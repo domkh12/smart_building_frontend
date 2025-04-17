@@ -8,7 +8,7 @@ import {
   setErrorSnackbar,
   setIsOpenSnackBar,
 } from "../../redux/feature/actions/actionSlice";
-import { Card, Grid2, TextField, Typography } from "@mui/material";
+import {Card, Grid2, Paper, TextField, Typography} from "@mui/material";
 import * as Yup from "yup";
 import SeoComponent from "../../components/SeoComponent";
 import MainHeaderComponent from "../../components/MainHeaderComponent";
@@ -93,13 +93,15 @@ function AddNewDevice() {
   }, [isErrorAddNewDeviceType, dispatch]);
 
   const breadcrumbs = [
-    <button
+    <Paper
+      elevation={0}
+      component="button"
       className="text-black hover:underline"
       onClick={() => navigate("/dash")}
       key={1}
     >
       {t("dashboard")}
-    </button>,
+    </Paper>,
     <Typography color="inherit" key={2}>
       {t("device")}
     </Typography>,

@@ -86,10 +86,9 @@ function QuickEditBuildingComponent() {
                     }}
                 >
                     <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                        sx={{ padding: "24px" }}
+                        variant = "h6"
+                        component = "h6"
+                        m = {3}
                     >
                         {t('quickUpdate')}
                     </Typography>
@@ -107,7 +106,6 @@ function QuickEditBuildingComponent() {
                                   errors,
                                   handleChange,
                                   handleBlur,
-                                  setFieldValue,
                               }) => {
 
                                 return (

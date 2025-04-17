@@ -2,9 +2,13 @@ import {IconButton, List, ListItemButton, ListItemText, Popover, Typography} fro
 import PopupState, {bindPopover, bindTrigger} from "material-ui-popup-state";
 import {BsFillPrinterFill, BsThreeDotsVertical} from "react-icons/bs";
 import {listStyle} from "../assets/style";
+import {useSelector} from "react-redux";
 
 
 function TableActionMenuComponent() {
+
+    const mode = useSelector((state) => state.theme.mode);
+
     return (
         <PopupState variant="popover" popupId="demo-popup-popover">
             {(popupState) => (
@@ -27,7 +31,7 @@ function TableActionMenuComponent() {
                             paper: {
                                 style: {
                                     padding: 10,
-                                    backgroundColor: "transparent",
+                                    background: "transparent",
                                     boxShadow: "none",
                                 },
                             },
@@ -42,13 +46,17 @@ function TableActionMenuComponent() {
                             disablePadding
                             dense={true}
                             sx={{
-                                ...listStyle,
+                                minWidth: 0,
+                                width: "200px",
+                                padding: "5px",
+                                borderRadius: "10px",
+                                background: `${mode === "dark" ? "#1C252E" : "#fff"}`,
+                                boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
                             }}
                         >
                             <ListItemButton
                                 sx={{
                                     borderRadius: "6px",
-                                    color: "#424242",
                                 }}
                             >
                                 <ListItemText
@@ -59,7 +67,6 @@ function TableActionMenuComponent() {
                                                 component="span"
                                                 variant="body1"
                                                 sx={{
-                                                    color: "#424242",
                                                     display: "inline",
                                                 }}
                                             >

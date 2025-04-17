@@ -25,9 +25,11 @@ export const getTheme = (mode) =>
                     },
                 }),
         },
+
         typography: {
             fontFamily: ['Roboto', 'Hanuman', 'Arial', 'sans-serif'].join(','),
         },
+
         components: {
             MuiButton: {
                 styleOverrides: {
@@ -80,9 +82,16 @@ export const getTheme = (mode) =>
             },
 
             MuiPaper: {
+                styleOverrides: {
+                    root: {
+                        borderRadius: "0px"
+                    }
+                },
                 defaultProps: {
                     elevation: 0,
+
                 },
+
             },
 
             MuiList: {
@@ -113,7 +122,8 @@ export const getTheme = (mode) =>
                         props: {variant: 'description'},
                         style: {
                             color: mode === "dark" ? "#fff" : "#000",
-                            opacity: mode === "dark" ? "80%" : "40%"
+                            opacity: mode === "dark" ? "80%" : "40%",
+                            fontSize: "14px"
                         },
                     },
                 ],

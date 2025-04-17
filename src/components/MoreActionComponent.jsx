@@ -8,18 +8,17 @@ import {
 } from "@mui/material";
 import PopupState, { bindPopover, bindTrigger } from "material-ui-popup-state";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { listStyle } from "../assets/style";
-import React from "react";
+import {useSelector} from "react-redux";
 
 function MoreActionComponent({
   menuItems,
   buttonIcon = <BsThreeDotsVertical className="w-5 h-5" />,
-  // textColor = "#424242",
-  // buttonColor = "#424242",
 }) {
-  
+
+  const mode = useSelector((state) => state.theme.mode);
+
   return (
-    <div>
+    <>
       <PopupState variant="popover" popupId="more-action-popover">
         {(popupState) => (
           <div>
@@ -27,8 +26,14 @@ function MoreActionComponent({
               aria-label="more_menu"
               {...bindTrigger(popupState)}
               size="small"
-              sx={{ width: "36px", height: "36px",backgroundColor: "transparent",
-                "&:hover": {backgroundColor: "transparent"} }}
+              sx={{
+                width: "36px",
+                height: "36px",
+                backgroundColor: "transparent",
+                "&:hover": {
+                  backgroundColor: "transparent"
+                }
+              }}
             >
               {buttonIcon}
             </IconButton>
@@ -42,7 +47,7 @@ function MoreActionComponent({
                 paper: {
                   style: {
                     padding: 10,
-                    backgroundColor: "transparent",
+                    background: "transparent",
                     boxShadow: "none",
                   },
                 },
@@ -57,7 +62,12 @@ function MoreActionComponent({
                 disablePadding
                 dense={true}
                 sx={{
-                  ...listStyle,
+                  minWidth: 0,
+                  width: "200px",
+                  padding: "5px",
+                  borderRadius: "10px",
+                  background: `${mode === "dark" ? "#1C252E" : "#fff"}`,
+                  boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
                 }}
               >
                 {menuItems.map((item, index) => (
@@ -98,7 +108,7 @@ function MoreActionComponent({
           </div>
         )}
       </PopupState>
-    </div>
+    </>
   );
 }
 

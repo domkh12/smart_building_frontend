@@ -1,4 +1,4 @@
-import { Card, Typography } from "@mui/material";
+import {Card, Paper, Typography} from "@mui/material";
 import ImageDetailComponent from "../../components/ImageDetailComponent";
 import {cardStyle} from "../../assets/style.js";
 import MainHeaderComponent from "../../components/MainHeaderComponent.jsx";
@@ -10,13 +10,15 @@ function ViewBuildingDetail({ building }) {
     const navigate = useNavigate();
     const { t } = useTranslate();
     const breadcrumbs = [
-        <button
+        <Paper
+            elevation={0}
+            component="button"
             className="text-black hover:underline"
             onClick={() => navigate("/dash")}
             key={1}
         >
             {t("dashboard")}
-        </button>,
+        </Paper>,
         <Typography color="inherit" key={2}>
             {t("device")}
         </Typography>,

@@ -52,12 +52,9 @@ export const selectMenuStyle = {
 };
 
 export const listStyle = {
-  minWidth: 0,
-  width: "200px",
-  padding: "5px",
-  borderRadius: "10px",
-  background: "linear-gradient(to top right,#FFE4D6,#fff, #E0E0F6)",
-  boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
+
+  // background: "linear-gradient(to top right,#FFE4D6,#fff, #E0E0F6)",
+  // boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
 };
 
 export const toolTipStyle = {

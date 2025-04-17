@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import useTranslate from '../../hook/useTranslate';
 import {useGetDeviceFilterQuery, useGetDeviceQuery} from '../../redux/feature/device/deviceApiSlice';
 import {
-    Card, Checkbox, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography
+    Card, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography
 } from '@mui/material';
 import LoadingFetchingDataComponent from '../../components/LoadingFetchingDataComponent';
 import DeviceRowComponent from '../../components/DeviceRowComponent';
@@ -99,17 +99,23 @@ function DeviceList() {
     }, [isFiltered, dispatch]);
 
 
-    const breadcrumbs = [<button
-        className="text-black hover:underline"
-        onClick={() => navigate("/dash")}
-        key={1}
-    >
-        {t("dashboard")}
-    </button>, <Typography color="inherit" key={2}>
-        {t("device")}
-    </Typography>, <Typography color="inherit" key={3}>
-        {t("list")}
-    </Typography>,];
+    const breadcrumbs = [
+        <Paper
+            elevation={0}
+            component="button"
+            className="text-black hover:underline"
+            onClick={() => navigate("/dash")}
+            key={1}
+        >
+            {t("dashboard")}
+        </Paper>,
+        <Typography color="inherit" key={2}>
+            {t("device")}
+        </Typography>,
+        <Typography color="inherit" key={3}>
+            {t("list")}
+        </Typography>,
+    ];
 
     const columns = [{
         id: "deviceName", label: t("deviceName"), minWidth: 230, align: "left",
@@ -143,7 +149,7 @@ function DeviceList() {
             <TableCell align="center" colSpan={8}>
                 <DataNotFound/>
             </TableCell>
-        </TableRow>)) : (ids.length ? (ids.map((id) => (<DeviceRowComponent key={id} device={entities[id]}/>))) : (
+            </TableRow>)) : (ids.length ? (ids.map((id) => (<DeviceRowComponent key={id} device={entities[id]}/>))) : (
             <TableRow>
                 <TableCell align="center" colSpan={8}>
                     <DataNotFound/>

@@ -1,21 +1,15 @@
 import {
-  Box,
-  Button,
-  Card,
-  Chip,
-  FormControl,
-  FormHelperText,
-  Grid2,
-  IconButton,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
+    Card,
+    FormControl,
+    FormHelperText,
+    Grid2, Paper,
+    TextField,
+    Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SeoComponent from "../../components/SeoComponent";
@@ -42,14 +36,17 @@ export default function Profile() {
   const {data: gender} = useFindAllGenderQuery("genderList");
     console.log(gender)
   const [updateUser] = useUpdateUserMutation();
+
   const breadcrumbs = [
-    <button
+    <Paper
+      elevation={0}
+      component="button"
       className="text-black hover:underline"
       onClick={() => navigate("/dash")}
       key={1}
     >
       {t("dashboard")}
-    </button>,
+    </Paper>,
     <Typography color="inherit" key={3}>
       {t("account")}
     </Typography>,
@@ -157,10 +154,6 @@ export default function Profile() {
 
             const handleGenderChange = (value) => {
               setFieldValue("genderId", value);
-            };
-
-            const handleIsVerifiedChange = (event) => {
-              setFieldValue("isVerified", event.target.checked);
             };
 
             return (

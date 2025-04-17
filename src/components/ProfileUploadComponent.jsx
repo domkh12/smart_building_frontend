@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { BsCameraFill } from "react-icons/bs";
 import useTranslate from "../hook/useTranslate";
+import {useSelector} from "react-redux";
 
 function ProfileUploadComponent({ profileImageFile, setProfileImageFile, profileUrl }) {
   
@@ -11,15 +12,19 @@ function ProfileUploadComponent({ profileImageFile, setProfileImageFile, profile
   const [error, setError] = useState(null);
   const { t } = useTranslate();
   const isError = !!error;
+  const mode = useSelector((state) => state.theme.mode);
+
   const handleClick = () => {
     profileRef.current.click();
   };
+
   const formatFileSize = (size) => {
     if (size) {
       return (size / 1024).toFixed(2) + " KB";
     }
     return null;
   };
+
   const handleImageChange = (event) => {
     setError(null);
     const file = event.target.files[0];
@@ -62,8 +67,8 @@ function ProfileUploadComponent({ profileImageFile, setProfileImageFile, profile
                 type="button"
               >
                 <div className="flex justify-center items-center flex-col gap-2">
-                  <BsCameraFill className=" text-white w-7 h-7 " />
-                  <span className="text-white text-sm">Upload photo</span>
+                  <BsCameraFill className=" w-7 h-7 " />
+                  <Typography  variant="subtitle2">Upload photo</Typography>
                 </div>
               </button>
             </>
@@ -77,13 +82,14 @@ function ProfileUploadComponent({ profileImageFile, setProfileImageFile, profile
           >
             <div className="flex justify-center items-center flex-col gap-2">
               <BsCameraFill
-                className={`${isError ? "text-[#f44336] text-opacity-100" : "text-black text-opacity-30"} w-7 h-7 `}
+                  className={`${isError ? "text-[#f44336] text-opacity-100" : `${mode === "dark" ? "text-white text-opacity-80":"text-black text-opacity-30"} `} w-7 h-7 `}
               />
-              <span
-                className={`${isError ? "text-[#f44336] text-opacity-100" : "text-black text-opacity-40"}  text-sm`}
+              <Typography
+                  variant="subtitle2"
+                  className={`${isError ? "text-[#f44336] text-opacity-100" : ""}  text-sm`}
               >
                 Upload photo
-              </span>
+              </Typography>
             </div>
           </button>
         )}
@@ -97,8 +103,8 @@ function ProfileUploadComponent({ profileImageFile, setProfileImageFile, profile
         />
       </div>
       <Typography
-        variant="caption"
-        className="text-black text-opacity-60 text-center w-[170px]"
+        variant="description"
+        className="opacity-60 text-center w-[170px]"
       >
         {t("imageValidation")}
       </Typography>

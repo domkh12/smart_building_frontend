@@ -567,7 +567,7 @@ function AddNewUser() {
                                                         name="password"
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        autoComplete="off"
+                                                        autoComplete="new-password"
                                                         value={values.password}
                                                         type={showPassword ? "text" : "password"}
                                                         endAdornment={
@@ -618,7 +618,7 @@ function AddNewUser() {
                                                         name="confirmPassword"
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        autoComplete="off"
+                                                        autoComplete="new-password"
                                                         value={values.confirmPassword}
                                                         type={showConfirmPassword ? "text" : "password"}
                                                         endAdornment={

@@ -358,7 +358,7 @@ export default function Login() {
                           name="password"
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          autoComplete="off"
+                          autoComplete="new-password"
                           value={values.password}
                           type={showPassword ? "text" : "password"}
                           endAdornment={

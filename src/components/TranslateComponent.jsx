@@ -25,6 +25,7 @@ function TranslateComponent() {
   const [initialFetchDone, setInitialFetchDone] = useState(true);
   const [caption, setCaption] = useState("");
   const dispatch = useDispatch();
+  const mode = useSelector((state) => state.theme.mode);
   const { t } = useTranslate();
 
   useEffect(() => {
@@ -79,8 +80,9 @@ function TranslateComponent() {
               slotProps={{
                 paper: {
                   style: {
-                    backgroundColor: "transparent",
-                    boxShadow: "none",
+                    background: "transparent",
+                    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
+                    borderRadius: "10px",
                   },
                 },
               }}
@@ -94,7 +96,11 @@ function TranslateComponent() {
                 disablePadding
                 dense={true}
                 sx={{
-                  ...listStyle,
+                  minWidth: 0,
+                  width: "200px",
+                  padding: "5px",
+                  background: `${mode === "dark" ? "#1C252E" : "#fff"}`,
+
                 }}
               >
                 <ListItemButton
@@ -104,7 +110,6 @@ function TranslateComponent() {
                   }}
                   sx={{
                     borderRadius: "6px",
-                    color: "#424242",
                   }}
                 >
                   <ListItemText
@@ -121,7 +126,6 @@ function TranslateComponent() {
                           component="span"
                           variant="body2"
                           sx={{
-                            color: "#424242",
                             display: "inline",
                           }}
                         >
@@ -139,7 +143,6 @@ function TranslateComponent() {
                   }}
                   sx={{
                     borderRadius: "6px",
-                    color: "#424242",
                   }}
                 >
                   <ListItemText
@@ -156,7 +159,6 @@ function TranslateComponent() {
                           component="span"
                           variant="body2"
                           sx={{
-                            color: "#424242",
                             display: "inline",
                           }}
                         >

@@ -55,6 +55,7 @@ function SideBarManager() {
   const isDeviceCreatePage = location.pathname === "/dash/devices/new";
   const isBuildingListPage = location.pathname === "/dash/buildings";
   const isBuildingCreatePage = location.pathname === "/dash/buildings/new";
+  const mode = useSelector((state) => state.theme.mode);
   const { t } = useTranslate();
 
   const handleManagementClick = () => {
@@ -379,7 +380,7 @@ function SideBarManager() {
                                       paper: {
                                         style: {
                                           padding: 10,
-                                          backgroundColor: "transparent",
+                                          background: "transparent",
                                           boxShadow: "none",
                                         },
                                       },
@@ -402,10 +403,8 @@ function SideBarManager() {
                                         width: "200px",
                                         padding: "5px",
                                         borderRadius: "10px",
-                                        background:
-                                          "linear-gradient(to top right,#FFE4D6,#fff, #E0E0F6)",
-                                        boxShadow:
-                                          "0px 0px 15px rgba(0, 0, 0, 0.15)",
+                                        background: `${mode === "dark" ? "#1C252E" : "#fff"}`,
+                                        boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
                                       }}
                                     >
                                       <ListItemButton
@@ -682,7 +681,7 @@ function SideBarManager() {
                                       paper: {
                                         style: {
                                           padding: 10,
-                                          backgroundColor: "transparent",
+                                          background: "transparent",
                                           boxShadow: "none",
                                         },
                                       },
@@ -705,10 +704,8 @@ function SideBarManager() {
                                         width: "200px",
                                         padding: "5px",
                                         borderRadius: "10px",
-                                        background:
-                                          "linear-gradient(to top right,#FFE4D6,#fff, #E0E0F6)",
-                                        boxShadow:
-                                          "0px 0px 15px rgba(0, 0, 0, 0.15)",
+                                        background: `${mode === "dark" ? "#1C252E" : "#fff"}`,
+                                        boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
                                       }}
                                     >
                                       <ListItemButton
@@ -972,7 +969,7 @@ function SideBarManager() {
                                   paper: {
                                     style: {
                                       padding: 10,
-                                      backgroundColor: "transparent",
+                                      background: "transparent",
                                       boxShadow: "none",
                                     },
                                   },
@@ -995,10 +992,8 @@ function SideBarManager() {
                                     width: "200px",
                                     padding: "5px",
                                     borderRadius: "10px",
-                                    background:
-                                      "linear-gradient(to top right,#FFE4D6,#fff, #E0E0F6)",
-                                    boxShadow:
-                                      "0px 0px 15px rgba(0, 0, 0, 0.15)",
+                                    background: `${mode === "dark" ? "#1C252E" : "#fff"}`,
+                                    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
                                   }}
                                 >
                                   <ListItemButton
@@ -1243,7 +1238,7 @@ function SideBarManager() {
                                   paper: {
                                     style: {
                                       padding: 10,
-                                      backgroundColor: "transparent",
+                                      background: "transparent",
                                       boxShadow: "none",
                                     },
                                   },
@@ -1266,10 +1261,8 @@ function SideBarManager() {
                                     width: "200px",
                                     padding: "5px",
                                     borderRadius: "10px",
-                                    background:
-                                      "linear-gradient(to top right,#FFE4D6,#fff, #E0E0F6)",
-                                    boxShadow:
-                                      "0px 0px 15px rgba(0, 0, 0, 0.15)",
+                                    background: `${mode === "dark" ? "#1C252E" : "#fff"}`, 
+                                    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
                                   }}
                                 >
                                   <ListItemButton
@@ -1518,7 +1511,7 @@ function SideBarManager() {
                                   paper: {
                                     style: {
                                       padding: 10,
-                                      backgroundColor: "transparent",
+                                      background: "transparent",
                                       boxShadow: "none",
                                     },
                                   },
@@ -1541,10 +1534,8 @@ function SideBarManager() {
                                     width: "200px",
                                     padding: "5px",
                                     borderRadius: "10px",
-                                    background:
-                                      "linear-gradient(to top right,#FFE4D6,#fff, #E0E0F6)",
-                                    boxShadow:
-                                      "0px 0px 15px rgba(0, 0, 0, 0.15)",
+                                    background: `${mode === "dark" ? "#1C252E" : "#fff"}`,
+                                    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
                                   }}
                                 >
                                   <ListItemButton
@@ -1682,7 +1673,6 @@ function SideBarManager() {
                             <ListItemButton
                               sx={{
                                 borderRadius: "10px",
-                                
                                 mb: "5px",
                               }}
                               onClick={() => navigate("/dash/users")}
@@ -1710,7 +1700,6 @@ function SideBarManager() {
                             <ListItemButton
                               sx={{
                                 borderRadius: "10px",
-                                
                                 mb: "5px",
                               }}
                               onClick={() => navigate("/dash/users/new")}

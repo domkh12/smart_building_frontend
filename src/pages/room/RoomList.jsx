@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import useTranslate from "../../hook/useTranslate";
 import {
     Card,
-    Checkbox,
+    Checkbox, Paper,
     Table,
     TableBody,
     TableCell,
@@ -24,7 +24,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     useGetAllNameBuildingQuery
 } from "../../redux/feature/building/buildingApiSlice.js";
-import {setBuildingFilterForRoom, setPageNoRoom, setSearchKeywordRoom} from "../../redux/feature/room/roomSlice.js";
+import {
+    setBuildingFilterForRoom,
+    setPageNoRoom,
+    setPageSizeRoom,
+    setSearchKeywordRoom
+} from "../../redux/feature/room/roomSlice.js";
 import {useDebounce} from "use-debounce";
 import SkeletonTableRowComponent from "../../components/SkeletonTableRowComponent.jsx";
 import FilterChipsComponent from "../../components/FilterChipsComponent.jsx";
@@ -41,8 +46,8 @@ function RoomList() {
     const pageNo = useSelector((state) => state.room.pageNo);
     const pageSize = useSelector((state) => state.room.pageSize);
     const mode = useSelector((state) => state.theme.mode);
-    const {data: building} = useGetAllNameBuildingQuery("buildingNameList")
 
+    const {data: building} = useGetAllNameBuildingQuery("buildingNameList")
 
     const {data: roomData, isSuccess, isLoading} = useGetRoomQuery({
         pageNo,
@@ -87,13 +92,15 @@ function RoomList() {
 
 
     const breadcrumbs = [
-        <button
+        <Paper
+            elevation={0}
+            component="button"
             className="text-black hover:underline"
             onClick={() => navigate("/dash")}
             key={1}
         >
             {t("dashboard")}
-        </button>,
+        </Paper>,
         <Typography color="inherit" key={2}>
             {t("room")}
         </Typography>,

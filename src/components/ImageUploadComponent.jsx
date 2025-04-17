@@ -87,7 +87,7 @@ function ImageUploadComponent({
                             <BsCameraFill
                                 className={`${isError ? "text-[#f44336] text-opacity-100" : `${mode === "dark" ? "text-white text-opacity-80":"text-black text-opacity-30"} `} w-7 h-7 `}
                             />
-                            <Typography variant="description"
+                            <Typography variant="body1"
                                         className={`${isError ? "text-[#f44336] text-opacity-100" : ""}  text-sm`}
                             >
                                 Upload photo
