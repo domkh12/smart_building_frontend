@@ -12,12 +12,12 @@ import ProfileDrawerComponent from "../../components/ProfileDrawerComponent";
 import SelectRoomComponent from "../../components/SelectRoomComponent.jsx";
 import useAuth from "../../hook/useAuth";
 import { selectCurrentToken } from "../../redux/feature/auth/authSlice";
-import { useVerifySitesMutation } from "../../redux/feature/auth/authApiSlice";
+import {useGetUserProfileQuery, useVerifySitesMutation} from "../../redux/feature/auth/authApiSlice";
 import { setChangedSite } from "../../redux/feature/site/siteSlice";
 
 function NavBarDashboardManager() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const user = useSelector((state) => state.users.user);
+  const {data: user} = useGetUserProfileQuery("profileList");
   const sites = useSelector((state) => state.sites.sitesForChange);
   const { isAdmin, isManager, sites: currentSite } = useAuth();
   const dispatch = useDispatch();
@@ -118,11 +118,14 @@ function NavBarDashboardManager() {
         </div>
       </Paper>
 
-      <ProfileDrawerComponent
-        open={drawerOpen}
-        onClose={handleDrawerClose}
-        handleSendLogout={handleSendLogout}
-      />
+      {
+        drawerOpen && <ProfileDrawerComponent
+              open={drawerOpen}
+              onClose={handleDrawerClose}
+              handleSendLogout={handleSendLogout}
+          />
+      }
+
     </>
   );
 }

@@ -8,23 +8,20 @@ import {floorApiSlice} from "../../redux/feature/floor/floorApiSlice";
 import {roomApiSlice} from "../../redux/feature/room/roomApiSlice";
 import {deviceApiSlice} from "../../redux/feature/device/deviceApiSlice";
 import {deviceTypeApiSlice} from "../../redux/feature/device/deviceTypeApiSlice.js";
+import {authApiSlice} from "../../redux/feature/auth/authApiSlice.js";
 
 function Prefetch() {
-    const {isManager, isAdmin} = useAuth();
+    const {isManager, isAdmin, isUser} = useAuth();
 
     useEffect(() => {
-        if (isManager) {
+        if (isUser) {
             store.dispatch(buildingApiSlice.util.prefetch("getBuilding", "buildingList", {
                 force: true,
             }));
             store.dispatch(floorApiSlice.util.prefetch("getFloor", "floorList", {force: true}));
-        }
-
-        if (isAdmin){
+        }else if (isAdmin){
             store.dispatch(userApiSlice.util.prefetch("getUsers", "usersList", {force: true}));
-        }
-
-        if (isManager) {
+        }else if (isManager) {
             store.dispatch(userApiSlice.util.prefetch("getAllSignUpMethods", "signupMethodList", {force: true}));
             store.dispatch(userApiSlice.util.prefetch("findAllGender", "genderList", {force: true}));
             store.dispatch(userApiSlice.util.prefetch("getAllRoles", "roleList", {force: true}));
@@ -35,6 +32,8 @@ function Prefetch() {
             store.dispatch(userApiSlice.util.prefetch("getUsers", "usersList", {force: true}));
             store.dispatch(roomApiSlice.util.prefetch("getRoom", "roomList", {force: true}));
             store.dispatch(deviceApiSlice.util.prefetch("getDevice", "deviceList", {force: true}));
+        }else {
+            store.dispatch(authApiSlice.util.prefetch("getUserProfile", "profileList"), {force: true});
         }
     }, []);
 

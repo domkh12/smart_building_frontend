@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar, IconButton } from "@mui/material";
+import {Avatar, IconButton, Paper} from "@mui/material";
 import { useEffect, useState } from "react";
 import NotificationsNoneTwoToneIcon from "@mui/icons-material/NotificationsNoneTwoTone";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
@@ -79,7 +79,7 @@ function NavBarDashboardUser() {
 
   return (
     <>
-      <div className="h-[70px] bg-white text-white bg-opacity-50 backdrop-blur-md flex justify-between flex-nowrap items-center xl:px-[40px] px-[10px] sm:px-[20px]">
+      <Paper elevation={0} className="h-[70px] bg-white text-white bg-opacity-50 backdrop-blur-md flex justify-between flex-nowrap items-center xl:px-[40px] px-[10px] sm:px-[20px]">
         <div className=" flex items-center gap-[10px]">
           <div className="xl:hidden">
             <SidebarDrawerUserComponent listGroups={combinedLists} />
@@ -127,7 +127,7 @@ function NavBarDashboardUser() {
             </IconButton>
           </div>
         </div>
-      </div>
+      </Paper>
 
       <ProfileDrawerComponent
         open={drawerOpen}

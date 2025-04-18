@@ -76,7 +76,8 @@ export const apiSlice = createApi({
         "FloorName",
         "Role",
         "Gender",
-        "SignupMethod"
+        "SignupMethod",
+        "Profile"
     ],
     endpoints: (builder) => ({}),
 });

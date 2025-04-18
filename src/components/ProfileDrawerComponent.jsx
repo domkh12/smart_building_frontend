@@ -14,21 +14,21 @@ import {
 } from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {IoClose} from "react-icons/io5";
-import {useSendLogoutMutation} from "../redux/feature/auth/authApiSlice";
+import {useGetUserProfileQuery, useSendLogoutMutation} from "../redux/feature/auth/authApiSlice";
 import {useNavigate} from "react-router-dom";
 import {LoadingButton} from "@mui/lab";
 import useAuth from "../hook/useAuth";
 import {useSelector} from "react-redux";
-import {FaUserCircle, FaUserTie} from "react-icons/fa";
 import {listItemButtonStyle} from "../assets/style";
 import {useConnectedUserMutation} from "../redux/feature/users/userApiSlice";
 import PortraitTwoToneIcon from "@mui/icons-material/PortraitTwoTone";
 import useTranslate from "../hook/useTranslate";
 import {deepPurple, red} from "@mui/material/colors";
+import {FaUserTie} from "react-icons/fa";
 
 function ProfileDrawerComponent({open: initialOpen, onClose}) {
     const {username, status} = useAuth();
-    const user = useSelector((state) => state.users.user);
+    const {data: user} = useGetUserProfileQuery("profileList");
     const [open, setOpen] = useState(initialOpen);
     const {t} = useTranslate();
     const navigate = useNavigate();

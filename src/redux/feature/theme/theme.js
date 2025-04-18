@@ -31,6 +31,16 @@ export const getTheme = (mode) =>
         },
 
         components: {
+
+            MuiTab: {
+                styleOverrides: {
+                    root: {
+                        textTransform: "none",
+                        fontSize: "1rem"
+                    }
+                }
+            },
+
             MuiButton: {
                 styleOverrides: {
                     contained: {

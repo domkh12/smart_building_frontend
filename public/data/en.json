@@ -159,5 +159,7 @@
   "resetAll": "Reset all",
   "fullScreen": "Fullscreen",
   "settings": "Settings",
-  "darkMode": "Dark mode"
+  "darkMode": "Dark mode",
+  "general": "General",
+  "security": "Security"
 }

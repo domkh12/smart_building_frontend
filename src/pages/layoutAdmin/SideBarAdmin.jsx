@@ -1,12 +1,9 @@
 import {useState} from "react";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRightRounded";
 import SpaceDashboardTwoToneIcon from "@mui/icons-material/SpaceDashboardTwoTone";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
-import ApartmentTwoToneIcon from "@mui/icons-material/ApartmentTwoTone";
-import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
-import TipsAndUpdatesTwoToneIcon from "@mui/icons-material/TipsAndUpdatesTwoTone";
 import SettingsRemoteIcon from "@mui/icons-material/SettingsRemote";
 
 import {
@@ -17,12 +14,11 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    ListSubheader,
+    ListSubheader, Paper,
     Typography,
 } from "@mui/material";
 import {IoIosArrowDown, IoIosArrowForward} from "react-icons/io";
 import LogoComponent from "../../components/LogoComponent.jsx";
-import ElevatorTwoToneIcon from "@mui/icons-material/ElevatorTwoTone";
 import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
 import {listItemButtonStyle} from "./../../assets/style";
 import {toggleCollapsed} from "../../redux/feature/actions/actionSlice.js";
@@ -36,8 +32,7 @@ function SideBarAdmin() {
     const [isOverviewOpen, setIsOverviewOpen] = useState(true);
     const [isManagementOpen, setIsManagementOpen] = useState(true);
     const [isUserOpen, setIsUserOpen] = useState(false);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const {isManager, isAdmin, isUser} = useAuth();
+    const mode = useSelector((state) => state.theme.mode);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
@@ -66,7 +61,7 @@ function SideBarAdmin() {
                         : "w-[300px] transition-all duration-500"
                 } h-full border-r-[1px] border-r-gray-200 w-[15rem] shrink-0 hidden xl:block`}
             >
-                <nav className="flex flex-col relative h-screen">
+                <Paper elevation={0} component="nav" className="flex flex-col relative h-screen">
                     <IconButton
                         aria-label="collapse_btn"
                         sx={{
@@ -77,18 +72,14 @@ function SideBarAdmin() {
                             width: "28px",
                             height: "28px",
                             zIndex: "30",
-                            backgroundColor: "white",
-                            ":hover": {
-                                backgroundColor: "#f5f5f5",
-                            },
                         }}
                         onClick={() => dispatch(toggleCollapsed(true))}
                         size="small"
                     >
                         {isCollapsed ? (
-                            <KeyboardArrowRightRoundedIcon/>
+                            <KeyboardArrowRightRoundedIcon />
                         ) : (
-                            <KeyboardArrowLeftRoundedIcon/>
+                            <KeyboardArrowLeftRoundedIcon />
                         )}
                     </IconButton>
                     <LogoComponent/>
@@ -139,11 +130,10 @@ function SideBarAdmin() {
                                 timeout="auto"
                                 unmountOnExit
                             >
-                                {(isManager || isAdmin) && (
+
                                     <ListItemButton
                                         sx={{
                                             borderRadius: "10px",
-                                            color: "#424242",
                                             mb: "5px",
                                             ...(isCollapsed && {
                                                 padding: "5px",
@@ -173,7 +163,6 @@ function SideBarAdmin() {
                                                             component="span"
                                                             variant="caption"
                                                             sx={{
-                                                                color: "#424242",
                                                                 display: "inline",
                                                             }}
                                                         >
@@ -191,7 +180,6 @@ function SideBarAdmin() {
                                                         component="span"
                                                         variant="body1"
                                                         sx={{
-                                                            color: "#424242",
                                                             display: "inline",
                                                         }}
                                                     >
@@ -201,11 +189,11 @@ function SideBarAdmin() {
                                             />
                                         )}
                                     </ListItemButton>
-                                )}
+
                                 <ListItemButton
                                     sx={{
                                         borderRadius: "10px",
-                                        color: "#424242",
+                                        
                                         mb: "5px",
                                         ...listItemButtonStyle,
                                     }}
@@ -232,7 +220,7 @@ function SideBarAdmin() {
                                                         component="span"
                                                         variant="caption"
                                                         sx={{
-                                                            color: "#424242",
+                                                            
                                                             display: "inline",
                                                             textWrap: "nowrap",
                                                         }}
@@ -250,7 +238,7 @@ function SideBarAdmin() {
                                                     component="span"
                                                     variant="body1"
                                                     sx={{
-                                                        color: "#424242",
+                                                        
                                                         display: "inline",
                                                         textWrap: "nowrap",
                                                     }}
@@ -322,7 +310,7 @@ function SideBarAdmin() {
                                                             {...bindHover(popupState)}
                                                             sx={{
                                                                 borderRadius: "10px",
-                                                                color: "#424242",
+                                                                
                                                                 ...((isUserListPage || isUserCreatePage) &&
                                                                     listItemButtonStyle),
                                                                 mt: "5px",
@@ -350,7 +338,7 @@ function SideBarAdmin() {
                                                                             component="span"
                                                                             variant="caption"
                                                                             sx={{
-                                                                                color: "#424242",
+                                                                                
                                                                                 display: "inline",
                                                                                 textWrap: "nowrap",
                                                                             }}
@@ -367,7 +355,7 @@ function SideBarAdmin() {
                                                                 paper: {
                                                                     style: {
                                                                         padding: 10,
-                                                                        backgroundColor: "transparent",
+                                                                        background: "transparent",
                                                                         boxShadow: "none",
                                                                     },
                                                                 },
@@ -390,16 +378,14 @@ function SideBarAdmin() {
                                                                     width: "200px",
                                                                     padding: "5px",
                                                                     borderRadius: "10px",
-                                                                    background:
-                                                                        "linear-gradient(to top right,#FFE4D6,#fff, #E0E0F6)",
-                                                                    boxShadow:
-                                                                        "0px 0px 15px rgba(0, 0, 0, 0.15)",
+                                                                    background: `${mode === "dark" ? "#1C252E" : "#fff"}`,
+                                                                    boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.15)",
                                                                 }}
                                                             >
                                                                 <ListItemButton
                                                                     sx={{
                                                                         borderRadius: "6px",
-                                                                        color: "#424242",
+                                                                        
                                                                         mb: "5px",
                                                                     }}
                                                                     onClick={() => {
@@ -418,7 +404,7 @@ function SideBarAdmin() {
                                                                                 component="span"
                                                                                 variant="body1"
                                                                                 sx={{
-                                                                                    color: "#424242",
+                                                                                    
                                                                                     display: "inline",
                                                                                 }}
                                                                             >
@@ -431,7 +417,7 @@ function SideBarAdmin() {
                                                                 <ListItemButton
                                                                     sx={{
                                                                         borderRadius: "6px",
-                                                                        color: "#424242",
+                                                                        
                                                                     }}
                                                                     onClick={() => {
                                                                         if (
@@ -451,7 +437,7 @@ function SideBarAdmin() {
                                                                                 component="span"
                                                                                 variant="body1"
                                                                                 sx={{
-                                                                                    color: "#424242",
+                                                                                    
                                                                                     display: "inline",
                                                                                 }}
                                                                             >
@@ -471,7 +457,7 @@ function SideBarAdmin() {
                                             <ListItemButton
                                                 sx={{
                                                     borderRadius: "10px",
-                                                    color: "#424242",
+                                                    
                                                     ...((isUserListPage || isUserCreatePage) &&
                                                         listItemButtonStyle),
                                                     mt: "5px",
@@ -497,7 +483,7 @@ function SideBarAdmin() {
                                                         <Typography
                                                             component="span"
                                                             variant="body1"
-                                                            sx={{color: "#424242", display: "inline"}}
+                                                            sx={{ display: "inline"}}
                                                         >
                                                             {t("user")}
                                                         </Typography>
@@ -532,7 +518,7 @@ function SideBarAdmin() {
                                                     <ListItemButton
                                                         sx={{
                                                             borderRadius: "10px",
-                                                            color: "#424242",
+                                                            
                                                             mb: "5px",
                                                         }}
                                                         onClick={() => navigate("/admin/users")}
@@ -543,7 +529,7 @@ function SideBarAdmin() {
                                                                 <Typography
                                                                     component="span"
                                                                     variant="body1"
-                                                                    sx={{color: "#424242", display: "inline"}}
+                                                                    sx={{ display: "inline"}}
                                                                 >
                                                                     {t("list")}
                                                                 </Typography>
@@ -560,7 +546,7 @@ function SideBarAdmin() {
                                                     <ListItemButton
                                                         sx={{
                                                             borderRadius: "10px",
-                                                            color: "#424242",
+                                                            
                                                             mb: "5px",
                                                         }}
                                                         onClick={() => navigate("/admin/users/new")}
@@ -571,7 +557,7 @@ function SideBarAdmin() {
                                                                 <Typography
                                                                     component="span"
                                                                     variant="body1"
-                                                                    sx={{color: "#424242", display: "inline"}}
+                                                                    sx={{ display: "inline"}}
                                                                 >
                                                                     {t("create")}
                                                                 </Typography>
@@ -587,7 +573,7 @@ function SideBarAdmin() {
                         </>
 
                     </div>
-                </nav>
+                </Paper>
             </Box>
         </>
     );

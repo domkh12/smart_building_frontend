@@ -19,6 +19,7 @@ import {setUserProfile} from "../../redux/feature/auth/authSlice";
 import SettingDrawerComponent from "../../components/SettingDrawerComponent";
 import WaveLoadingComponent from "../../components/WaveLoadingComponent.jsx";
 import {selectIsInitialLoading, setInitialLoading} from "../../redux/feature/app/appSlice.js";
+import {Paper} from "@mui/material";
 
 function UserLayout() {
     const isPaginationSuccess = useSelector(
@@ -137,8 +138,8 @@ function UserLayout() {
 
     if (isSuccessGetUserProfile || isSuccessConnectUser) {
         content = (
-            <div className="fixed top-0 left-0 w-full h-screen dark:bg-[#282828]">
-                <div className="flex h-full bg-white">
+            <Paper elevation={0} className="fixed top-0 left-0 w-full h-screen dark:bg-[#282828]">
+                <Paper elevation={0} className="flex h-full bg-white">
                     <SideBarUser/>
                     {/* <main className="flex flex-grow h-full overflow-auto"> */}
                     <div className="flex-grow h-full overflow-auto">
@@ -153,7 +154,7 @@ function UserLayout() {
                         </main>
                     </div>
                     {/* </main> */}
-                </div>
+                </Paper>
                 <SnackBarComponent
                     isError={isErrorSnackbar}
                     isLoading={isLoadingSnackbar}
@@ -162,7 +163,7 @@ function UserLayout() {
                 />
                 <DeleteConfirmComponent/>
                 <SettingDrawerComponent/>
-            </div>
+            </Paper>
         );
     }
 

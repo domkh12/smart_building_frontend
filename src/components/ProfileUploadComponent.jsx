@@ -86,10 +86,12 @@ function ProfileUploadComponent({ profileImageFile, setProfileImageFile, profile
               />
               <Typography
                   variant="subtitle2"
-                  className={`${isError ? "text-[#f44336] text-opacity-100" : ""}  text-sm`}
+                  className={`${mode === "dark" && isError ? "text-[#f44336] text-opacity-100" : mode === "dark" ? "text-white text-opacity-80" : isError ? "text-[#f44336] text-opacity-100" : "text-black text-opacity-40"} 
+                              text-sm`}
               >
                 Upload photo
               </Typography>
+
             </div>
           </button>
         )}

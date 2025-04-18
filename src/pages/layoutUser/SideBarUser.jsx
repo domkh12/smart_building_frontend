@@ -7,15 +7,15 @@ import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftR
 import SettingsRemoteIcon from "@mui/icons-material/SettingsRemote";
 
 import {
-  Box,
-  Collapse,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader,
-  Typography,
+    Box,
+    Collapse,
+    IconButton,
+    List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    ListSubheader, Paper,
+    Typography,
 } from "@mui/material";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import LogoComponent from "../../components/LogoComponent.jsx";
@@ -48,31 +48,27 @@ function SideBarUser() {
             : "w-[300px] transition-all duration-500"
         } h-full border-r-[1px] border-r-gray-200 w-[15rem] shrink-0 hidden xl:block`}
       >
-        <nav className="flex flex-col relative h-screen">
-          <IconButton
-            aria-label="collapse_btn"
-            sx={{
-              border: "0.5px solid #e5e7eb",
-              position: "absolute",
-              top: "23px",
-              right: "-14px",
-              width: "28px",
-              height: "28px",
-              zIndex: "30",
-              backgroundColor: "white",
-              ":hover": {
-                backgroundColor: "#f5f5f5",
-              },
-            }}
-            onClick={() => dispatch(toggleCollapsed(true))}
-            size="small"
-          >
-            {isCollapsed ? (
-              <KeyboardArrowRightRoundedIcon />
-            ) : (
-              <KeyboardArrowLeftRoundedIcon />
-            )}
-          </IconButton>
+        <Paper elevation={0} component="nav" className="flex flex-col relative h-screen">
+            <IconButton
+                aria-label="collapse_btn"
+                sx={{
+                    border: "0.5px solid #e5e7eb",
+                    position: "absolute",
+                    top: "23px",
+                    right: "-14px",
+                    width: "28px",
+                    height: "28px",
+                    zIndex: "30",
+                }}
+                onClick={() => dispatch(toggleCollapsed(true))}
+                size="small"
+            >
+                {isCollapsed ? (
+                    <KeyboardArrowRightRoundedIcon />
+                ) : (
+                    <KeyboardArrowLeftRoundedIcon />
+                )}
+            </IconButton>
           <LogoComponent />
 
           <div
@@ -123,7 +119,6 @@ function SideBarUser() {
                 <ListItemButton
                   sx={{
                     borderRadius: "10px",
-                    color: "#424242",
                     mb: "5px",
                     ...listItemButtonStyle,
                   }}
@@ -150,7 +145,6 @@ function SideBarUser() {
                             component="span"
                             variant="caption"
                             sx={{
-                              color: "#424242",
                               display: "inline",
                               textWrap: "nowrap",
                             }}
@@ -168,7 +162,6 @@ function SideBarUser() {
                           component="span"
                           variant="body1"
                           sx={{
-                            color: "#424242",
                             display: "inline",
                             textWrap: "nowrap",
                           }}
@@ -184,7 +177,7 @@ function SideBarUser() {
             </List>
 
           </div>
-        </nav>
+        </Paper>
       </Box>
     </>
   );

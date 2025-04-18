@@ -18,6 +18,7 @@ import DeleteConfirmComponent from "../../components/DeleteConfirmComponent";
 import { setUserProfile } from "../../redux/feature/auth/authSlice";
 import SettingDrawerComponent from "../../components/SettingDrawerComponent";
 import WaveLoadingComponent from "../../components/WaveLoadingComponent.jsx";
+import {Paper} from "@mui/material";
 
 function AdminLayout() {
   const isPaginationSuccess = useSelector(
@@ -136,8 +137,8 @@ function AdminLayout() {
 
   if (isSuccessGetUserProfile || isSuccessConnectUser) {
     content = (
-      <div className="fixed top-0 left-0 w-full h-screen dark:bg-[#282828]">
-        <div className="flex h-full bg-white">
+      <Paper elevation={0} className="fixed top-0 left-0 w-full h-screen dark:bg-[#282828]">
+        <Paper elevation={0} className="flex h-full bg-white">
           <SideBarAdmin />
 
           <div className="flex-grow h-full overflow-auto">
@@ -152,7 +153,7 @@ function AdminLayout() {
             </main>
           </div>
           {/* </main> */}
-        </div>
+        </Paper>
         <SnackBarComponent
           isError={isErrorSnackbar}
           isLoading={isLoadingSnackbar}
@@ -161,7 +162,7 @@ function AdminLayout() {
         />
         <DeleteConfirmComponent />
 
-      </div>
+      </Paper>
     );
   }
 

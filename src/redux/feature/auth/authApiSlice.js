@@ -92,23 +92,33 @@ export const authApiSlice = apiSlice.injectEndpoints({
       
     }),
 
-    getUserProfile: builder.mutation({
+    getUserProfile: builder.query({
       query: () => ({
         url: `/auth/profiles`,
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setUser(data));
-        } catch (error) {
-          console.error("Failed to fetch user:", error);
-        }
+      providesTags: (result, error, arg) => {
+        if (result?.ids) {
+          return [{type: "Profile", id: "LIST"}, ...result.ids.map((id) => ({type: "Profile", id})),];
+        } else return [{type: "Profile", id: "LIST"}];
       },
     }),
+
+    updateUserProfile: builder.mutation({
+      query:( initialState) => ({
+        url: `/auth/profiles`,
+        method: "PUT",
+        body: {
+          ...initialState
+        }
+      }),
+      invalidatesTags: (result, error, arg) => [{type: "Profile", id: "LIST"}],
+    })
+
   }),
 });
 
 export const {
+  useUpdateUserProfileMutation,
   useLoginMutation,
   useSendLogoutMutation,
   useRefreshMutation,
@@ -117,5 +127,5 @@ export const {
   useDisableTwoFaMutation,
   useVerify2FALoginMutation,
   useVerifySitesMutation,
-  useGetUserProfileMutation,
+  useGetUserProfileQuery,
 } = authApiSlice;
