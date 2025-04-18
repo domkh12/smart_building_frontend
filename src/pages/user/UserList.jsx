@@ -16,7 +16,7 @@ import {
     setBranchFilter,
     setClearSearchQuery,
     setPageNo,
-    setPageSize,
+    setPageSize, setResultFound,
     setRoleFilter,
     setSearchQuery,
     setSignUpMethodFilter,
@@ -43,10 +43,10 @@ function UserList() {
     const signUpMethodFilter = useSelector((state) => state.users.signUpMethodFilter);
     const {isManager, isAdmin} = useAuth();
     const isOpenQuickEditUser = useSelector((state) => state.users.isOpenQuickEdit);
-    const {data: role} = useGetAllRolesQuery("roleList", {
+    const {data: role, isLoading : isLoadingRole, isSuccess : isSuccessRole} = useGetAllRolesQuery("roleList", {
         skip: !isManager,
     });
-    const {data: signupMethod} = useGetAllSignUpMethodsQuery("signupMethodList");
+    const {data: signupMethod, isSuccess : isSuccessSM ,isLoading : isLoadingSM} = useGetAllSignUpMethodsQuery("signupMethodList");
 
     const {
         data: users, isLoading: isLoadingGetAllUsers, isSuccess, isError, error,
@@ -146,13 +146,14 @@ function UserList() {
 
     let content;
 
-    if (!role && !signupMethod && isLoadingGetAllUsers) content = <LoadingFetchingDataComponent/>;
+    if (isLoadingRole || isLoadingSM || isLoadingGetAllUsers) content = <LoadingFetchingDataComponent/>;
 
     if (isError) {
         content = <p>Error: {error?.message}</p>;
     }
 
-    if (isSuccess && signupMethod && (isManager ? role : true)) {
+
+    if (isSuccess && isSuccessSM && (isManager ? isSuccessRole : true)) {
         const {
             totalElements, pageSize, pageNo, entities, activeCount, pendingCount, bannedCount,
         } = users;
@@ -164,20 +165,13 @@ function UserList() {
             entities: searchEntities,
         } = searchData || {};
 
-        // const displayTotalElements =
-        //   searchQuery !== "" ||
-        //   roleFilter.length > 0 ||
-        //   signUpMethodFilter.length > 0 ||
-        //   statusFilter !== "" ||
-        //   branchFilter.length > 0
-        //     ? totalElementsSearch
-        //     : totalElements;
-
-        // useEffect(() => {
-        //   if (displayTotalElements) {
-        //     dispatch(setResultFound(displayTotalElements));
-        //   }
-        // }, [displayTotalElements]);
+        const resultFound =
+          debounceInputSearch !== "" ||
+          roleFilter.length > 0 ||
+          signUpMethodFilter.length > 0 ||
+          statusFilter !== ""
+            ? totalElementsSearch
+            : totalElements;
 
         content = (<div data-aos="fade-left">
                 <SeoComponent title="User List"/>
@@ -218,6 +212,7 @@ function UserList() {
                         handleMethodChange={handleMethodChange}
                         clearFilter={() => dispatch(clearFilter())}
                         clearSearch={() => dispatch(setClearSearchQuery())}
+                        resultFound={resultFound}
                     />
                     <UserTableComponent
                         columns={columns}

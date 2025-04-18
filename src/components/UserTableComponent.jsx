@@ -53,7 +53,7 @@ function UserTableComponent({
                         />
                     ))
                 ) : (
-                    <TableRow sx={{bgcolor: "#f9fafb"}}>
+                    <TableRow >
                         <TableCell align="center" colSpan={8}>
                             <DataNotFound/>
                         </TableCell>
@@ -71,7 +71,7 @@ function UserTableComponent({
                         />
                     ))
                 ) : (
-                    <TableRow sx={{bgcolor: "#f9fafb"}}>
+                    <TableRow >
                         <TableCell align="center" colSpan={8}>
                             <DataNotFound/>
                         </TableCell>

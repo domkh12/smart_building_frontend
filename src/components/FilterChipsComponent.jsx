@@ -31,8 +31,8 @@ function FilterChipsComponent({
                                   handleVehicleTypeChange,
                                   clearFilter,
                                   clearSearch,
+                                  resultFound
                               }) {
-    const resultFound = useSelector((state) => state.users.resultFound);
     const isFiltered = useSelector((state) => state.action.isFiltered);
     const dispatch = useDispatch();
     const {t} = useTranslate();

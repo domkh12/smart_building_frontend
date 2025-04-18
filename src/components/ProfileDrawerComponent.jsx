@@ -32,6 +32,8 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
     const [open, setOpen] = useState(initialOpen);
     const {t} = useTranslate();
     const navigate = useNavigate();
+    const mode = useSelector((state) => state.theme.mode);
+
     const [sendLogout, {isLoading, isSucess, isError, error}] =
         useSendLogoutMutation();
 
@@ -69,7 +71,11 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
         <div>
             <Drawer open={open} onClose={handleDrawerClose} anchor={"right"}>
                 <Box
-                    sx={{width: 320}}
+                    sx={{
+                        width: 320,
+                        backgroundColor: mode === 'dark' ? '#141A21' : '#fff',
+                        height: "100%"
+                    }}
                     role="presentation"
                     onClick={toggleDrawer(true)}
                 >

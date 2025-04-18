@@ -47,7 +47,7 @@ function RoomList() {
     const pageSize = useSelector((state) => state.room.pageSize);
     const mode = useSelector((state) => state.theme.mode);
 
-    const {data: building} = useGetAllNameBuildingQuery("buildingNameList")
+    const {data: building, isLoading: isLoadingBuilding, isSuccess: isSuccessBuilding} = useGetAllNameBuildingQuery("buildingNameList")
 
     const {data: roomData, isSuccess, isLoading} = useGetRoomQuery({
         pageNo,
@@ -146,9 +146,9 @@ function RoomList() {
 
     let content;
 
-    if (isLoading) content = <LoadingFetchingDataComponent/>;
+    if (isLoading && isLoadingBuilding) content = <LoadingFetchingDataComponent/>;
 
-    if (isSuccess) {
+    if (isSuccess && isSuccessBuilding) {
         const {ids, entities, totalElements, pageSize, pageNo} = roomData;
         const {
             ids: idsFilter,
@@ -159,6 +159,8 @@ function RoomList() {
         } = roomDataFilter || {};
 
         const displayTotalElements = debounceInputSearch !== "" || buildingFilter.length > 0 ? totalElementsFilter : totalElements;
+
+        console.log(displayTotalElements)
 
         const tableContent = debounceInputSearch !== "" || buildingFilter.length > 0 ? (idsFilter?.length ? (idsFilter.map((roomId) =>
             <RoomRowComponent key={roomId}
@@ -199,7 +201,9 @@ function RoomList() {
                                               clearFilter={() => {
                                                   dispatch(setSearchKeywordRoom(""))
                                                   dispatch(setBuildingFilterForRoom([]));
-                                              }}/>
+                                              }}
+                                              resultFound={displayTotalElements}
+                        />
                         <TableContainer>
                             <Table>
                                 <TableHead>

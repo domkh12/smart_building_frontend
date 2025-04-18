@@ -14,7 +14,7 @@ import {
     Card,
     FormControl,
     FormHelperText,
-    Grid2,
+    Grid2, Paper,
     styled,
     Switch,
     TextField,
@@ -37,8 +37,6 @@ function EditUserForm({user}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [profileImageFile, setProfileImageFile] = useState(null);
-    const genderFetched = useSelector((state) => state.users.genders);
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const {t} = useTranslate();
     const {isManager, isAdmin} = useAuth();
@@ -228,14 +226,24 @@ function EditUserForm({user}) {
         }
     };
 
+    const handleNavigate = () => {
+        if (isManager){
+            navigate("/dash")
+        }else if (isAdmin){
+            navigate("/admin")
+        }
+    }
+
     const breadcrumbs = [
-        <button
+        <Paper
+            elevation={0}
+            component="button"
             className="text-black hover:underline"
-            onClick={() => navigate("/dash")}
+            onClick={handleNavigate}
             key={1}
         >
             {t("dashboard")}
-        </button>,
+        </Paper>,
         <Typography color="inherit" key={2}>
             {t("user")}
         </Typography>,

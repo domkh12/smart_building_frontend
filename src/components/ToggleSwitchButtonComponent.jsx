@@ -1,4 +1,4 @@
-import { Switch, Typography } from "@mui/material";
+import {Box, Switch, Typography} from "@mui/material";
 import  { useState, useEffect, useRef } from "react";
 import { useUpdateDeviceValueMutation } from "../redux/feature/device/deviceApiSlice";
 import { PiFanFill } from "react-icons/pi";
@@ -60,16 +60,15 @@ const ToggleSwitchButtonComponent = ({ device, messages, sendMessage }) => {
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
   return (
-    <div className="flex flex-col justify-start items-start p-4 rounded-lg bg-gray-200 shadow-xl gap-10">
-      <div className="flex justify-between items-center w-full">
+    <Box className="flex flex-col justify-start items-start p-4 rounded-lg  shadow-xl gap-10 border">
+      <Box className="flex justify-between items-center w-full ">
         {renderIcons(device?.deviceType?.name)}
-
         <Switch {...label} checked={isChecked} onChange={handleChange} />
-      </div>
+      </Box>
       <Typography variant="body1" sx={{ fontSize: "20px" }}>
         {device?.name}
       </Typography>
-    </div>
+    </Box>
   );
 };
 

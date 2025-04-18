@@ -152,7 +152,9 @@ function BuildingList() {
                                             handleSearchChange={handleSearch}/>
                         <FilterChipsComponent searchQuery={buildingSearchKeyword}
                                               clearSearch={() => dispatch(setBuildingSearchKeyword(""))}
-                                              clearFilter={() => dispatch(setBuildingSearchKeyword(""))}/>
+                                              clearFilter={() => dispatch(setBuildingSearchKeyword(""))}
+                                              resultFound={displayTotalElements}
+                        />
                         <TableContainer>
                             <Table>
                                 <TableHead>

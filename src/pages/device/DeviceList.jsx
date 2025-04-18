@@ -44,8 +44,9 @@ function DeviceList() {
     const pageSize = useSelector((state) => state.device.pageSize);
     const isQuickEditDeviceOpen = useSelector((state) => state.device.isOpenQuickEditDevice);
     const mode = useSelector((state) => state.theme.mode);
-    const {data: deviceType} = useGetAllDeviceTypesQuery("deviceTypeList");
-    const {data: building} = useGetAllNameBuildingQuery("buildingNameList")
+
+    const {data: deviceType, isSuccess : isSuccessDeviceType, isLoading : isLoadingDeviceType} = useGetAllDeviceTypesQuery("deviceTypeList");
+    const {data: building, isSuccess : isSuccessBuilding, isLoading : isLoadingBuilding} = useGetAllNameBuildingQuery("buildingNameList")
 
     const {
         data: deviceDataFilter,
@@ -98,7 +99,6 @@ function DeviceList() {
         dispatch(setIsFiltered(isFiltered));
     }, [isFiltered, dispatch]);
 
-
     const breadcrumbs = [
         <Paper
             elevation={0}
@@ -114,7 +114,7 @@ function DeviceList() {
         </Typography>,
         <Typography color="inherit" key={3}>
             {t("list")}
-        </Typography>,
+        </Typography>
     ];
 
     const columns = [{
@@ -135,17 +135,17 @@ function DeviceList() {
 
     let content;
 
-    if (isLoadingGetDevice && !building && !deviceType) content = <LoadingFetchingDataComponent/>;
+    if (isLoadingGetDevice || isLoadingDeviceType || isLoadingBuilding) content = <LoadingFetchingDataComponent/>;
 
-    if (isSuccessGetDevice && building && deviceType) {
+    if (isSuccessGetDevice && isSuccessBuilding && isSuccessDeviceType) {
         const {ids, entities, totalElements, pageNo, pageSize} = deviceData;
         const {ids: idsDeviceFilter, entities: entitiesFilter, totalElementsFilter, pageSizeFilter, pageNoFilter} = deviceDataFilter || {};
 
         const displayTotalElements = debounceInputSearch !== "" || buildingFilter.length > 0 || deviceTypeFilter.length > 0 ? totalElementsFilter : totalElements;
 
         const tableContent = debounceInputSearch !== "" || buildingFilter.length > 0 || deviceTypeFilter.length > 0 ? (idsDeviceFilter?.length ? (idsDeviceFilter.map((id) =>
-            <DeviceRowComponent key={id}
-                                device={entitiesFilter[id]}/>)) : (<TableRow>
+            <DeviceRowComponent key={id} device={entitiesFilter[id]}/>)) : (
+            <TableRow>
             <TableCell align="center" colSpan={8}>
                 <DataNotFound/>
             </TableCell>
@@ -189,7 +189,9 @@ function DeviceList() {
                                                   dispatch(setKeywordsSearchDevice(""))
                                                   dispatch(setBuildingFilterForDevice([]));
                                                   dispatch(setDeviceTypeFilterForDevice([]));
-                                              }}/>
+                                              }}
+                                              resultFound={displayTotalElements}
+                        />
 
                         <TableContainer>
                             <Table>
@@ -207,20 +209,28 @@ function DeviceList() {
                                                 color="primary"
                                             />
                                         </TableCell>
-                                        {columns.map((column) => (<TableCell
-                                            sx={{backgroundColor: mode === "dark" ? "#28323D" : "#F4F6F8"}}
+                                        {columns.map((column) => (
+                                            <TableCell
+                                            sx={{
+                                                backgroundColor: mode === "dark" ? "#28323D" : "#F4F6F8"}}
                                                 key={column.id}
                                                 align={column.align}
-                                                style={{minWidth: column.minWidth, color: "gray"}}
+                                                style={{minWidth: column.minWidth, color: "gray"
+                                            }}
                                             >
                                                 {column.label}
-                                            </TableCell>))}
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody
-                                    sx={{border: "none"}}> {isFetchingDeviceFilter ? (Array.from({length: pageSize}).map((_, index) => (
-                                    <SkeletonTableRowComponent key={index}
-                                                               cellCount={6}/>))) : (<>{tableContent}</>)}</TableBody>
+                                    sx={{border: "none"}}>
+                                    {isFetchingDeviceFilter ?
+                                        (Array.from({length: pageSize}).map((_, index) => (
+                                            <SkeletonTableRowComponent key={index} cellCount={6}/>))) :
+                                        (<>{tableContent}</>)
+                                    }
+                                </TableBody>
                             </Table>
                         </TableContainer>
                         <TablePagination

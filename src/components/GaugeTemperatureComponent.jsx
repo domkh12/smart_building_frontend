@@ -7,12 +7,13 @@ import {
 import { LiaTemperatureHighSolid } from "react-icons/lia";
 import { cardStyle } from "../assets/style";
 import useTranslate from "../hook/useTranslate.jsx";
+import {useSelector} from "react-redux";
 
 function GaugeTemperatureComponent({ value }) {
   const { t } = useTranslate();
+  const mode = useSelector((state) => state.theme.mode);
   const valueMin = 16;
   const valueMax = 50;
-
 
   const clampedValue = Math.min(Math.max(value, valueMin), valueMax);
 
@@ -31,10 +32,10 @@ function GaugeTemperatureComponent({ value }) {
 
     return (
       <g>
-        <circle cx={cx} cy={cy} r={5} fill="black" />
+        <circle cx={cx} cy={cy} r={5} fill={`${mode === "dark"  ? "white" : "black"}`} />
         <path
           d={`M ${cx} ${cy} L ${target.x} ${target.y}`}
-          stroke="black"
+          stroke= {`${mode === "dark"  ? "white" : "black"}`}
           strokeWidth={4}
         />
       </g>

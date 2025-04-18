@@ -43,7 +43,8 @@ function FloorList() {
     const pageNo = useSelector((state) => state.floor.pageNo);
     const pageSize = useSelector((state) => state.floor.pageSize);
     const mode = useSelector((state) => state.theme.mode);
-    const {data: building} = useGetAllNameBuildingQuery("buildingNameList");
+
+    const {data: building, isLoading: isLoadingBuilding, isSuccess: isSuccessBuilding} = useGetAllNameBuildingQuery("buildingNameList");
 
     const {
         data: floorData,
@@ -69,19 +70,21 @@ function FloorList() {
 
     }, {skip: debounceInputSearch === "" && buildingFilter.length === 0});
 
-    const breadcrumbs = [<Paper
-        elevation={0}
-        component="button"
-        className="text-black hover:underline"
-        onClick={() => navigate("/dash")}
-        key={1}
-    >
-        {t("dashboard")}
-    </Paper>, <Typography color="inherit" key={2}>
-        {t("floor")}
-    </Typography>, <Typography color="inherit" key={3}>
-        {t("list")}
-    </Typography>,];
+    const breadcrumbs = [
+        <Paper
+            elevation={0}
+            component="button"
+            className="text-black hover:underline"
+            onClick={() => navigate("/dash")}
+            key={1}
+        >
+            {t("dashboard")}
+        </Paper>, <Typography color="inherit" key={2}>
+            {t("floor")}
+        </Typography>, <Typography color="inherit" key={3}>
+            {t("list")}
+        </Typography>
+    ];
 
     const handleSearch = (inputValue) => {
         dispatch(setSearchKeywordsFloor(inputValue));
@@ -120,9 +123,9 @@ function FloorList() {
 
     let content;
 
-    if (isLoadingGetFloor && !building) content = <LoadingFetchingDataComponent/>;
+    if (isLoadingGetFloor && isLoadingBuilding) content = <LoadingFetchingDataComponent/>;
 
-    if (isSuccessGetFloor && building) {
+    if (isSuccessGetFloor && isSuccessBuilding) {
         const {ids, entities, totalElements, pageNo, pageSize} = floorData;
         const {
             ids: idsDataFilter,
@@ -171,7 +174,9 @@ function FloorList() {
                                               clearFilter={() => {
                                                   dispatch(setSearchKeywordsFloor(""))
                                                   dispatch(setBuildingFilter([]));
-                                              }}/>
+                                              }}
+                                              resultFound={displayTotalElements}
+                        />
                         <TableContainer>
                             <Table>
                                 <TableHead>

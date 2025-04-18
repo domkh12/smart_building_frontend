@@ -1,9 +1,11 @@
 import {Button, styled, Switch, Typography} from "@mui/material";
 import {FaCloudMoon} from "react-icons/fa";
 import {useState} from "react";
+import {useSelector} from "react-redux";
 
 function SettingToggleButtonComponent({title, handleChange, value}) {
     const [checked, setChecked] = useState(value);
+    const mode = useSelector((state) => state.theme.mode);
 
     const handleToggle = () => {
         setChecked(prev => !prev);
@@ -63,16 +65,16 @@ function SettingToggleButtonComponent({title, handleChange, value}) {
                 width: "100%",
                 textTransform: "none",
                 padding: "16px 20px",
-                backgroundColor: "#F5F5F5",
+                // backgroundColor: mode === 'dark' ? '#1C252E' : '#fff',
                 display: "flex",
                 gap: "10px",
                 justifyContent: "start",
                 alignItems: "start",
                 borderRadius: "16px",
-                border: "1px solid black",
-                "&:hover": {
-                    backgroundColor: "#E0E0E0"
-                }
+                border: mode === "dark" ? "1px solid white" : "1px solid black",
+                // "&:hover": {
+                //     backgroundColor: "#E0E0E0"
+                // }
             }} disableRipple>
                 <div className="flex justify-between items-start w-full">
                 <div className="flex flex-col gap-5">

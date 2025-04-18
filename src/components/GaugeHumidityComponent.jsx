@@ -10,9 +10,11 @@ import {MdOutlineWaves} from "react-icons/md";
 import {cardStyle} from "../assets/style";
 import useWebsocketServer from "../hook/useWebsocketServer";
 import useTranslate from "../hook/useTranslate.jsx";
+import {useSelector} from "react-redux";
 
 function GaugeHumidityComponent({value}) {
     const {t} = useTranslate();
+    const mode = useSelector((state) => state.theme.mode);
     const valueMin = 0;
     const valueMax = 100;
 
@@ -33,10 +35,10 @@ function GaugeHumidityComponent({value}) {
 
         return (
             <g>
-                <circle cx={cx} cy={cy} r={5} fill="black"/>
+                <circle cx={cx} cy={cy} r={5} fill={`${mode === "dark"  ? "white" : "black"}`}/>
                 <path
                     d={`M ${cx} ${cy} L ${target.x} ${target.y}`}
-                    stroke="black"
+                    stroke={`${mode === "dark"  ? "white" : "black"}`}
                     strokeWidth={4}
                 />
             </g>

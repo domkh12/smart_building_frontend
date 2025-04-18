@@ -14,7 +14,7 @@ import {
   Autocomplete,
   Button,
   Card,
-  Grid2,
+  Grid2, Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -134,13 +134,15 @@ function AddNewRoom() {
   }, [isErrorAddNewRoom]);
 
   const breadcrumbs = [
-    <button
+    <Paper
+      elevation={0}
+      component="button"
       className="text-black hover:underline"
       onClick={() => navigate("/dash")}
       key={1}
     >
       {t("dashboard")}
-    </button>,
+    </Paper>,
     <Typography color="inherit" key={2}>
       {t("room")}
     </Typography>,
@@ -150,8 +152,8 @@ function AddNewRoom() {
   ];
 
   let content;
-  if (!building)
-    content = <LoadingFetchingDataComponent />;
+
+  if (!building) content = <LoadingFetchingDataComponent />;
 
   if (building) {
     content = (

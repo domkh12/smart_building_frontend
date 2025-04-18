@@ -8,8 +8,10 @@ import {
 import React from "react";
 import { FaSmog } from "react-icons/fa";
 import { cardStyle } from "../assets/style";
+import {useSelector} from "react-redux";
 
 function GaugePM2_5Component({ value }) {
+  const mode = useSelector((state) => state.theme.mode);
   const valueMin = 0;
   const valueMax = 100;
 
@@ -30,10 +32,10 @@ function GaugePM2_5Component({ value }) {
 
     return (
       <g>
-        <circle cx={cx} cy={cy} r={5} fill="black" />
+        <circle cx={cx} cy={cy} r={5} fill={`${mode === "dark"  ? "white" : "black"}`} />
         <path
           d={`M ${cx} ${cy} L ${target.x} ${target.y}`}
-          stroke="black"
+          stroke={`${mode === "dark"  ? "white" : "black"}`}
           strokeWidth={4}
         />
       </g>

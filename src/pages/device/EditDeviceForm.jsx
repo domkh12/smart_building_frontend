@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useUploadImageMutation} from "../../redux/feature/uploadImage/uploadImageApiSlice.js";
 import * as Yup from "yup";
 import {setCaptionSnackBar, setErrorSnackbar, setIsOpenSnackBar} from "../../redux/feature/actions/actionSlice.js";
-import {Card, Grid2, TextField, Typography} from "@mui/material";
+import {Card, Grid2, Paper, TextField, Typography} from "@mui/material";
 import SeoComponent from "../../components/SeoComponent.jsx";
 import MainHeaderComponent from "../../components/MainHeaderComponent.jsx";
 import {Form, Formik} from "formik";
@@ -96,13 +96,15 @@ function EditDeviceForm({ device }) {
     }, [isErrorUpdateSingleDevice]);
 
     const breadcrumbs = [
-        <button
+        <Paper
+            elevation={0}
+            component="button"
             className="text-black hover:underline"
             onClick={() => navigate("/dash")}
             key={1}
         >
             {t("dashboard")}
-        </button>,
+        </Paper>,
         <Typography color="inherit" key={2}>
             {t("device")}
         </Typography>,

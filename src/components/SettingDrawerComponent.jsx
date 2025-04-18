@@ -68,7 +68,11 @@ function SettingDrawerComponent() {
                 onClose={() => dispatch(setIsOpenSettingDrawer(false))}
             >
                 <Box
-                    sx={{width: 360}}
+                    sx={{
+                        width: 360,
+                        backgroundColor: mode === 'dark' ? '#141A21' : '#fff',
+                        height: "100%"
+                    }}
                 >
                     <div className="flex justify-between items-center p-4">
                         <Typography variant="h6"
