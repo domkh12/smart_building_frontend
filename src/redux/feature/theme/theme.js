@@ -32,25 +32,73 @@ export const getTheme = (mode) =>
 
         components: {
 
+            MuiTextField: {
+                styleOverrides: {
+                    root: {
+                        "& .MuiInputBase-input": {
+                            boxShadow: "none",
+                        },
+                        borderRadius: "9px"
+                    }
+                }
+            },
+
+            MuiOutlinedInput: {
+                styleOverrides: {
+                    root: {
+                        "& .MuiInputBase-input": {
+                            boxShadow: "none",
+                        },
+                        borderRadius: "9px"
+                    }
+                }
+            },
+
+            MuiTabPanel: {
+                styleOverrides: {
+                    root: {
+                        padding: "24px 0px"
+                    }
+                }
+            },
+
+            MuiTabs: {
+                styleOverrides: {
+                    root: {
+                        "& .MuiTabs-indicator": {
+                            backgroundColor: mode === "dark" ? "#fff" : "#000",
+                        }
+                    }
+                }
+            },
+
             MuiTab: {
                 styleOverrides: {
                     root: {
                         textTransform: "none",
-                        fontSize: "1rem"
+                        fontSize: "1rem",
+                        "&.Mui-selected": {
+                            color: mode === "dark" ? "#fff" : "#000",
+                        },
                     }
                 }
             },
 
             MuiButton: {
                 styleOverrides: {
+                    outlined:{
+                        borderRadius: '8px',
+                    },
                     contained: {
                         backgroundColor: deepPurple[600],
                         borderRadius: '8px',
-                        textTransform: 'none',
                         '&:hover': {
                             backgroundColor: deepPurple[700],
                         },
                     },
+                    root: {
+                        textTransform: 'none',
+                    }
                 },
             },
 
@@ -60,11 +108,11 @@ export const getTheme = (mode) =>
                         variants: [
                             {
                                 style: {
+                                    borderRadius: "14px",
+                                    boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
                                     backgroundColor: mode === 'dark' ? '#1C252E' : '#fff',
                                     color: mode === 'dark' ? '#fff' : '#000',
-                                    borderRadius: '16px',
                                     transition: 'all 0.3s ease',
-                                    boxShadow: 'none',
                                 },
                             },
                         ],
@@ -78,7 +126,6 @@ export const getTheme = (mode) =>
                         variants: [
                             {
                                 style: {
-                                    backgroundColor: mode === 'dark' ? '#141A21' : '#fff',
                                     color: mode === 'dark' ? '#fff' : '#637381',
                                     transition: 'all 0.3s ease',
                                     "&:hover": {
@@ -90,8 +137,6 @@ export const getTheme = (mode) =>
                     },
                 },
             },
-
-
 
             MuiPaper: {
                 styleOverrides: {

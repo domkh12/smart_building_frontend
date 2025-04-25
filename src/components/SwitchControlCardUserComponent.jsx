@@ -1,5 +1,5 @@
 import {cardStyle} from "../assets/style.js";
-import {Card, IconButton, Typography} from "@mui/material";
+import {Card, Grid2, IconButton, Typography} from "@mui/material";
 import SwitchComponent from "./SwitchComponent.jsx";
 import {IoIosArrowDown} from "react-icons/io";
 import {useState} from "react";
@@ -42,11 +42,16 @@ function SwitchControlCardUserComponent({icon, title, devices}) {
                         expanded ? "rotate-180" : ""
                     }`}
                 /></IconButton>
+
             <div
                 className={`flex justify-evenly w-full mt-5 flex-col ${expanded ? "h-auto visible" : "h-[120px] overflow-hidden"}`}>
-                {devices?.length > 0
-                    ? devices.map((device) => <SwitchComponent key={device.id} device={device}/>)
-                    : null}
+                <Grid2 container spacing={1}>
+                    {devices?.length > 0
+                        ? devices.map((device) => <Grid2 key={device.id} size={{xs: 12, sm: 12, xl: 6}}><SwitchComponent
+                            device={device}/>
+                        </Grid2>)
+                        : null}
+                </Grid2>
             </div>
         </Card>
     )

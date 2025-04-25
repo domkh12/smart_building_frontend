@@ -99,6 +99,7 @@ function SideBarManager() {
               width: "28px",
               height: "28px",
               zIndex: "30",
+              backgroundColor: mode === 'dark' ? '#141A21' : '#fff',
             }}
             onClick={() => dispatch(toggleCollapsed(true))}
             size="small"

@@ -33,8 +33,8 @@ function SwitchComponent({ device, title}){
     };
 
     return (
-        <div className="flex justify-evenly w-full">
-            <Typography variant="h6">{device?.name || title}</Typography>
+        <div className="flex justify-evenly items-center w-full border shadow-md rounded-lg py-2">
+            <Typography variant="body1">{device?.name || title}</Typography>
             <Switch {...label} checked={isChecked} onChange={handleChange}/>
         </div>
     )

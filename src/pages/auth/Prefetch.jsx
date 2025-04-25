@@ -15,10 +15,10 @@ function Prefetch() {
 
     useEffect(() => {
         if (isUser) {
-            store.dispatch(buildingApiSlice.util.prefetch("getBuilding", "buildingList", {
-                force: true,
-            }));
-            store.dispatch(floorApiSlice.util.prefetch("getFloor", "floorList", {force: true}));
+            // store.dispatch(buildingApiSlice.util.prefetch("getBuilding", "buildingList", {
+            //     force: true,
+            // }));
+            // store.dispatch(floorApiSlice.util.prefetch("getFloor", "floorList", {force: true}));
         }else if (isAdmin){
             store.dispatch(userApiSlice.util.prefetch("getUsers", "usersList", {force: true}));
         }else if (isManager) {

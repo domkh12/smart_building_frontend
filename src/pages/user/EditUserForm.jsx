@@ -214,7 +214,7 @@ function EditUserForm({user}) {
                 address: values.address,
                 phoneNumber: values.phoneNumber,
                 roleId: values.roleId,
-                profileImage: profileImageUri,
+                profileImage: profileImageUri || user.profileImage,
                 isVerified: values.isVerified,
                 isDeleted: false,
                 roomId: values.roomId,
@@ -331,7 +331,8 @@ function EditUserForm({user}) {
                                             <div className="flex justify-center items-center flex-col gap-5">
                                                 <ProfileUploadComponent
                                                     setProfileImageFile={setProfileImageFile}
-                                                    profileImageFile={profileImageFile}
+                                                    profileImageFile={profileImageFile || ""}
+                                                    profileUrl={values?.profileImage || ""}
                                                 />
                                             </div>
                                             <div className="flex items-center justify-between gap-7 mt-5">
@@ -548,7 +549,7 @@ function EditUserForm({user}) {
 
                                             <div className="col-span-2 flex justify-end mt-[20px]">
                                                 <ButtonComponent
-                                                    btnTitle={t("createUser")}
+                                                    btnTitle={t("saveChanges")}
                                                     type={"submit"}
                                                     isLoading={isLoadingUpdateUser}
                                                 />

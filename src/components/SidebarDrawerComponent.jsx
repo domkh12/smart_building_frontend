@@ -1,22 +1,20 @@
 import {
-  Box,
   Collapse,
   Drawer,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  ListSubheader,
+  ListSubheader, Paper,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import ToolTipButtonComponent from "./ToolTipButtonComponent";
 import { CgMenuLeftAlt } from "react-icons/cg";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { listItemButtonStyle } from "../assets/style";
 import { useLocation, useNavigate } from "react-router-dom";
 import SpaceDashboardTwoToneIcon from "@mui/icons-material/SpaceDashboardTwoTone";
-import ScheduleTwoToneIcon from "@mui/icons-material/ScheduleTwoTone";
 import LogoComponent from "./LogoComponent";
 import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
 import useTranslate from "../hook/useTranslate";
@@ -63,15 +61,15 @@ function SidebarDrawerComponent() {
   };
 
   return (
-    <div>
+    <Paper elevation={0} >
       <ToolTipButtonComponent
         title={"Collapse"}
         icon={CgMenuLeftAlt}
         onClick={() => setOpen(true)}
       />
       {open && (
-        <Drawer open={open} onClose={() => setOpen(false)}>
-          <Box sx={{ width: 280 }} role="presentation">
+        <Drawer open={open} onClose={() => setOpen(false)} elevation={0}>
+          <Paper elevation={0} sx={{ width: 280, height: "100%" }} role="presentation">
             <LogoComponent />
             <div className="px-[16px] overflow-auto">
               <List
@@ -110,7 +108,7 @@ function SidebarDrawerComponent() {
                   <ListItemButton
                     sx={{
                       borderRadius: "10px",
-                      color: "#424242",
+                      
                       mb: "5px",
                       ...listItemButtonStyle,
                     }}
@@ -135,7 +133,6 @@ function SidebarDrawerComponent() {
                           component="span"
                           variant="body1"
                           sx={{
-                            color: "#424242",
                             display: "inline",
                           }}
                         >
@@ -147,7 +144,6 @@ function SidebarDrawerComponent() {
                   <ListItemButton
                     sx={{
                       borderRadius: "10px",
-                      color: "#424242",
                       mb: "5px",
                       ...listItemButtonStyle,
                     }}
@@ -170,7 +166,6 @@ function SidebarDrawerComponent() {
                           component="span"
                           variant="body1"
                           sx={{
-                            color: "#424242",
                             display: "inline",
                             textWrap: "nowrap",
                           }}
@@ -222,7 +217,6 @@ function SidebarDrawerComponent() {
                     <ListItemButton
                       sx={{
                         borderRadius: "10px",
-                        color: "#424242",
                         ...((isBuildingListPage || isBuildingCreatePage) &&
                           listItemButtonStyle),
                       }}
@@ -248,7 +242,7 @@ function SidebarDrawerComponent() {
                           <Typography
                             component="span"
                             variant="body1"
-                            sx={{ color: "#424242", display: "inline" }}
+                            sx={{ display: "inline" }}
                           >
                             {t("building")}
                           </Typography>
@@ -281,7 +275,6 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                             sx={{
                               borderRadius: "10px",
-                              color: "#424242",
                               mb: "5px",
                             }}
                             onClick={() => handleNavigation("/dash/buildings")}
@@ -292,7 +285,7 @@ function SidebarDrawerComponent() {
                                 <Typography
                                   component="span"
                                   variant="body1"
-                                  sx={{ color: "#424242", display: "inline" }}
+                                  sx={{ display: "inline" }}
                                 >
                                   {t("list")}
                                 </Typography>
@@ -309,7 +302,6 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                             sx={{
                               borderRadius: "10px",
-                              color: "#424242",
                               mb: "5px",
                             }}
                             onClick={() =>
@@ -324,7 +316,7 @@ function SidebarDrawerComponent() {
                                 <Typography
                                   component="span"
                                   variant="body1"
-                                  sx={{ color: "#424242", display: "inline" }}
+                                  sx={{ display: "inline" }}
                                 >
                                   {t("create")}
                                 </Typography>
@@ -341,7 +333,6 @@ function SidebarDrawerComponent() {
                     <ListItemButton
                       sx={{
                         borderRadius: "10px",
-                        color: "#424242",
                         mt: "5px",
                         ...((isFloorListPage || isFloorCreatePage) &&
                           listItemButtonStyle),
@@ -368,7 +359,7 @@ function SidebarDrawerComponent() {
                           <Typography
                             component="span"
                             variant="body1"
-                            sx={{ color: "#424242", display: "inline" }}
+                            sx={{ display: "inline" }}
                           >
                             {t("floor")}
                           </Typography>
@@ -397,7 +388,6 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                             sx={{
                               borderRadius: "10px",
-                              color: "#424242",
                               mb: "5px",
                             }}
                             onClick={() => handleNavigation("/dash/floors")}
@@ -408,7 +398,7 @@ function SidebarDrawerComponent() {
                                 <Typography
                                   component="span"
                                   variant="body1"
-                                  sx={{ color: "#424242", display: "inline" }}
+                                  sx={{ display: "inline" }}
                                 >
                                   {t("list")}
                                 </Typography>
@@ -425,7 +415,6 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                             sx={{
                               borderRadius: "10px",
-                              color: "#424242",
                               mb: "5px",
                             }}
                             onClick={() => handleNavigation("/dash/floors/new")}
@@ -436,7 +425,7 @@ function SidebarDrawerComponent() {
                                 <Typography
                                   component="span"
                                   variant="body1"
-                                  sx={{ color: "#424242", display: "inline" }}
+                                  sx={{ display: "inline" }}
                                 >
                                   {t("create")}
                                 </Typography>
@@ -453,7 +442,6 @@ function SidebarDrawerComponent() {
                     <ListItemButton
                       sx={{
                         borderRadius: "10px",
-                        color: "#424242",
                         ...((isRoomListPage || isRoomCreatePage) &&
                           listItemButtonStyle),
                         mt: "5px",
@@ -479,7 +467,7 @@ function SidebarDrawerComponent() {
                           <Typography
                             component="span"
                             variant="body1"
-                            sx={{ color: "#424242", display: "inline" }}
+                            sx={{ display: "inline" }}
                           >
                             {t("room")}
                           </Typography>
@@ -508,7 +496,6 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                             sx={{
                               borderRadius: "10px",
-                              color: "#424242",
                               mb: "5px",
                             }}
                             onClick={() => handleNavigation("/dash/rooms")}
@@ -519,7 +506,7 @@ function SidebarDrawerComponent() {
                                 <Typography
                                   component="span"
                                   variant="body1"
-                                  sx={{ color: "#424242", display: "inline" }}
+                                  sx={{ display: "inline" }}
                                 >
                                   {t("list")}
                                 </Typography>
@@ -536,7 +523,6 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                             sx={{
                               borderRadius: "10px",
-                              color: "#424242",
                               mb: "5px",
                             }}
                             onClick={() => handleNavigation("/dash/rooms/new")}
@@ -547,7 +533,7 @@ function SidebarDrawerComponent() {
                                 <Typography
                                   component="span"
                                   variant="body1"
-                                  sx={{ color: "#424242", display: "inline" }}
+                                  sx={{ display: "inline" }}
                                 >
                                   {t("create")}
                                 </Typography>
@@ -564,7 +550,6 @@ function SidebarDrawerComponent() {
                   <ListItemButton
                       sx={{
                         borderRadius: "10px",
-                        color: "#424242",
                         ...((isDeviceListPage || isDeviceCreatePage) &&
                             listItemButtonStyle),
                         mt: "5px",
@@ -590,7 +575,7 @@ function SidebarDrawerComponent() {
                           <Typography
                               component="span"
                               variant="body1"
-                              sx={{ color: "#424242", display: "inline" }}
+                              sx={{ display: "inline" }}
                           >
                             {t("device")}
                           </Typography>
@@ -618,7 +603,6 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                               sx={{
                                 borderRadius: "10px",
-                                color: "#424242",
                                 mb: "5px",
                               }}
                               onClick={() => {
@@ -632,7 +616,7 @@ function SidebarDrawerComponent() {
                                   <Typography
                                       component="span"
                                       variant="body1"
-                                      sx={{ color: "#424242", display: "inline" }}
+                                      sx={{ display: "inline" }}
                                   >
                                     {t("list")}
                                   </Typography>
@@ -649,7 +633,6 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                               sx={{
                                 borderRadius: "10px",
-                                color: "#424242",
                                 mb: "5px",
                               }}
                               onClick={() => {
@@ -663,7 +646,7 @@ function SidebarDrawerComponent() {
                                   <Typography
                                       component="span"
                                       variant="body1"
-                                      sx={{ color: "#424242", display: "inline" }}
+                                      sx={{ display: "inline" }}
                                   >
                                     {t("create")}
                                   </Typography>
@@ -679,7 +662,6 @@ function SidebarDrawerComponent() {
                   <ListItemButton
                     sx={{
                       borderRadius: "10px",
-                      color: "#424242",
                       ...((isUserListPage || isUserCreatePage) &&
                         listItemButtonStyle),
                       mt: "5px",
@@ -705,7 +687,7 @@ function SidebarDrawerComponent() {
                         <Typography
                           component="span"
                           variant="body1"
-                          sx={{ color: "#424242", display: "inline" }}
+                          sx={{ display: "inline" }}
                         >
                           {t("user")}
                         </Typography>
@@ -733,7 +715,7 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                             sx={{
                               borderRadius: "10px",
-                              color: "#424242",
+                              
                               mb: "5px",
                             }}
                             onClick={() => {
@@ -747,7 +729,7 @@ function SidebarDrawerComponent() {
                                 <Typography
                                   component="span"
                                   variant="body1"
-                                  sx={{ color: "#424242", display: "inline" }}
+                                  sx={{  display: "inline" }}
                                 >
                                   {t("list")}
                                 </Typography>
@@ -764,7 +746,7 @@ function SidebarDrawerComponent() {
                           <ListItemButton
                             sx={{
                               borderRadius: "10px",
-                              color: "#424242",
+                              
                               mb: "5px",
                             }}
                             onClick={() => {
@@ -778,7 +760,7 @@ function SidebarDrawerComponent() {
                                 <Typography
                                   component="span"
                                   variant="body1"
-                                  sx={{ color: "#424242", display: "inline" }}
+                                  sx={{  display: "inline" }}
                                 >
                                   {t("create")}
                                 </Typography>
@@ -794,10 +776,10 @@ function SidebarDrawerComponent() {
                 </Collapse>
               </List>
             </div>
-          </Box>
+          </Paper>
         </Drawer>
       )}
-    </div>
+    </Paper >
   );
 }
 

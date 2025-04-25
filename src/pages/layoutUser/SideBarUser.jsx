@@ -30,6 +30,7 @@ function SideBarUser() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { t } = useTranslate();
+  const mode = useSelector((state) => state.theme.mode);
 
   const handleOverViewClick = () => {
     setIsOverviewOpen(!isOverviewOpen);
@@ -59,6 +60,7 @@ function SideBarUser() {
                     width: "28px",
                     height: "28px",
                     zIndex: "30",
+                    backgroundColor: mode === 'dark' ? '#141A21' : '#fff',
                 }}
                 onClick={() => dispatch(toggleCollapsed(true))}
                 size="small"
@@ -90,6 +92,7 @@ function SideBarUser() {
                       justifyContent: "center",
                       width: "auto",
                       position: "inherit",
+                      backgroundColor: mode === 'dark' ? '#141A21' : '#fff',
                     }}
                     className="group cursor-pointer hover:text-gray-cus"
                     // component="span"

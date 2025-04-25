@@ -1,11 +1,12 @@
 import {Breadcrumbs, Button, IconButton, Typography} from "@mui/material";
-import React from "react";
 import {FiPlus} from "react-icons/fi";
 import {IoIosArrowBack} from "react-icons/io";
+import {useSelector} from "react-redux";
 
 function MainHeaderComponent({
                                  breadcrumbs, title, btnTitle, onClick, handleBackClick,
                              }) {
+    const mode = useSelector((state) => state.theme.mode);
     return (<div className="pb-10 pt-1 flex flex-wrap justify-between items-center gap-5">
             <div className="flex flex-col gap-5">
                 <div>
@@ -15,7 +16,8 @@ function MainHeaderComponent({
                             size="small"
                             disableRipple
                             sx={{
-                                backgroundColor: "transparent", "&:hover": {backgroundColor: "transparent"}
+                                backgroundColor: "transparent", "&:hover": {backgroundColor: "transparent"},
+                                color: mode === "dark" ? "#fff" : "#0A0A0A"
                             }}
                         >
                             <IoIosArrowBack className="text-gray-700"/>

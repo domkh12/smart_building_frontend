@@ -29,23 +29,18 @@ function TranslateComponent() {
         if (initialFetchDone) {
             dispatch(fetchTranslations(language));
             setInitialFetchDone(false);
-            return;
+        } else {
+            toast.success(t("changeLanguage"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
-
-        toast.success(t("changeLanguage"), {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-            isLoading: loading,
-            theme: "light",
-            transition: Slide
-        });
-
-    }, [isSuccess, loading, initialFetchDone, dispatch]);
+    }, [language]);
 
     const handleLanguageChange = (lang) => {
         dispatch(setLanguage(lang));

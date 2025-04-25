@@ -71,7 +71,11 @@ function ImageUploadComponent({
                             >
                                 <div className="flex justify-center items-center flex-col gap-2">
                                     <BsCameraFill className=" text-white w-7 h-7 "/>
-                                    <Typography variant="body1">Upload photo</Typography>
+                                    <Typography variant="body1"
+                                                className= {`${mode === "dark" ? "text-white text-opacity-80":"text-white text-opacity-80"}`}
+                                        >
+                                        Upload photo
+                                    </Typography>
                                 </div>
                             </button>
                         </>
@@ -87,8 +91,10 @@ function ImageUploadComponent({
                             <BsCameraFill
                                 className={`${isError ? "text-[#f44336] text-opacity-100" : `${mode === "dark" ? "text-white text-opacity-80":"text-black text-opacity-30"} `} w-7 h-7 `}
                             />
-                            <Typography variant="body1"
-                                        className={`${isError ? "text-[#f44336] text-opacity-100" : ""}  text-sm`}
+                            <Typography
+                                variant="subtitle2"
+                                className={`${mode === "dark" && isError ? "text-[#f44336] text-opacity-100" : mode === "dark" ? "text-white text-opacity-80" : isError ? "text-[#f44336] text-opacity-100" : "text-black text-opacity-40"} 
+                              text-sm`}
                             >
                                 Upload photo
                             </Typography>

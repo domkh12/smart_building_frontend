@@ -187,10 +187,10 @@ function UserRowComponent({ userId, user }) {
     return (
       <>
         <TableRow hover>
-          <TableCell padding="checkbox" sx={{ borderBottomStyle: "dashed" }}>
+          <TableCell padding="checkbox" sx={{ borderTopStyle: "dashed", borderBottomStyle: "dashed" }}>
             <Checkbox color="primary" />
           </TableCell>
-          <TableCell sx={{ borderBottomStyle: "dashed" }}>
+          <TableCell  sx={{ borderTopStyle: "dashed", borderBottomStyle: "dashed" }}>
             <List sx={{ padding: "0" }}>
               <ListItem sx={{ padding: "0", gap: "10px" }}>
                 <StyledBadge
@@ -226,29 +226,26 @@ function UserRowComponent({ userId, user }) {
               </ListItem>
             </List>
           </TableCell>
-          <TableCell sx={{ borderBottomStyle: "dashed" }}>
+          <TableCell  sx={{ borderTopStyle: "dashed", borderBottomStyle: "dashed" }}>
             {user.phoneNumber}
           </TableCell>
-          <TableCell sx={{ borderBottomStyle: "dashed" }}>
+          <TableCell sx={{ borderTopStyle: "dashed", borderBottomStyle: "dashed" }}>
             <div className="flex gap-5 items-center">{roles}</div>
           </TableCell>
-          <TableCell sx={{ borderBottomStyle: "dashed" }}>
+          <TableCell sx={{ borderTopStyle: "dashed", borderBottomStyle: "dashed" }}>
             <div className="flex gap-5 items-center">{room.length > 0 ? room : "N/A"}</div>
           </TableCell>
-          <TableCell sx={{ borderBottomStyle: "dashed" }}>
+          <TableCell  sx={{ borderTopStyle: "dashed", borderBottomStyle: "dashed" }}>
             <Chip sx={getChipStyles()} size="small" label={user.status} />
           </TableCell>
-          <TableCell sx={{ borderBottomStyle: "dashed" }}>
+          <TableCell  sx={{ borderTopStyle: "dashed", borderBottomStyle: "dashed" }}>
             <Typography variant="body1">{user.createdAt.slice(0, user.createdAt.indexOf(" "))}</Typography>
             <Typography variant="body2" color="gray">
               {user.createdAt.slice(user.createdAt.indexOf(" "), user.createdAt.length)}
             </Typography>
           </TableCell>
           <TableCell
-            sx={{
-              borderBottomStyle: "dashed",
-              px: 0,
-            }}
+            sx={{ borderTopStyle: "dashed", borderBottomStyle: "dashed", px: 0 }}
           >
             <div className="flex justify-center items-center">
               <EditButtonComponent

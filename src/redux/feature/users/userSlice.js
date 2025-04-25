@@ -25,8 +25,12 @@ const userSlice = createSlice({
     quickEditUserReponse: {},
     idUserToDelete: "",
     allFullNameUsersFetched: [],
+    isOpenModalMultiFactor: false
   },
   reducers: {
+    setIsOpenModalMultiFactor(state, action){
+      state.isOpenModalMultiFactor = action.payload;
+    },
     setIsLoadingUser(state, action) {
       state.isLoadingUser = action.payload;
     },
@@ -123,6 +127,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  setIsOpenModalMultiFactor,
   clearFilter,
   setIsLoadingUser,
   setUuid,

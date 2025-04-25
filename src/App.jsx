@@ -183,6 +183,7 @@ function App() {
                             >
                                 <Route path="/user" element={<UserLayout/>}>
                                     <Route index element={<DeviceControlUser/>}/>
+                                    <Route path="accounts" element={<Profile/>}/>
                                     <Route path="devices-control" element={<DeviceControlUser/>}/>
                                 </Route>
                             </Route>

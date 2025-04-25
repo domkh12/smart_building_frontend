@@ -9,14 +9,14 @@ import {
 } from "../../redux/feature/users/userApiSlice";
 import LoadingFetchingDataComponent from "../../components/LoadingFetchingDataComponent";
 import SeoComponent from "../../components/SeoComponent";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import useTranslate from "../../hook/useTranslate";
 import {
     clearFilter,
     setBranchFilter,
     setClearSearchQuery,
     setPageNo,
-    setPageSize, setResultFound,
+    setPageSize,
     setRoleFilter,
     setSearchQuery,
     setSignUpMethodFilter,
@@ -97,7 +97,7 @@ function UserList() {
     }, {
         id: "status", label: t('status'), minWidth: 120, align: "left",
     }, {
-        id: "createdAt", label: "Created\u00a0At", minWidth: 120, align: "left",
+        id: "createdAt", label: t('createdAt'), minWidth: 120, align: "left",
     }, {
         id: "action", label: "", minWidth: 30, align: "left",
     },].filter(Boolean);

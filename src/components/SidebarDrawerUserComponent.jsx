@@ -11,7 +11,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    ListSubheader,
+    ListSubheader, Paper,
     Typography
 } from "@mui/material";
 import LogoComponent from "./LogoComponent.jsx";
@@ -24,7 +24,7 @@ function SidebarDrawerUserComponent() {
     const location = useLocation();
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    const { t } = useTranslate();
+    const {t} = useTranslate();
 
     const handleOverViewClick = () => {
         setIsOverviewOpen(!isOverviewOpen);
@@ -43,9 +43,9 @@ function SidebarDrawerUserComponent() {
                 onClick={() => setOpen(true)}
             />
             {open && (
-                <Drawer open={open} onClose={() => setOpen(false)}>
-                    <Box sx={{ width: 280 }} role="presentation">
-                        <LogoComponent />
+                <Drawer open={open} onClose={() => setOpen(false)} elevation={0}>
+                    <Paper elevation={0} sx={{width: 280, height: "100%"}} role="presentation">
+                        <LogoComponent/>
                         <div className="px-[16px] overflow-auto">
                             <List
                                 component="div"
@@ -67,9 +67,11 @@ function SidebarDrawerUserComponent() {
                                         onClick={handleOverViewClick}
                                     >
                                         {isOverviewOpen ? (
-                                            <IoIosArrowDown className="absolute w-4 h-auto left-0 opacity-0 group-hover:opacity-100 " />
+                                            <IoIosArrowDown
+                                                className="absolute w-4 h-auto left-0 opacity-0 group-hover:opacity-100 "/>
                                         ) : (
-                                            <IoIosArrowForward className="absolute w-4 h-auto left-0 opacity-0 group-hover:opacity-100 " />
+                                            <IoIosArrowForward
+                                                className="absolute w-4 h-auto left-0 opacity-0 group-hover:opacity-100 "/>
                                         )}
                                         <p
                                             className={`group-hover:translate-x-1 transition-[2s] duration-200`}
@@ -83,7 +85,7 @@ function SidebarDrawerUserComponent() {
                                     <ListItemButton
                                         sx={{
                                             borderRadius: "10px",
-                                            color: "#424242",
+
                                             mb: "5px",
                                             ...listItemButtonStyle,
                                         }}
@@ -99,7 +101,7 @@ function SidebarDrawerUserComponent() {
                                                 mr: 1,
                                             }}
                                         >
-                                            <SpaceDashboardTwoToneIcon className="w-6 h-6" />
+                                            <SpaceDashboardTwoToneIcon className="w-6 h-6"/>
                                         </ListItemIcon>
 
                                         <ListItemText
@@ -108,7 +110,7 @@ function SidebarDrawerUserComponent() {
                                                     component="span"
                                                     variant="body1"
                                                     sx={{
-                                                        color: "#424242",
+
                                                         display: "inline",
                                                     }}
                                                 >
@@ -122,7 +124,7 @@ function SidebarDrawerUserComponent() {
                             </List>
 
                         </div>
-                    </Box>
+                    </Paper>
                 </Drawer>
             )}
         </div>

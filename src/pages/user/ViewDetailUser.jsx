@@ -1,7 +1,7 @@
 
 import {Link, useNavigate} from "react-router-dom";
 import useTranslate from "../../hook/useTranslate.jsx";
-import {Avatar, Badge, Card, List, ListItem, ListItemText, styled, Typography} from "@mui/material";
+import {Avatar, Badge, Card, List, ListItem, ListItemText, Paper, styled, Typography} from "@mui/material";
 import MainHeaderComponent from "../../components/MainHeaderComponent.jsx";
 import {cardStyle} from "../../assets/style.js";
 import EditButtonComponent from "../../components/EditButtonComponent.jsx";
@@ -89,13 +89,15 @@ function ViewDetailUser({ user }) {
   }));
 
   const breadcrumbs = [
-    <button
+    <Paper
+        elevation={0}
+        component="button"
         className="text-black hover:underline"
         onClick={() => navigate("/dash")}
         key={1}
     >
       {t("dashboard")}
-    </button>,
+    </Paper>,
     <Typography color="inherit" key={2}>
       {t("user")}
     </Typography>,
@@ -152,39 +154,39 @@ function ViewDetailUser({ user }) {
           </div>
           <div className="flex flex-col gap-3 mt-5">
             <Typography variant="body1">
-              <span className="text-gray-cus">User id </span>
+              <span >User id </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.id}`}
             </Typography>
             <Typography variant="body1">
-              <span className="text-gray-cus">{t('fullName')} </span>
+              <span >{t('fullName')} </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.fullName || "N/A"}`}
             </Typography>
             <Typography variant="body1">
-              <span className="text-gray-cus">{t('email')} </span>
+              <span >{t('email')} </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.email || "N/A"}`}
             </Typography>
             <Typography variant="body1">
-              <span className="text-gray-cus">{t('gender')} </span>
+              <span >{t('gender')} </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.gender?.gender || "N/A"}`}
             </Typography>
             <Typography variant="body1">
-              <span className="text-gray-cus">{t('phoneNumber')} </span>
+              <span >{t('phoneNumber')} </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.phoneNumber || "N/A"}`}
             </Typography>
             <Typography variant="body1">
-              <span className="text-gray-cus">{t('dateOfBirth')} </span>
+              <span >{t('dateOfBirth')} </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.dateOfBirth || "N/A"}`}
             </Typography>
             <Typography variant="body1">
-              <span className="text-gray-cus">{t('role')} </span>
+              <span >{t('role')} </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.roles.map(role => role.name).join(", ") || "N/A"}`}
             </Typography>
             <Typography variant="body1">
-              <span className="text-gray-cus">{t('room')} </span>
+              <span >{t('room')} </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.rooms.map(room => room.name).join(", ") || "N/A"}`}
             </Typography>
             <Typography variant="body1">
-              <span className="text-gray-cus">{t('createdAt')} </span>
+              <span >{t('createdAt')} </span>
               {`${"\u00a0"}:${"\u00a0"}${user?.createdAt}`}
             </Typography>
           </div>

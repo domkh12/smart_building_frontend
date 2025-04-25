@@ -23,7 +23,7 @@ function SelectRoomComponent({
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
     sx: {
-      ...selectMenuStyle,
+      // ...selectMenuStyle,
     },
     PaperProps: {
       style: {

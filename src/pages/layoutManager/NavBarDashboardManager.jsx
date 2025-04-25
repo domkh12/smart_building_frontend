@@ -9,40 +9,19 @@ import { IoSearch } from "react-icons/io5";
 import SettingComponent from "../../components/SettingComponent";
 import TranslateComponent from "../../components/TranslateComponent";
 import ProfileDrawerComponent from "../../components/ProfileDrawerComponent";
-import SelectRoomComponent from "../../components/SelectRoomComponent.jsx";
-import useAuth from "../../hook/useAuth";
-import { selectCurrentToken } from "../../redux/feature/auth/authSlice";
-import {useGetUserProfileQuery, useVerifySitesMutation} from "../../redux/feature/auth/authApiSlice";
+import {useGetUserProfileQuery} from "../../redux/feature/auth/authApiSlice";
 import { setChangedSite } from "../../redux/feature/site/siteSlice";
 
 function NavBarDashboardManager() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const {data: user} = useGetUserProfileQuery("profileList");
-  const sites = useSelector((state) => state.sites.sitesForChange);
-  const { isAdmin, isManager, sites: currentSite } = useAuth();
   const dispatch = useDispatch();
-  const token = useSelector(selectCurrentToken);
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
   };
-  const [
-    verifySites,
-    {
-      isSuccess: isVerifySiteSuccess,
-      isLoading: isVerifySiteLoading,
-      isError: isVerifySiteError,
-      error: errorVerifySite,
-    },
-  ] = useVerifySitesMutation();
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
-  };
-
-  const handleSendLogout = async () => {
-    // await sendLogout();
-    console.log("click");
-    onClose();
   };
 
   const listGroup1 = [
@@ -59,20 +38,6 @@ function NavBarDashboardManager() {
   ];
 
   const combinedLists = [listGroup1, listGroup2];
-
-  const handleChange = async (value) => {
-    console.log(value);
-    await verifySites({
-      uuid: value,
-      token: token,
-    });
-  };
-
-  useEffect(() => {
-    if (isVerifySiteSuccess) {
-      dispatch(setChangedSite(true));
-    }
-  }, [isVerifySiteSuccess]);
 
   return (
     <>
@@ -112,7 +77,7 @@ function NavBarDashboardManager() {
               className="w-auto h-auto  flex justify-center items-center"
               onClick={handleDrawerOpen}
             >
-              <Avatar alt="Profile" src={user.profileImage} />
+              <Avatar alt="Profile" src={user?.profileImage} />
             </IconButton>
           </div>
         </div>
@@ -122,7 +87,6 @@ function NavBarDashboardManager() {
         drawerOpen && <ProfileDrawerComponent
               open={drawerOpen}
               onClose={handleDrawerClose}
-              handleSendLogout={handleSendLogout}
           />
       }
 

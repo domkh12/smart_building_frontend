@@ -33,7 +33,6 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
     const {t} = useTranslate();
     const navigate = useNavigate();
     const mode = useSelector((state) => state.theme.mode);
-
     const [sendLogout, {isLoading, isSucess, isError, error}] =
         useSendLogoutMutation();
 
@@ -112,13 +111,13 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
                                 >
                                     <Avatar
                                         alt="Profile"
-                                        src={user.profileImage}
+                                        src={user?.profileImage}
                                         sx={{width: 100, height: 100}}
                                     />
                                 </IconButton>
                             </div>
                             <Box className="flex flex-col justify-center items-center">
-                                <Typography>{user.fullName}</Typography>
+                                <Typography>{user?.fullName}</Typography>
                                 <Chip icon={<FaUserTie className="w-5 h-5"/>} label={status}/>
                                 <Typography variant="body1" color="gray">
                                     {username}

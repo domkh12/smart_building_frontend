@@ -61,53 +61,58 @@ function SettingDrawerComponent() {
     };
 
     return (
+
         <>
-            <Drawer
-                anchor="right"
-                open={open}
-                onClose={() => dispatch(setIsOpenSettingDrawer(false))}
-            >
-                <Box
-                    sx={{
-                        width: 360,
-                        backgroundColor: mode === 'dark' ? '#141A21' : '#fff',
-                        height: "100%"
-                    }}
+            {open &&
+                <Drawer
+                    anchor="right"
+                    open={open}
+                    onClose={() => dispatch(setIsOpenSettingDrawer(false))}
                 >
-                    <div className="flex justify-between items-center p-4">
-                        <Typography variant="h6"
-                                    sx={{fontWeight: "500", fontSize: "1.2rem"}}>{t('settings')}</Typography>
-                        <div>
-                            <Tooltip arrow={true} title={t('fullScreen')}>
-                                <IconButton aria-label="fullScreen" onClick={handleFullScreen}>
-                                    <MdFullscreen className="w-7 h-7"/>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title={t('resetAll')}>
-                                <IconButton>
-                                    <GrPowerReset className="w-5 h-5"/>
-                                    <CartBadge variant="dot" color="secondary" overlap="circular"/>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip arrow={true} title={t('close')}>
-                                <IconButton aria-label="close" onClick={() => dispatch(setIsOpenSettingDrawer(false))}>
+                    <Box
+                        sx={{
+                            width: 360,
+                            backgroundColor: mode === 'dark' ? '#141A21' : '#fff',
+                            height: "100%"
+                        }}
+                    >
+                        <div className="flex justify-between items-center p-4">
+                            <Typography variant="h6"
+                                        sx={{fontWeight: "500", fontSize: "1.2rem"}}>{t('settings')}</Typography>
+                            <div>
+                                <Tooltip arrow={true} title={t('fullScreen')}>
+                                    <IconButton aria-label="fullScreen" onClick={handleFullScreen}>
+                                        <MdFullscreen className="w-7 h-7"/>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title={t('resetAll')}>
+                                    <IconButton>
+                                        <GrPowerReset className="w-5 h-5"/>
+                                        <CartBadge variant="dot" color="secondary" overlap="circular"/>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip arrow={true} title={t('close')}>
+                                    <IconButton aria-label="close"
+                                                onClick={() => dispatch(setIsOpenSettingDrawer(false))}>
 
-                                    <IoCloseOutline className="w-7 h-7"/>
-                                </IconButton>
-                            </Tooltip>
+                                        <IoCloseOutline className="w-7 h-7"/>
+                                    </IconButton>
+                                </Tooltip>
 
+                            </div>
                         </div>
-                    </div>
 
-                    <Grid2 container spacing={2} sx={{paddingX: "16px"}}>
-                        <Grid2 size={6}>
-                            <SettingToggleButtonComponent title={t('darkMode')}
-                                                          handleChange={() => dispatch(toggleMode())}
-                                                          value={mode === "dark"}/>
+                        <Grid2 container spacing={2} sx={{paddingX: "16px"}}>
+                            <Grid2 size={6}>
+                                <SettingToggleButtonComponent title={t('darkMode')}
+                                                              handleChange={() => dispatch(toggleMode())}
+                                                              value={mode === "dark"}/>
+                            </Grid2>
                         </Grid2>
-                    </Grid2>
-                </Box>
-            </Drawer>
+                    </Box>
+                </Drawer>
+            }
+
         </>
     );
 }

@@ -93,7 +93,10 @@ function UserTableComponent({
                     <TableHead>
                         <TableRow>
                             <TableCell padding="checkbox"
-                                       sx={{backgroundColor: mode === "dark" ? "#28323D" : "#F4F6F8"}}>
+                                       sx={{
+                                           backgroundColor: mode === "dark" ? "#28323D" : "#F4F6F8",
+                                           borderBottomStyle: "hidden"
+                                        }}>
                                 <Checkbox
                                     sx={{
                                         "&.Mui-checked": {
@@ -109,7 +112,8 @@ function UserTableComponent({
                             </TableCell>
                             {columns?.map((column) => (
                                 <TableCell
-                                    sx={{backgroundColor: mode === "dark" ? "#28323D" : "#F4F6F8"}}
+                                    sx={{backgroundColor: mode === "dark" ? "#28323D" : "#F4F6F8",
+                                        borderBottomStyle: "hidden"}}
                                     key={column?.id}
                                     align={column?.align}
                                     style={{minWidth: column?.minWidth, color: "gray"}}

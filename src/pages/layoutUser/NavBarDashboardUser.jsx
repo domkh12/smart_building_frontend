@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import NotificationsNoneTwoToneIcon from "@mui/icons-material/NotificationsNoneTwoTone";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import ToolTipButtonComponent from "../../components/ToolTipButtonComponent";
-import SidebarDrawerComponent from "../../components/SidebarDrawerComponent";
 import { IoSearch } from "react-icons/io5";
 import SettingComponent from "../../components/SettingComponent";
 import TranslateComponent from "../../components/TranslateComponent";
@@ -12,23 +11,22 @@ import ProfileDrawerComponent from "../../components/ProfileDrawerComponent";
 import SelectRoomComponent from "../../components/SelectRoomComponent.jsx";
 import useAuth from "../../hook/useAuth";
 import { selectCurrentToken } from "../../redux/feature/auth/authSlice";
-import { useVerifySitesMutation } from "../../redux/feature/auth/authApiSlice";
+import {useGetUserProfileQuery, useVerifySitesMutation} from "../../redux/feature/auth/authApiSlice";
 import { setChangedSite } from "../../redux/feature/site/siteSlice";
 import SidebarDrawerUserComponent from "../../components/SidebarDrawerUserComponent.jsx";
 import {useGetAllRoomNamesQuery} from "../../redux/feature/room/roomApiSlice.js";
 
 function NavBarDashboardUser() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const user = useSelector((state) => state.users.user);
   const { isAdmin, isManager, isUser, roomId } = useAuth();
   const dispatch = useDispatch();
   const token = useSelector(selectCurrentToken);
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
   };
-
+  const {data: user} = useGetUserProfileQuery("profileList");
   const {data: room} = useGetAllRoomNamesQuery("roomNameList");
-
+  console.log("room", room)
   const [
     verifySites,
     {
@@ -41,12 +39,6 @@ function NavBarDashboardUser() {
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
-  };
-
-  const handleSendLogout = async () => {
-    // await sendLogout();
-    console.log("click");
-    onClose();
   };
 
   const listGroup1 = [
@@ -123,17 +115,19 @@ function NavBarDashboardUser() {
               className="w-auto h-auto  flex justify-center items-center"
               onClick={handleDrawerOpen}
             >
-              <Avatar alt="Profile" src={user.profileImage} />
+              <Avatar alt="Profile" src={user?.profileImage} />
             </IconButton>
           </div>
         </div>
       </Paper>
 
-      <ProfileDrawerComponent
-        open={drawerOpen}
-        onClose={handleDrawerClose}
-        handleSendLogout={handleSendLogout}
-      />
+      {drawerOpen &&
+            <ProfileDrawerComponent
+            open={drawerOpen}
+            onClose={handleDrawerClose}
+        />
+      }
+
     </>
   );
 }

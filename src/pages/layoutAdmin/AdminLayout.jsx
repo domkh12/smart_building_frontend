@@ -12,19 +12,16 @@ import useWebSocket from "../../hook/useWebSocket";
 import { setIsOnlineUser } from "../../redux/feature/users/userSlice";
 import SnackBarComponent from "../../components/SnackBarComponent";
 import { DESTINATION } from "../../config/destination";
-import { useGetUserProfileMutation } from "../../redux/feature/auth/authApiSlice";
-import LoadingFetchingDataComponent from "./../../components/LoadingFetchingDataComponent";
 import DeleteConfirmComponent from "../../components/DeleteConfirmComponent";
 import { setUserProfile } from "../../redux/feature/auth/authSlice";
-import SettingDrawerComponent from "../../components/SettingDrawerComponent";
 import WaveLoadingComponent from "../../components/WaveLoadingComponent.jsx";
 import {Paper} from "@mui/material";
+import {useGetUserProfileQuery} from "../../redux/feature/auth/authApiSlice.js";
 
 function AdminLayout() {
   const isPaginationSuccess = useSelector(
     (state) => state.action.isPaginationSuccess
   );
-  const user = useSelector((state) => state.users.user);
   const mainContentRef = useRef(null);
   const dispatch = useDispatch();
   const [scrolling, setScrolling] = useState();
@@ -37,6 +34,7 @@ function AdminLayout() {
   const isOpenSnackBar = useSelector((state) => state.action.isOpenSnackBar);
   const captionSnackBar = useSelector((state) => state.action.captionSnackBar);
   const [isLoading, setIsLoading] = useState(true);
+  const {data: user} = useGetUserProfileQuery("profileList");
 
   // const [
   //   getSitesList,
@@ -52,11 +50,6 @@ function AdminLayout() {
     connectedUser,
     { isSuccess: isSuccessConnectUser, isLoading: isLoadingConnectUser },
   ] = useConnectedUserMutation();
-
-  const [
-    getUserProfile,
-    { isSuccess: isSuccessGetUserProfile, isLoading: isLoadingGetUserProfile },
-  ] = useGetUserProfileMutation();
 
   useEffect(() => {
     if (messages) {
@@ -78,9 +71,9 @@ function AdminLayout() {
     const fetchUserProfile = async () => {
       try {
         setIsLoading(true);
-        const res = await getUserProfile().unwrap();
+        const res = 1;
         dispatch(setUserProfile(res));
-        await connectedUser({id: res?.id, isOnline: true});
+        await connectedUser({id: res, isOnline: true});
       } catch (error) {
         console.error(error);
       } finally {
@@ -135,7 +128,7 @@ function AdminLayout() {
     content = <WaveLoadingComponent />;
   }
 
-  if (isSuccessGetUserProfile || isSuccessConnectUser) {
+  if (isSuccessConnectUser) {
     content = (
       <Paper elevation={0} className="fixed top-0 left-0 w-full h-screen dark:bg-[#282828]">
         <Paper elevation={0} className="flex h-full bg-white">

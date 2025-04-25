@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import useTranslate from "../hook/useTranslate.jsx";
 import ToolTipButtonComponent from "./ToolTipButtonComponent.jsx";
@@ -11,7 +11,7 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    ListSubheader,
+    ListSubheader, Paper,
     Typography
 } from "@mui/material";
 import LogoComponent from "./LogoComponent.jsx";
@@ -19,21 +19,12 @@ import {IoIosArrowDown, IoIosArrowForward} from "react-icons/io";
 import {listItemButtonStyle} from "../assets/style.js";
 import SpaceDashboardTwoToneIcon from "@mui/icons-material/SpaceDashboardTwoTone";
 import SettingsRemoteIcon from "@mui/icons-material/SettingsRemote";
-import ApartmentTwoToneIcon from "@mui/icons-material/ApartmentTwoTone";
-import ElevatorTwoToneIcon from "@mui/icons-material/ElevatorTwoTone";
-import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
-import TipsAndUpdatesTwoToneIcon from "@mui/icons-material/TipsAndUpdatesTwoTone";
 import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
-
 
 function SidebarDrawerAdminComponent() {
     const [isOverviewOpen, setIsOverviewOpen] = useState(true);
     const [isManagementOpen, setIsManagementOpen] = useState(true);
-    const [isFloorOpen, setIsFloorOpen] = useState(false);
-    const [isRoomOpen, setIsRoomOpen] = useState(false);
-    const [isBuildingOpen, setIsBuildingOpen] = useState(false);
     const [isUserOpen, setIsUserOpen] = useState(false);
-    const [isDeviceOpen, setisDeviceOpen] = useState(false);
     const location = useLocation();
     const [open, setOpen] = useState(false);
     const isUserListPage = location.pathname === "/admin/users";
@@ -55,15 +46,15 @@ function SidebarDrawerAdminComponent() {
     };
 
     return (
-        <div>
+        <Paper elevation={0}>
             <ToolTipButtonComponent
                 title={"Collapse"}
                 icon={CgMenuLeftAlt}
                 onClick={() => setOpen(true)}
             />
             {open && (
-                <Drawer open={open} onClose={() => setOpen(false)}>
-                    <Box sx={{ width: 280 }} role="presentation">
+                <Drawer open={open} onClose={() => setOpen(false)} elevation={0}>
+                    <Paper elevation={0} sx={{ width: 280 }} role="presentation">
                         <LogoComponent />
                         <div className="px-[16px] overflow-auto">
                             <List
@@ -102,7 +93,7 @@ function SidebarDrawerAdminComponent() {
                                     <ListItemButton
                                         sx={{
                                             borderRadius: "10px",
-                                            color: "#424242",
+                                            
                                             mb: "5px",
                                             ...listItemButtonStyle,
                                         }}
@@ -127,7 +118,7 @@ function SidebarDrawerAdminComponent() {
                                                     component="span"
                                                     variant="body1"
                                                     sx={{
-                                                        color: "#424242",
+                                                        
                                                         display: "inline",
                                                     }}
                                                 >
@@ -139,7 +130,7 @@ function SidebarDrawerAdminComponent() {
                                     <ListItemButton
                                         sx={{
                                             borderRadius: "10px",
-                                            color: "#424242",
+                                            
                                             mb: "5px",
                                             ...listItemButtonStyle,
                                         }}
@@ -162,7 +153,7 @@ function SidebarDrawerAdminComponent() {
                                                     component="span"
                                                     variant="body1"
                                                     sx={{
-                                                        color: "#424242",
+                                                        
                                                         display: "inline",
                                                         textWrap: "nowrap",
                                                     }}
@@ -214,7 +205,7 @@ function SidebarDrawerAdminComponent() {
                                     <ListItemButton
                                         sx={{
                                             borderRadius: "10px",
-                                            color: "#424242",
+                                            
                                             ...((isUserListPage || isUserCreatePage) &&
                                                 listItemButtonStyle),
                                             mt: "5px",
@@ -240,7 +231,7 @@ function SidebarDrawerAdminComponent() {
                                                 <Typography
                                                     component="span"
                                                     variant="body1"
-                                                    sx={{ color: "#424242", display: "inline" }}
+                                                    sx={{  display: "inline" }}
                                                 >
                                                     {t("user")}
                                                 </Typography>
@@ -268,7 +259,7 @@ function SidebarDrawerAdminComponent() {
                                                     <ListItemButton
                                                         sx={{
                                                             borderRadius: "10px",
-                                                            color: "#424242",
+                                                            
                                                             mb: "5px",
                                                         }}
                                                         onClick={() => {
@@ -282,7 +273,7 @@ function SidebarDrawerAdminComponent() {
                                                                 <Typography
                                                                     component="span"
                                                                     variant="body1"
-                                                                    sx={{ color: "#424242", display: "inline" }}
+                                                                    sx={{  display: "inline" }}
                                                                 >
                                                                     {t("list")}
                                                                 </Typography>
@@ -299,7 +290,7 @@ function SidebarDrawerAdminComponent() {
                                                     <ListItemButton
                                                         sx={{
                                                             borderRadius: "10px",
-                                                            color: "#424242",
+                                                            
                                                             mb: "5px",
                                                         }}
                                                         onClick={() => {
@@ -313,7 +304,7 @@ function SidebarDrawerAdminComponent() {
                                                                 <Typography
                                                                     component="span"
                                                                     variant="body1"
-                                                                    sx={{ color: "#424242", display: "inline" }}
+                                                                    sx={{  display: "inline" }}
                                                                 >
                                                                     {t("create")}
                                                                 </Typography>
@@ -329,10 +320,10 @@ function SidebarDrawerAdminComponent() {
                                 </Collapse>
                             </List>
                         </div>
-                    </Box>
+                    </Paper>
                 </Drawer>
             )}
-        </div>
+        </Paper>
     );
 }
 

@@ -9,39 +9,22 @@ import SettingComponent from "../../components/SettingComponent";
 import TranslateComponent from "../../components/TranslateComponent";
 import ProfileDrawerComponent from "../../components/ProfileDrawerComponent";
 import useAuth from "../../hook/useAuth";
-import { selectCurrentToken } from "../../redux/feature/auth/authSlice";
-import { useVerifySitesMutation } from "../../redux/feature/auth/authApiSlice";
+import {useGetUserProfileQuery} from "../../redux/feature/auth/authApiSlice";
 import { setChangedSite } from "../../redux/feature/site/siteSlice";
 import SidebarDrawerAdminComponent from "../../components/SidebarDrawerAdminComponent.jsx";
 
 function NavBarDashboardAdmin() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const user = useSelector((state) => state.users.user);
   const sites = useSelector((state) => state.sites.sitesForChange);
   const { isAdmin, isManager, sites: currentSite } = useAuth();
+  const {data: user} = useGetUserProfileQuery("profileList");
   const dispatch = useDispatch();
-  const token = useSelector(selectCurrentToken);
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
   };
-  const [
-    verifySites,
-    {
-      isSuccess: isVerifySiteSuccess,
-      isLoading: isVerifySiteLoading,
-      isError: isVerifySiteError,
-      error: errorVerifySite,
-    },
-  ] = useVerifySitesMutation();
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
-  };
-
-  const handleSendLogout = async () => {
-    // await sendLogout();
-    console.log("click");
-    onClose();
   };
 
   const listGroup1 = [
@@ -58,12 +41,6 @@ function NavBarDashboardAdmin() {
   ];
 
   const combinedLists = [listGroup1, listGroup2];
-
-  useEffect(() => {
-    if (isVerifySiteSuccess) {
-      dispatch(setChangedSite(true));
-    }
-  }, [isVerifySiteSuccess]);
 
   return (
     <>
@@ -112,7 +89,6 @@ function NavBarDashboardAdmin() {
       <ProfileDrawerComponent
         open={drawerOpen}
         onClose={handleDrawerClose}
-        handleSendLogout={handleSendLogout}
       />
     </>
   );

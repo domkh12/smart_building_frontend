@@ -18,17 +18,13 @@ import {useDispatch} from "react-redux";
 import {Slide, toast} from "react-toastify";
 
 function GeneralProfileComponent() {
-    const navigate = useNavigate();
     const [profileImageFile, setProfileImageFile] = useState(null);
     const {t} = useTranslate();
-    const dispatch = useDispatch();
     const [uploadImage, {isLoading : isLoadingUpdateProfile}] = useUploadImageMutation();
-
     const {data: gender, isLoading : isLoadingGender, isSuccess : isSuccessGender} = useFindAllGenderQuery("genderList");
-
     const [updateUser, {isSuccess}] = useUpdateUserProfileMutation();
     const {data: user, isSuccess : isSuccessProfile, isLoading : isLoadingProfile} = useGetUserProfileQuery("profileList");
-    console.log("user", user)
+
     const validationSchema = Yup.object().shape({
         fullName: Yup.string()
             .matches(
@@ -74,13 +70,16 @@ function GeneralProfileComponent() {
                 profileImageUri = uploadResponse.uri;
             }
 
+            const formattedDateOfBirth = dayjs(values.dateOfBirth).format(
+                "YYYY-MM-DD"
+            );
             await updateUser({
-                dateOfBirth: values.dateOfBirth,
+                dateOfBirth: formattedDateOfBirth,
                 fullName: values.fullName,
                 genderId: values.genderId,
                 address: values.address,
                 phoneNumber: values.phoneNumber,
-                profileImage: profileImageUri,
+                profileImage: profileImageUri || user.profileImage,
             });
         } catch (error) {
             console.error(error);
@@ -171,12 +170,7 @@ function GeneralProfileComponent() {
                                                 <TextField
                                                     label={t("fullName")}
                                                     variant="outlined"
-                                                    sx={{
-                                                        "& .MuiInputBase-input": {
-                                                            boxShadow: "none",
-                                                        },
-                                                        borderRadius: "6px",
-                                                    }}
+                                                    
                                                     type="text"
                                                     id="fullName"
                                                     name="fullName"
@@ -208,12 +202,7 @@ function GeneralProfileComponent() {
                                                 <TextField
                                                     label={`${t("address")} (${t("optional")})`}
                                                     variant="outlined"
-                                                    sx={{
-                                                        "& .MuiInputBase-input": {
-                                                            boxShadow: "none",
-                                                        },
-                                                        borderRadius: "6px",
-                                                    }}
+                                                    
                                                     type="text"
                                                     id="address"
                                                     name="address"
@@ -234,12 +223,7 @@ function GeneralProfileComponent() {
                                                 <TextField
                                                     label={t("phoneNumber")}
                                                     variant="outlined"
-                                                    sx={{
-                                                        "& .MuiInputBase-input": {
-                                                            boxShadow: "none",
-                                                        },
-                                                        borderRadius: "6px",
-                                                    }}
+                                                    
                                                     type="text"
                                                     id="phoneNumber"
                                                     name="phoneNumber"

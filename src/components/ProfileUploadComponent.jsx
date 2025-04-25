@@ -67,8 +67,12 @@ function ProfileUploadComponent({ profileImageFile, setProfileImageFile, profile
                 type="button"
               >
                 <div className="flex justify-center items-center flex-col gap-2">
-                  <BsCameraFill className=" w-7 h-7 " />
-                  <Typography  variant="subtitle2">Upload photo</Typography>
+                  <BsCameraFill  className={`text-white w-7 h-7 `} />
+                  <Typography  variant="subtitle2"
+                               className= {`${mode === "dark" ? "text-white text-opacity-80":"text-white text-opacity-80"}`}
+                  >
+                    Upload photo
+                  </Typography>
                 </div>
               </button>
             </>

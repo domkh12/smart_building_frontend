@@ -239,8 +239,11 @@ function AddNewUser() {
                 const uploadResponse = await uploadImage(formData).unwrap();
                 profileImageUri = uploadResponse.uri;
             }
-            const dateOfBirth = new Date(values.dateOfBirth);
-            const formattedDateOfBirth = dateOfBirth.toISOString().split("T")[0];
+
+            const formattedDateOfBirth = dayjs(values.dateOfBirth).format(
+                "YYYY-MM-DD"
+            );
+
             await addNewUser({
                 fullName: values.fullName,
                 dateOfBirth: formattedDateOfBirth,

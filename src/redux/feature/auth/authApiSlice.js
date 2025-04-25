@@ -112,12 +112,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }
       }),
       invalidatesTags: (result, error, arg) => [{type: "Profile", id: "LIST"}],
-    })
+    }),
+
+    changePassword: builder.mutation({
+      query: ({ ...initialUserData }) => ({
+        url: `/auth/change-password`,
+        method: "POST",
+        body: { ...initialUserData },
+      }),
+    }),
 
   }),
 });
 
 export const {
+  useChangePasswordMutation,
   useUpdateUserProfileMutation,
   useLoginMutation,
   useSendLogoutMutation,
