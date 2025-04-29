@@ -64,7 +64,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
 
     verifyTwoFa: builder.mutation({
-      query: (code) => ({
+      query: ({code}) => ({
         url: `/auth/verify-2fa?code=${code}`,
         method: "POST",
       }),
@@ -78,8 +78,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
 
     verify2FALogin: builder.mutation({
-      query: ({ code, token }) => ({
-        url: `/auth/verify-2fa-login?code=${code}&token=${token}`,
+      query: ({ code, email }) => ({
+        url: `/auth/verify-2fa-login?code=${code}&email=${email}`,
         method: "POST",
       }),
     }),

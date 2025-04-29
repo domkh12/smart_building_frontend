@@ -1,22 +1,29 @@
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Card, Divider, Modal, Skeleton, Typography} from "@mui/material";
-import {useGetQrCode2FaMutation} from "../redux/feature/auth/authApiSlice.js";
+import {useGetQrCode2FaMutation, useVerifyTwoFaMutation} from "../redux/feature/auth/authApiSlice.js";
 import {useEffect, useState} from "react";
 import {selectQrCodeUrl} from "../redux/feature/auth/authSlice.js";
 import useTranslate from "../hook/useTranslate.jsx";
 import {setIsOpenModalMultiFactor} from "../redux/feature/users/userSlice.js";
 import OTPInput from "react-otp-input";
 import {FaPaste} from "react-icons/fa6";
+import {Slide, toast} from "react-toastify";
 
 function ModalMultiFactorComponent() {
     const [otp, setOtp] = useState('');
-    console.log(otp)
     const mode = useSelector((state) => state.theme.mode);
     const {t} = useTranslate();
     const open = useSelector((state) => state.users.isOpenModalMultiFactor);
     const dispatch = useDispatch();
     const qrCodeUrl = useSelector(selectQrCodeUrl);
     const [getQrCode2Fa, {}] = useGetQrCode2FaMutation();
+    const [verifyTwoFa, {
+        isSuccess: isSuccessVerifyTwoFa,
+        isLoading: isLoadingVerifyTwoFa,
+        isError: isErrorVerifyTwoFa,
+        error: errorVerifyTwoFa,
+    }] = useVerifyTwoFaMutation();
+
     useEffect(() => {
         const fetchData = async () => {
 
@@ -51,6 +58,43 @@ function ModalMultiFactorComponent() {
     const handlePaste = (event) => {
         const data = event.clipboardData.getData('text');
     };
+
+    useEffect(() => {
+        if (otp.length === 6) {
+            verifyTwoFa({
+                code: otp
+            })
+        }
+    }, [otp])
+
+    useEffect(() => {
+        if (isSuccessVerifyTwoFa) {
+            toast.success(t("verify2FaSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
+            handleClose();
+        }
+    }, [isSuccessVerifyTwoFa])
+
+    useEffect(() => {
+        if (isErrorVerifyTwoFa) {
+            toast.error(t("verify2FaError"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
+        }
+    }, [isErrorVerifyTwoFa]);
 
     return (<>
         <Modal
