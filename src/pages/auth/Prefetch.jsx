@@ -9,6 +9,7 @@ import {roomApiSlice} from "../../redux/feature/room/roomApiSlice";
 import {deviceApiSlice} from "../../redux/feature/device/deviceApiSlice";
 import {deviceTypeApiSlice} from "../../redux/feature/device/deviceTypeApiSlice.js";
 import {authApiSlice} from "../../redux/feature/auth/authApiSlice.js";
+import {Paper} from "@mui/material";
 
 function Prefetch() {
     const {isManager, isAdmin, isUser} = useAuth();
@@ -37,7 +38,7 @@ function Prefetch() {
         }
     }, []);
 
-    return <Outlet/>;
+    return <Paper elevation={0}><Outlet/></Paper>;
 }
 
 export default Prefetch;

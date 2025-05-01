@@ -32,6 +32,15 @@ export const getTheme = (mode) =>
 
         components: {
 
+            MuiCssBaseline: {
+                styleOverrides: {
+                    body: {
+                        backgroundColor: mode === 'dark' ? '#121212' : '#fafafa',
+                        transition: 'background-color 0.3s ease'
+                    }
+                }
+            },
+
             MuiTextField: {
                 styleOverrides: {
                     root: {

@@ -1,6 +1,6 @@
 import {lazy, Suspense, useEffect, useState} from "react";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {createTheme, ThemeProvider, useMediaQuery} from "@mui/material";
+import {createTheme, CssBaseline, ThemeProvider, useMediaQuery} from "@mui/material";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import RequireAuth from "./pages/auth/RequireAuth.jsx";
@@ -8,6 +8,7 @@ import {ROLES} from "./config/roles.js";
 import {deepOrange, deepPurple} from "@mui/material/colors";
 import {useSelector} from "react-redux";
 import {getTheme} from "./redux/feature/theme/theme.js";
+import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
 
 const AdminLayout = lazy(() => import("./pages/layoutAdmin/AdminLayout.jsx"));
 const WaveLoadingComponent = lazy(() => import("./components/WaveLoadingComponent.jsx"));
@@ -68,14 +69,17 @@ function App() {
         });
     }, []);
 
-    return (<ThemeProvider theme={theme}>
+    return (
+        <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Suspense fallback={<WaveLoadingComponent/>}>
             <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Navigate to="/login" replace/>}/>
-                <Route path="/test" element={<WaveLoadingComponent/>}/>
+                <Route path="/test" element={<Error403Component/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="unauthorize" element={<Error403Component/>}/>
+                <Route path="/forgot-password" element={<ForgotPassword />} />
 
                 {/* Protected routes */}
                 <Route element={<PersistLogin/>}>

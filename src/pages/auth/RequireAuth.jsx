@@ -1,14 +1,15 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../../hook/useAuth";
+import {Paper} from "@mui/material";
 
 function RequireAuth({ allowedRoles }) {
   const location = useLocation();
 
   const { roles } = useAuth();
-  
+  console.log(roles)
   const content = (
     roles.some(role => allowedRoles.includes(role))
-        ? <Outlet/>
+        ? <Paper elevation={0}> <Outlet/> </Paper>
         : <Navigate to="/unauthorize" state={{ from : location }} replace/>
   )
 

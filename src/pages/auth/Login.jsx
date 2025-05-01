@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
     useLoginMutation,
@@ -37,6 +37,7 @@ import SeoComponent from "../../components/SeoComponent";
 import {useGetSitesListMutation} from "../../redux/feature/site/siteApiSlice";
 import {setRoomId} from "../../redux/feature/room/roomSlice.js";
 import OTPInput from "react-otp-input";
+import useLocalStorage from "../../hook/useLocalStorage.jsx";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -59,6 +60,22 @@ export default function Login() {
     const [login, {isSuccess, isLoading}] = useLoginMutation();
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+    const [authData, setAuthData] = useLocalStorage('authData', {
+        isRemember: false,
+        userRoles: "",
+        uuid: null,
+        roomId: null
+    });
+
+    const saveLoginInfo = (roles, uuid, roomId = null) => {
+        setAuthData({
+            isRemember: true,
+            userRoles: roles[0],
+            uuid,
+            roomId
+        });
+    };
+
     const [
         verify2FALogin,
         {
@@ -73,10 +90,22 @@ export default function Login() {
     };
 
     useEffect(() => {
-        // if (rememberMe){
-        //   navigate("/dash")
-        // }
-    }, [rememberMe]);
+        const checkRememberedLogin = () => {
+            if (authData.isRemember && authData.userRoles !== "") {
+                if (authData.userRoles === "ROLE_ADMIN") {
+                    navigate("/admin");
+                } else if (authData.userRoles === "ROLE_MANAGER") {
+                    navigate("/dash");
+                } else if (authData.userRoles === "ROLE_USER") {
+                    navigate("/user");
+                }
+
+            }
+        };
+
+        checkRememberedLogin();
+    }, []);
+
 
     useEffect(() => {
         if (open) {
@@ -115,6 +144,7 @@ export default function Login() {
         }
     }, [isVerify2FaError]);
 
+    // Update your 2FA verification success handler
     useEffect(() => {
         if (otp.length === 6) {
             try {
@@ -123,33 +153,33 @@ export default function Login() {
                         code: otp,
                         email: email
                     }).unwrap();
-                    setToken(accessToken);
-                    console.log(accessToken)
+
+                    const decoded = jwtDecode(accessToken);
+                    const { scope, uuid, roomId } = decoded;
+                    const roles = scope ? scope.split(" ") : [];
+
+                    if (roles.includes(ROLES.ROLE_ADMIN)) {
+                        dispatch(setUuid(uuid));
+                        saveLoginInfo(roles, uuid);
+                        navigate("/admin");
+                    } else if (roles.includes(ROLES.ROLE_MANAGER)) {
+                        dispatch(setUuid(uuid));
+                        saveLoginInfo(roles, uuid);
+                        navigate("/dash");
+                    } else if (roles.includes(ROLES.ROLE_USER)) {
+                        dispatch(setUuid(uuid));
+                        dispatch(setRoomId(roomId));
+                        saveLoginInfo(roles, uuid, roomId);
+                        navigate("/user");
+                    }
                 }
                 postVerifyLogin();
-                const decoded = jwtDecode(token);
-                const { scope, uuid, roomId } = decoded;
-                const roles = scope ? scope.split(" ") : [];
-                if (roles.includes(ROLES.ROLE_ADMIN)) {
-                    dispatch(setUuid(uuid));
-                    localStorage.setItem("isRemember", "true");
-                    navigate("/admin");
-                }else if (roles.includes(ROLES.ROLE_MANAGER)) {
-                    console.log(roles)
-                    dispatch(setUuid(uuid));
-                    localStorage.setItem("isRemember", "true");
-                    navigate("/dash");
-                }else if (roles.includes(ROLES.ROLE_USER)) {
-                    dispatch(setUuid(uuid));
-                    dispatch(setRoomId(roomId))
-                    localStorage.setItem("isRemember", "true");
-                    navigate("/user");
-                }
             } catch (error) {
                 console.log(error)
             }
         }
-    }, [otp, token])
+    }, [otp]);
+
 
     const handleSubmit = async (values, {setSubmitting, resetForm}) => {
         try {
@@ -309,6 +339,15 @@ export default function Login() {
                                                 }
                                                 size="medium"
                                             />
+
+                                            <div className="flex justify-end">
+                                                <Link
+                                                    to={"/forgot-password"}
+                                                    className="text-sm hover:underline text-right"
+                                                >
+                                                    {t('forgotPassword')}
+                                                </Link>
+                                            </div>
 
                                             <FormControl
                                                 sx={{width: "100%", mb: 2}}

@@ -7,6 +7,7 @@ import usePersist from "../../hook/usePersist";
 import Error401Component from './../../components/Error401Component';
 import {selectIsInitialLoading, setInitialLoading} from "../../redux/feature/app/appSlice.js";
 import WaveLoadingComponent from "../../components/WaveLoadingComponent.jsx";
+import {Paper} from "@mui/material";
 
 function PersistLogin() {
   const [persist] = usePersist();
@@ -37,7 +38,7 @@ function PersistLogin() {
   let content;
   if (!persist) {
     // persist: no
-    content = <Outlet />;
+    content = <Paper elevation={0}><Outlet /></Paper>;
   } else if (isLoading) {
     // persist: yes , token: no
     content = <WaveLoadingComponent />;
@@ -46,9 +47,9 @@ function PersistLogin() {
     content = <Error401Component/>
   } else if (isSuccess && trueSuccess) {
     // persist: yes , token: yes
-    content = <Outlet />;
+    content = <Paper elevation={0}> <Outlet /> </Paper>;
   } else if (token && isUninitialized) {
-    content = <Outlet />;
+    content = <Paper> <Outlet /> </Paper>;
   }
 
   return content;

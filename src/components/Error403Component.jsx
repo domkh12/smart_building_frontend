@@ -1,11 +1,27 @@
-import { Button } from "@mui/material";
-import React from "react";
+import {Button, Paper} from "@mui/material";
+import React, {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import useLocalStorage from "../hook/useLocalStorage.jsx";
 
 function Error403Component() {
   const navigate = useNavigate();
+    const [authData, setAuthData] = useLocalStorage('authData', {
+        isRemember: false,
+        userRoles: "",
+        uuid: null,
+        roomId: null
+    });
+
+    useEffect(() => {
+        setAuthData({
+            isRemember: false,
+            userRoles: "",
+            uuid: null,
+            roomId: null
+        });
+    }, []);
   return (
-    <div className="flex justify-center items-center flex-col gap-5 h-screen">
+    <Paper elevation={0} className="flex justify-center items-center flex-col gap-5 h-screen">
       <img
         src="/images/error403.svg"
         alt="error401"
@@ -18,7 +34,7 @@ function Error403Component() {
       >
         Go to Dashboard
       </Button>
-    </div>
+    </Paper>
   );
 }
 
