@@ -3,7 +3,7 @@ import useTranslate from "../hook/useTranslate.jsx";
 import {useGetAllNameBuildingQuery} from "../redux/feature/building/buildingApiSlice.js";
 import {useUpdateRoomMutation} from "../redux/feature/room/roomApiSlice.js";
 import * as Yup from "yup";
-import React, {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import {setIsQuickEditRoomOpen} from "../redux/feature/room/roomSlice.js";
 import {setCaptionSnackBar, setErrorSnackbar, setIsOpenSnackBar} from "../redux/feature/actions/actionSlice.js";
 import {Autocomplete, Box, Button, Modal, TextField, Typography} from "@mui/material";
@@ -20,6 +20,7 @@ import {
 } from "../redux/feature/device/deviceSlice.js";
 import LoadingFetchingDataComponent from "./LoadingFetchingDataComponent.jsx";
 import {FiPlus} from "react-icons/fi";
+import useAuth from "../hook/useAuth.jsx";
 
 function QuickEditRoomComponent() {
     const isQuickEditRoomOpen = useSelector((state) => state.room.isQuickEditRoomOpen);
@@ -32,7 +33,7 @@ function QuickEditRoomComponent() {
     );
     const deviceLocalData = useSelector((state) => state.device.deviceLocalData);
     const deviceUpdateLocalData = useSelector((state) => state.device.deviceUpdateLocalData);
-
+    const {isAdmin} = useAuth();
 
     const [
         updateRoom,
@@ -44,7 +45,10 @@ function QuickEditRoomComponent() {
         },
     ] = useUpdateRoomMutation();
 
-    const {data: building} = useGetAllNameBuildingQuery("buildingNameList")
+    const {data: building} = useGetAllNameBuildingQuery("buildingNameList",
+        {
+            skip: isAdmin,
+        })
 
     const [
         addNewDevice, {
@@ -91,10 +95,6 @@ function QuickEditRoomComponent() {
         }
     };
 
-    const style = {
-        display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh",
-    };
-
     useEffect(() => {
         if (isSuccessUpdateRoom) {
             dispatch(setIsQuickEditRoomOpen(false))
@@ -130,18 +130,22 @@ function QuickEditRoomComponent() {
     if (building && room) {
         content = (<Modal
             open={isQuickEditRoomOpen}
+            onClose={() => dispatch(setIsQuickEditRoomOpen(false))}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             closeAfterTransition
         >
-            <Box sx={style}>
+            <Box>
                 <Box
                     sx={{
                         backgroundColor: "background.paper",
                         borderRadius: "16px",
-                        width: "100%",
-                        mx: 5,
+                        width: "95%",
                         maxWidth: "720px",
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
                     }}
                 >
                     <Typography

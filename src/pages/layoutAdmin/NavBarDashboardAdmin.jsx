@@ -12,6 +12,7 @@ import useAuth from "../../hook/useAuth";
 import {useGetUserProfileQuery} from "../../redux/feature/auth/authApiSlice";
 import { setChangedSite } from "../../redux/feature/site/siteSlice";
 import SidebarDrawerAdminComponent from "../../components/SidebarDrawerAdminComponent.jsx";
+import UtilSearchComponent from "../../components/UtilSearchComponent.jsx";
 
 function NavBarDashboardAdmin() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -52,12 +53,7 @@ function NavBarDashboardAdmin() {
         </div>
 
         <div className="flex lg:gap-2 items-center flex-nowrap">
-          <button className="hidden  bg-black bg-opacity-5 hover:bg-opacity-10 w-[100px] h-[40px] rounded-xl gap-2 xl:flex justify-evenly items-center px-[7px] mr-[8px] shadow-inner">
-            <SearchTwoToneIcon className="w-5 h-5 text-black text-opacity-50" />
-            <span className="text-black bg-white px-[7px] py-[2px] rounded-lg shadow-sm">
-              ⌘ K
-            </span>
-          </button>
+          <UtilSearchComponent />
           <div>
             <ToolTipButtonComponent title={"Search"} icon={IoSearch} />
           </div>
@@ -80,7 +76,7 @@ function NavBarDashboardAdmin() {
               className="w-auto h-auto  flex justify-center items-center"
               onClick={handleDrawerOpen}
             >
-              <Avatar alt="Profile" src={user.profileImage} />
+              <Avatar alt="Profile" src={user?.profileImage} />
             </IconButton>
           </div>
         </div>

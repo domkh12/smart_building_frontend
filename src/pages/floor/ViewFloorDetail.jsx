@@ -1,15 +1,15 @@
 import useTranslate from "../../hook/useTranslate.jsx";
 import {useNavigate} from "react-router-dom";
-import {Badge, Card, styled, Typography} from "@mui/material";
+import {Badge, Card, Paper, styled, Typography} from "@mui/material";
 import MainHeaderComponent from "../../components/MainHeaderComponent.jsx";
 import {cardStyle} from "../../assets/style.js";
 import EditButtonComponent from "../../components/EditButtonComponent.jsx";
 
-function ViewFloorDetail({ floor }) {
-    const { t } = useTranslate();
+function ViewFloorDetail({floor}) {
+    const {t} = useTranslate();
     const navigate = useNavigate();
 
-    const StyledBadge = styled(Badge)(({ theme, isonline }) => ({
+    const StyledBadge = styled(Badge)(({theme, isonline}) => ({
         "& .MuiBadge-badge": {
             backgroundColor: isonline === "true" ? "#44b700" : "#9E9E9E",
             color: isonline === "true" ? "#44b700" : "#9E9E9E",
@@ -40,13 +40,15 @@ function ViewFloorDetail({ floor }) {
     }));
 
     const breadcrumbs = [
-        <button
+        <Paper
+            elevation={0}
+            component="button"
             className="text-black hover:underline"
             onClick={() => navigate("/dash")}
             key={1}
         >
             {t("dashboard")}
-        </button>,
+        </Paper>,
         <Typography color="inherit" key={2}>
             {t("floor")}
         </Typography>,
@@ -61,7 +63,7 @@ function ViewFloorDetail({ floor }) {
                 title={floor.name}
                 handleBackClick={() => navigate("/dash/floors")}
             />
-            <Card sx={{ ...cardStyle, p: "16px" }}>
+            <Card sx={{...cardStyle, p: "16px"}}>
                 <div className="flex justify-between items-center mb-5">
                     <Typography variant="h6">Floor info</Typography>
 
@@ -86,19 +88,19 @@ function ViewFloorDetail({ floor }) {
                 </div>
                 <div className="flex flex-col gap-3 mt-5">
                     <Typography variant="body1">
-                        <span className="text-gray-cus">Floor name </span>
+                        <span >Floor name </span>
                         {`${"\u00a0"}:${"\u00a0"}${floor?.name}`}
                     </Typography>
                     <Typography variant="body1">
-                        <span className="text-gray-cus">Floor id </span>
+                        <span >Floor id </span>
                         {`${"\u00a0"}:${"\u00a0"}${floor?.id}`}
                     </Typography>
                     <Typography variant="body1">
-                        <span className="text-gray-cus">Room quantity </span>
+                        <span >Room quantity </span>
                         {`${"\u00a0"}:${"\u00a0"}${floor?.roomQty}`}
                     </Typography>
                     <Typography variant="body1">
-                        <span className="text-gray-cus">Created at </span>
+                        <span >Created at </span>
                         {`${"\u00a0"}:${"\u00a0"}${floor?.createdAt}`}
                     </Typography>
                     {/* <div className="flex gap-2">
@@ -110,28 +112,28 @@ function ViewFloorDetail({ floor }) {
             <Typography variant="body1">{floor.color}</Typography>
           </div>
           <Typography variant="body1">
-            <span className="text-gray-cus">{t("licensePlateType")}</span>
+            <span >{t("licensePlateType")}</span>
             {`${"\u00a0"}:${"\u00a0"}${floor.licensePlateType.name}`}
           </Typography>
           <Typography variant="body1">
-            <span className="text-gray-cus">Total parking hours</span>
+            <span >Total parking hours</span>
             {`${"\u00a0"}:${"\u00a0"}${floor?.totalParkingHours || "N/A"}`}
           </Typography>
           <Typography variant="body1">
-            <span className="text-gray-cus">Total parking fee</span>
+            <span >Total parking fee</span>
             {`${"\u00a0"}:${"\u00a0"}${floor?.totalParkingFees || "N/A"}`}
           </Typography>
           <Typography variant="body1">
-            <span className="text-gray-cus">Last parking lot</span>
+            <span >Last parking lot</span>
             {`${"\u00a0"}:${"\u00a0"}${floor.lastParkingLot || "N/A"}`}
           </Typography>
           <Typography variant="body1">
-            <span className="text-gray-cus">Last parking-time</span>
+            <span >Last parking-time</span>
             {`${"\u00a0"}:${"\u00a0"}${floor.lastParkingTime || "N/A"}`}
           </Typography> */}
                 </div>
             </Card>
-        </> 
+        </>
     );
 }
 

@@ -10,17 +10,17 @@ import {Form, Formik} from "formik";
 import * as Yup from "yup";
 import {jwtDecode} from "jwt-decode";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { MdKeyboardArrowLeft } from "react-icons/md";
+import {MdKeyboardArrowLeft} from "react-icons/md";
 
 import {
-    Alert,
+    Alert, Box,
     Button,
     FormControl,
     FormHelperText,
     IconButton,
     InputAdornment,
     InputLabel,
-    OutlinedInput, Paper,
+    OutlinedInput, Paper, Stack,
     TextField,
     Typography,
 } from "@mui/material";
@@ -63,15 +63,15 @@ export default function Login() {
     const [authData, setAuthData] = useLocalStorage('authData', {
         isRemember: false,
         userRoles: "",
-        uuid: null,
+        id: null,
         roomId: null
     });
 
-    const saveLoginInfo = (roles, uuid, roomId = null) => {
+    const saveLoginInfo = (roles, id, roomId = null) => {
         setAuthData({
             isRemember: true,
             userRoles: roles[0],
-            uuid,
+            id,
             roomId
         });
     };
@@ -149,27 +149,24 @@ export default function Login() {
         if (otp.length === 6) {
             try {
                 const postVerifyLogin = async () => {
-                    const { accessToken } = await verify2FALogin({
+                    const {accessToken} = await verify2FALogin({
                         code: otp,
                         email: email
                     }).unwrap();
 
                     const decoded = jwtDecode(accessToken);
-                    const { scope, uuid, roomId } = decoded;
+                    const {scope, id, roomId} = decoded;
                     const roles = scope ? scope.split(" ") : [];
 
                     if (roles.includes(ROLES.ROLE_ADMIN)) {
-                        dispatch(setUuid(uuid));
-                        saveLoginInfo(roles, uuid);
+                        saveLoginInfo(roles, id);
                         navigate("/admin");
                     } else if (roles.includes(ROLES.ROLE_MANAGER)) {
-                        dispatch(setUuid(uuid));
-                        saveLoginInfo(roles, uuid);
+                        saveLoginInfo(roles, id);
                         navigate("/dash");
                     } else if (roles.includes(ROLES.ROLE_USER)) {
-                        dispatch(setUuid(uuid));
                         dispatch(setRoomId(roomId));
-                        saveLoginInfo(roles, uuid, roomId);
+                        saveLoginInfo(roles, id, roomId);
                         navigate("/user");
                     }
                 }
@@ -196,30 +193,27 @@ export default function Login() {
                 localStorage.setItem("isRemember", "true");
             } else {
                 const decoded = jwtDecode(accessToken);
-                const {jti: email, scope, uuid, roomId} = decoded;
+                const {jti: email, scope, id, roomId} = decoded;
 
                 const roles = scope ? scope.split(" ") : [];
-                if (roles.includes(ROLES.ROLE_ADMIN)) {
+                if (roles.includes(ROLES.ROLE_MANAGER)) {
                     try {
-                        dispatch(setUuid(uuid));
-                        localStorage.setItem("isRemember", "true");
-                        navigate("/admin");
+                        saveLoginInfo(roles, id);
+                        navigate("/dash");
                     } catch (err) {
                         console.log(err);
                     }
-                } else if (roles.includes(ROLES.ROLE_MANAGER)) {
+                } else if (roles.includes(ROLES.ROLE_ADMIN)) {
                     try {
-                        dispatch(setUuid(uuid));
-                        localStorage.setItem("isRemember", "true");
-                        navigate("/dash");
+                        navigate("/admin");
+                        saveLoginInfo(roles, id);
                     } catch (err) {
                         console.log(err);
                     }
                 } else if (roles.includes(ROLES.ROLE_USER)) {
                     try {
-                        dispatch(setUuid(uuid));
-                        dispatch(setRoomId(roomId))
-                        localStorage.setItem("isRemember", "true");
+                        dispatch(setRoomId(roomId));
+                        saveLoginInfo(roles, id, roomId);
                         navigate("/user");
                     } catch (error) {
                         console.log(error)
@@ -281,162 +275,172 @@ export default function Login() {
                     >
                         {({values, touched, errors, handleChange, handleBlur}) => (
                             <Form>
-                                <section className="flex h-screen">
-                                    <Paper className="h-screen shrink-0 w-[480px] hidden lg:block bg-[#f5f5f5]">
+                                <section className="h-screen">
+                                    <Stack direction="row" spacing={2} sx={{
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        height: "100%",
+                                        maxWidth: "1280px",
+                                        margin: "0 auto"
+                                    }}>
                                         <Paper
-                                            className="px-[20px] h-full text-center flex justify-center items-center flex-col">
-                                            <img
-                                                src="/images/login_image.png"
-                                                alt="login_image"
-                                                className="w-full h-auto"
-                                            />
+                                            className="h-screen shrink-0 w-[480px] hidden lg:flex bg-[#f5f5f5] justify-center items-center">
+                                            <Paper
+                                                className="px-[20px] h-full text-center flex justify-center items-center flex-col">
+                                                <img
+                                                    src="/images/login_image.png"
+                                                    alt="login_image"
+                                                    className="w-full h-auto"
+                                                />
+                                            </Paper>
                                         </Paper>
-                                    </Paper>
-                                    <Paper
-                                        sx={{
-                                            width: "100%",
-                                            px: "20px",
-                                            py: 15,
-                                        }}
-                                        className="flex flex-col justify-start items-center lg:justify-center"
-                                    >
-                                        <Paper className="max-w-[500px]">
-                                            <Typography variant="h6" sx={{mb: "40px"}}>
-                                                {t("login-to-your-account")}
-                                            </Typography>
+                                        <Paper
+                                            sx={{
+                                                width: "100%",
+                                                px: "20px",
+                                                py: 15,
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center"
+                                            }}
+                                        >
+                                            <Paper sx={{maxWidth: "500px", width: "100%"}}>
+                                                <Typography variant="h6" sx={{mb: "40px"}}>
+                                                    {t("login-to-your-account")}
+                                                </Typography>
 
-                                            {open && (
-                                                <Alert
-                                                    sx={{mb: 2, borderRadius: "6px"}}
-                                                    severity="error"
-                                                >
-                                                    {errorMessage}
-                                                </Alert>
-                                            )}
+                                                {open && (
+                                                    <Alert
+                                                        sx={{mb: 2, borderRadius: "6px"}}
+                                                        severity="error"
+                                                    >
+                                                        {errorMessage}
+                                                    </Alert>
+                                                )}
 
-                                            <TextField
-                                                label={t("email")}
-                                                variant="outlined"
-                                                sx={{
-                                                    "& .MuiInputBase-input": {
-                                                        boxShadow: "none",
-                                                    },
-                                                    borderRadius: "6px",
-                                                    mb: 2,
-                                                }}
-                                                type="email"
-                                                id="email"
-                                                name="email"
-                                                autoFocus
-                                                fullWidth
-                                                value={values.email}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                autoComplete="off"
-                                                error={errors.email && touched.email}
-                                                helperText={
-                                                    errors.email && touched.email ? errors.email : null
-                                                }
-                                                size="medium"
-                                            />
-
-                                            <div className="flex justify-end">
-                                                <Link
-                                                    to={"/forgot-password"}
-                                                    className="text-sm hover:underline text-right"
-                                                >
-                                                    {t('forgotPassword')}
-                                                </Link>
-                                            </div>
-
-                                            <FormControl
-                                                sx={{width: "100%", mb: 2}}
-                                                variant="outlined"
-                                                size="medium"
-                                                error={errors.password && touched.password}
-                                            >
-                                                <InputLabel htmlFor="password">
-                                                    {t("password")}
-                                                </InputLabel>
-                                                <OutlinedInput
+                                                <TextField
+                                                    label={t("email")}
+                                                    variant="outlined"
                                                     sx={{
                                                         "& .MuiInputBase-input": {
                                                             boxShadow: "none",
                                                         },
                                                         borderRadius: "6px",
+                                                        mb: 2,
                                                     }}
-                                                    id="password"
-                                                    name="password"
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    autoFocus
+                                                    fullWidth
+                                                    value={values.email}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
-                                                    autoComplete="new-password"
-                                                    value={values.password}
-                                                    type={showPassword ? "text" : "password"}
-                                                    endAdornment={
-                                                        <InputAdornment position="end">
-                                                            <IconButton
-                                                                aria-label={
-                                                                    showPassword
-                                                                        ? "hide the password"
-                                                                        : "display the password"
-                                                                }
-                                                                onClick={handleClickShowPassword}
-                                                                onMouseDown={handleMouseDownPassword}
-                                                                onMouseUp={handleMouseUpPassword}
-                                                                edge="end"
-                                                            >
-                                                                {showPassword ? <IoEye/> : <IoEyeOff/>}
-                                                            </IconButton>
-                                                        </InputAdornment>
+                                                    autoComplete="off"
+                                                    error={errors.email && touched.email}
+                                                    helperText={
+                                                        errors.email && touched.email ? errors.email : null
                                                     }
-                                                    label="Password"
+                                                    size="medium"
                                                 />
-                                                <FormHelperText>
-                                                    {errors.password && touched.password
-                                                        ? errors.password
-                                                        : null}
-                                                </FormHelperText>
-                                            </FormControl>
 
-                                            <LoadingButton
-                                                variant="contained"
-                                                size="large"
-                                                sx={{
-                                                    textTransform: "none",
-                                                    borderRadius: "6px",
-                                                    mb: 2,
-                                                }}
-                                                loading={isLoading}
-                                                type="submit"
-                                                className="w-full "
-                                            >
-                                                {t("login")}
-                                            </LoadingButton>
-                                            <Button
-                                                variant="outlined"
-                                                sx={{textTransform: "none", borderRadius: "6px", width: "fit-content"}}
-                                                fullWidth
-                                                onClick={() =>
-                                                    (window.location.href = `${
-                                                        import.meta.env.VITE_API_BACKEND_URL
-                                                    }`)
-                                                }
-                                            >
-                                                <svg
-                                                    width="30px"
-                                                    height="30px"
-                                                    viewBox="0 0 16 16"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
+                                                <div className="flex justify-end">
+                                                    <Link
+                                                        to={"/forgot-password"}
+                                                        className="text-sm hover:underline text-right"
+                                                    >
+                                                        {t('forgotPassword')}
+                                                    </Link>
+                                                </div>
+
+                                                <FormControl
+                                                    sx={{width: "100%", mb: 2}}
+                                                    variant="outlined"
+                                                    size="medium"
+                                                    error={errors.password && touched.password}
                                                 >
-                                                    <path fill="#F35325" d="M1 1h6.5v6.5H1V1z"/>
-                                                    <path fill="#81BC06" d="M8.5 1H15v6.5H8.5V1z"/>
-                                                    <path fill="#05A6F0" d="M1 8.5h6.5V15H1V8.5z"/>
-                                                    <path fill="#FFBA08" d="M8.5 8.5H15V15H8.5V8.5z"/>
-                                                </svg>
-                                            </Button>
+                                                    <InputLabel htmlFor="password">
+                                                        {t("password")}
+                                                    </InputLabel>
+                                                    <OutlinedInput
+                                                        sx={{
+                                                            "& .MuiInputBase-input": {
+                                                                boxShadow: "none",
+                                                            },
+                                                            borderRadius: "6px",
+                                                        }}
+                                                        id="password"
+                                                        name="password"
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        autoComplete="new-password"
+                                                        value={values.password}
+                                                        type={showPassword ? "text" : "password"}
+                                                        endAdornment={
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label={
+                                                                        showPassword
+                                                                            ? "hide the password"
+                                                                            : "display the password"
+                                                                    }
+                                                                    onClick={handleClickShowPassword}
+                                                                    onMouseDown={handleMouseDownPassword}
+                                                                    onMouseUp={handleMouseUpPassword}
+                                                                    edge="end"
+                                                                >
+                                                                    {showPassword ? <IoEye/> : <IoEyeOff/>}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        }
+                                                        label="Password"
+                                                    />
+                                                    <FormHelperText>
+                                                        {errors.password && touched.password
+                                                            ? errors.password
+                                                            : null}
+                                                    </FormHelperText>
+                                                </FormControl>
+
+                                                <LoadingButton
+                                                    variant="contained"
+                                                    size="large"
+                                                    sx={{
+                                                        textTransform: "none",
+                                                        borderRadius: "6px",
+                                                        mb: 2,
+                                                    }}
+                                                    loading={isLoading}
+                                                    type="submit"
+                                                    className="w-full "
+                                                >
+                                                    {t("login")}
+                                                </LoadingButton>
+                                                <Box sx={{display: "flex", justifyContent: "center", width: "100%"}}>
+                                                    <IconButton
+                                                        onClick={() =>
+                                                            (window.location.href = `${
+                                                                import.meta.env.VITE_API_BACKEND_URL
+                                                            }`)
+                                                        }
+                                                    >
+                                                        <svg
+                                                            width="30px"
+                                                            height="30px"
+                                                            viewBox="0 0 16 16"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none"
+                                                        >
+                                                            <path fill="#F35325" d="M1 1h6.5v6.5H1V1z"/>
+                                                            <path fill="#81BC06" d="M8.5 1H15v6.5H8.5V1z"/>
+                                                            <path fill="#05A6F0" d="M1 8.5h6.5V15H1V8.5z"/>
+                                                            <path fill="#FFBA08" d="M8.5 8.5H15V15H8.5V8.5z"/>
+                                                        </svg>
+                                                    </IconButton>
+                                                </Box>
+                                            </Paper>
                                         </Paper>
-                                    </Paper>
+                                    </Stack>
                                 </section>
                             </Form>
                         )}
@@ -476,100 +480,119 @@ export default function Login() {
                     >
                         {({values, touched, errors, handleChange, handleBlur}) => (
                             <Form>
-                                <section className="flex h-screen">
-                                    <Paper className="h-screen shrink-0 w-[480px] hidden lg:block bg-[#f5f5f5]">
+                                <section className="h-screen">
+                                    <Stack direction="row" spacing={2} sx={{
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        height: "100%",
+                                        maxWidth: "1280px",
+                                        margin: "0 auto"
+                                    }}>
                                         <Paper
-                                            className="px-[20px] h-full text-center flex justify-center items-center flex-col">
-                                            <img
-                                                src="/images/login_image.png"
-                                                alt="login_image"
-                                                className="w-full h-auto"
-                                            />
+                                            className="h-screen shrink-0 w-[480px] hidden lg:flex bg-[#f5f5f5] justify-center items-center">
+                                            <Paper
+                                                className="px-[20px] h-full text-center flex justify-center items-center flex-col">
+                                                <img
+                                                    src="/images/login_image.png"
+                                                    alt="login_image"
+                                                    className="w-full h-auto"
+                                                />
+                                            </Paper>
                                         </Paper>
-                                    </Paper>
-                                    <Paper
-                                        sx={{
-                                            width: "100%",
-                                            px: "20px",
-                                            py: 15,
-                                        }}
-                                        className="flex flex-col justify-start items-center lg:justify-center"
-                                    >
-                                        <div className="xs:min-w-[500px] max-w-[450px] flex flex-col items-center gap-7">
-                                            <img
-                                                src="/images/email.svg"
-                                                alt="branch_image"
-                                                className="w-20 h-auto"
-                                            />
 
-                                            <Typography variant="h6" className="text-center">
-                                                Please check your email!
-                                            </Typography>
+                                        <Paper
+                                            sx={{
+                                                width: "100%",
+                                                px: "20px",
+                                                py: 15,
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center"
+                                            }}
+                                        >
+                                            <Paper sx={{
+                                                maxWidth: "500px",
+                                                width: "100%",
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                gap: 2
+                                            }}>
+                                                <img
+                                                    src="/images/email.svg"
+                                                    alt="branch_image"
+                                                    className="w-20 mx-auto mb-2"
+                                                />
 
-                                            <Typography variant="body1" className="text-center">
-                                                We've emailed a 6-digit confirmation code. Please enter
-                                                the code in the box below to verify your email.
-                                            </Typography>
-                                            <div>
-                                                {openErrorVerifyCode && (
-                                                    <Alert
-                                                        sx={{ mb: 2, borderRadius: "6px" }}
-                                                        severity="error"
-                                                    >
-                                                        {verifyCodeErrorMessage}
-                                                    </Alert>
-                                                )}
+                                                <Typography variant="h6" className="text-center">
+                                                    Two-Factor Authentication Required
+                                                </Typography>
 
-                                                <div className="flex justify-center items-center">
-                                                    <OTPInput
-                                                        value={otp}
-                                                        onChange={setOtp}
-                                                        numInputs={6}
-                                                        renderSeparator={<span>-</span>}
-                                                        onPaste={handlePaste}
-                                                        inputType="tel"
-                                                        renderInput={(props) => <input {...props} />}
-                                                        inputStyle={{
-                                                            width: "2.5rem",
-                                                            height: "2.5rem",
-                                                            margin: "0 0.5rem",
-                                                            fontSize: "1.5rem",
-                                                            borderRadius: 4,
-                                                            border: "1px solid #ccc",
-                                                            color: mode === "dark" ? "white" : "black",
-                                                            backgroundColor: mode === "dark" ? "black" : "white",
-                                                        }}
-                                                    />
+                                                <Typography variant="body1" className="text-center">
+                                                    Please enter the 6-digit code from your authentication app to verify
+                                                    your identity.
+                                                </Typography>
+                                                <div>
+                                                    {openErrorVerifyCode && (
+                                                        <Alert
+                                                            sx={{mb: 2, borderRadius: "6px"}}
+                                                            severity="error"
+                                                        >
+                                                            {verifyCodeErrorMessage}
+                                                        </Alert>
+                                                    )}
+
+                                                    <div className="flex justify-center items-center">
+                                                        <OTPInput
+                                                            value={otp}
+                                                            onChange={setOtp}
+                                                            numInputs={6}
+                                                            renderSeparator={<span>-</span>}
+                                                            onPaste={handlePaste}
+                                                            inputType="tel"
+                                                            renderInput={(props) => <input {...props} />}
+                                                            inputStyle={{
+                                                                width: "2.5rem",
+                                                                height: "2.5rem",
+                                                                margin: "0 0.5rem",
+                                                                fontSize: "1.5rem",
+                                                                borderRadius: 4,
+                                                                border: "1px solid #ccc",
+                                                                color: mode === "dark" ? "white" : "black",
+                                                                backgroundColor: mode === "dark" ? "black" : "white",
+                                                            }}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                            <LoadingButton
-                                                variant="contained"
-                                                size="large"
-                                                sx={{
-                                                    textTransform: "none",
-                                                    borderRadius: "6px",
-                                                    mb: 2,
-                                                }}
-                                                loading={isLoading}
-                                                type="submit"
-                                                loadingIndicator="Logging..."
-                                                className="w-full "
-                                            >
-                                                Verify
-                                            </LoadingButton>
-                                            <div className="flex justify-center items-center hover:underline cursor-pointer">
-                                                <a
-                                                    onClick={() => setStep(1)}
-                                                    className="flex justify-center items-center gap-2"
+                                                <LoadingButton
+                                                    variant="contained"
+                                                    size="large"
+                                                    sx={{
+                                                        textTransform: "none",
+                                                        borderRadius: "6px",
+                                                        mb: 2,
+                                                    }}
+                                                    loading={isLoading}
+                                                    type="submit"
+                                                    loadingIndicator="Logging..."
+                                                    className="w-full "
                                                 >
-                                                    <MdKeyboardArrowLeft className="w-5 h-5" />
-                                                    {t("returnToLogin")}
-                                                </a>
-                                            </div>
-                                        </div>
+                                                    Verify
+                                                </LoadingButton>
+                                                <div
+                                                    className="flex justify-center items-center hover:underline cursor-pointer">
+                                                    <a
+                                                        onClick={() => setStep(1)}
+                                                        className="flex justify-center items-center gap-2"
+                                                    >
+                                                        <MdKeyboardArrowLeft className="w-5 h-5"/>
+                                                        {t("returnToLogin")}
+                                                    </a>
+                                                </div>
+                                            </Paper>
 
-                                    </Paper>
+                                        </Paper>
+                                    </Stack>
                                 </section>
                             </Form>
                         )}

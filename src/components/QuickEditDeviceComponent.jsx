@@ -19,7 +19,7 @@ function QuickEditDeviceComponent() {
     const device = useSelector((state) => state.device.deviceDataForQuickEdit);
     const {t} = useTranslate();
     const dispatch = useDispatch();
-    console.log(device)
+
     const {data: deviceType} = useGetAllDeviceTypesQuery("deviceTypeList");
     const [
         updateDevice,
@@ -30,14 +30,6 @@ function QuickEditDeviceComponent() {
             error: errorUpdateDevice,
         },
     ] = useUpdateSingleDeviceMutation();
-
-    const style = {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100vh",
-    };
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -78,18 +70,22 @@ function QuickEditDeviceComponent() {
     content = (
         <Modal
             open={isQuickEditDeviceOpen}
+            onClose={() => dispatch(setIsOpenQuickEditDevice(false))}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             closeAfterTransition
         >
-            <Box sx={style}>
+            <Box>
                 <Box
                     sx={{
                         backgroundColor: "background.paper",
                         borderRadius: "16px",
-                        width: "100%",
-                        mx: 5,
+                        width: "95%",
                         maxWidth: "720px",
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
                     }}
                 >
                     <Typography

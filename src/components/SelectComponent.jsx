@@ -167,13 +167,8 @@ const SelectComponent = ({
             options?.forEach((group) => {
                 menuItems.push(
                     <ListSubheader
+                        variant="cus1"
                         key={group[groupLabelKey]}
-                        sx={{
-                            backgroundColor: "#D5D6E9",
-                            borderRadius: "5px",
-                            color: "#2C3092",
-                            pointerEvents: "none",
-                        }}
                     >
                         {group[groupLabelKey]}
                     </ListSubheader>

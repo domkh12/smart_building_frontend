@@ -25,6 +25,7 @@ import PortraitTwoToneIcon from "@mui/icons-material/PortraitTwoTone";
 import useTranslate from "../hook/useTranslate";
 import {deepPurple, red} from "@mui/material/colors";
 import {FaUserTie} from "react-icons/fa";
+import useLocalStorage from "../hook/useLocalStorage.jsx";
 
 function ProfileDrawerComponent({open: initialOpen, onClose}) {
     const {username, status} = useAuth();
@@ -35,6 +36,13 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
     const mode = useSelector((state) => state.theme.mode);
     const [sendLogout, {isLoading, isSucess, isError, error}] =
         useSendLogoutMutation();
+
+    const [authData, setAuthData] = useLocalStorage('authData', {
+        isRemember: false,
+        userRoles: "",
+        uuid: null,
+        roomId: null
+    });
 
     const handleDrawerClose = () => {
         onClose();
@@ -51,10 +59,15 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
 
     const handleSendLogout = async () => {
         try {
-            await connectedUser({uuid: user?.uuid, isOnline: false});
+            setAuthData({
+                isRemember: false,
+                userRoles: "",
+                uuid: null,
+                roomId: null
+            });
+            // await connectedUser({uuid: user?.uuid, isOnline: false});
             await sendLogout().unwrap();
             navigate("/login");
-            localStorage.removeItem("isRemember");
             onClose();
         } catch (err) {
             console.error("Logout failed:", err);
@@ -180,7 +193,7 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
                                 }}
                                 onClick={handleSendLogout}
                             >
-                                Logout
+                                {t("logout")}
                             </LoadingButton>
                         </List>
                     </div>

@@ -1,5 +1,4 @@
 import {Checkbox, List, ListItem, ListItemText, TableCell, TableRow, Typography} from "@mui/material";
-import React from "react";
 import {FaEye, FaPen, FaTrashCan} from "react-icons/fa6";
 import {useDispatch} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
@@ -12,11 +11,13 @@ import {
     setIdFloorToDelete,
     setIsQuickEditFloorOpen
 } from "../redux/feature/floor/floorSlice.js";
+import useAuth from "../hook/useAuth.jsx";
 
 function FloorRowComponent({floor}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {t} = useTranslate();
+    const {isAdmin} = useAuth();
     let content;
 
     if (floor) {
@@ -29,17 +30,19 @@ function FloorRowComponent({floor}) {
         var handleEdit = () => navigate(`/dash/floors/${floor.id}`);
         var handleView = () => navigate(`/dash/floors/${floor.id}/view`);
 
-        var menuActions = [{
-            label: t('edit'), icon: <FaPen className="w-5 h-5"/>, onClick: handleEdit,
-        }, {
-            label: t('view'), icon: <FaEye className="w-5 h-5"/>, onClick: handleView,
-        }, {
-            label: t('delete'),
-            icon: <FaTrashCan className="w-5 h-5"/>,
-            onClick: handleDelete,
-            textColor: "red",
-            buttonColor: "red",
-        },];
+        var menuActions = [
+            {
+                label: t('edit'), icon: <FaPen className="w-5 h-5"/>, onClick: handleEdit,
+            },
+            {
+                label: t('view'), icon: <FaEye className="w-5 h-5"/>, onClick: handleView,
+            }, {
+                label: t('delete'),
+                icon: <FaTrashCan className="w-5 h-5"/>,
+                onClick: handleDelete,
+                textColor: "red",
+                buttonColor: "red",
+            },];
         content = (<TableRow hover>
             <TableCell padding="checkbox" sx={{borderBottomStyle: "dashed"}}>
                 <Checkbox color="primary"/>
@@ -88,10 +91,10 @@ function FloorRowComponent({floor}) {
                 }}
             >
                 <div className="flex justify-center items-center">
-                    <EditButtonComponent handleQuickEdit={() => {
+                    {!isAdmin && <EditButtonComponent handleQuickEdit={() => {
                         dispatch(setIsQuickEditFloorOpen(true))
                         dispatch(setFloorDataForQuickEdit(floor))
-                    }}/>
+                    }}/>}
                     <MoreActionComponent menuItems={menuActions}/>
                 </div>
             </TableCell>

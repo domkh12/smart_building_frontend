@@ -4,9 +4,7 @@ import {Paper} from "@mui/material";
 
 function RequireAuth({ allowedRoles }) {
   const location = useLocation();
-
   const { roles } = useAuth();
-  console.log(roles)
   const content = (
     roles.some(role => allowedRoles.includes(role))
         ? <Paper elevation={0}> <Outlet/> </Paper>

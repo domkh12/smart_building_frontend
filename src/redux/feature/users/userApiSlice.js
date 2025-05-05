@@ -189,18 +189,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
             },
         }),
 
-        get2faStatus: builder.mutation({
+        get2faStatus: builder.query({
             query: () => ({
                 url: "/users/2fa-status",
-                method: "GET",
             }),
-            async onQueryStarted(args, {dispatch, queryFulfilled}) {
-                try {
-                    const {data} = await queryFulfilled;
-                    dispatch(setIsTwoFAEnabled({data}));
-                } catch (error) {
-                    console.log(error);
-                }
+            providesTags: (result, error, arg) => {
+                if (result?.ids) {
+                    return [{type: "MultiStatus", id: "LIST"}, ...result.ids.map((id) => ({type: "MultiStatus", id})),];
+                } else return [{type: "MultiStatus", id: "LIST"}];
             },
         }),
 
@@ -252,7 +248,7 @@ export const {
     useUpdateUserMutation,
     useConnectedUserMutation,
     useGet2faSecretCodeMutation,
-    useGet2faStatusMutation,
+    useGet2faStatusQuery,
     useDeleteUserMutation,
     useFindAllGenderQuery,
     useGetUserByIdQuery

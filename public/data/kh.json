@@ -187,5 +187,10 @@
   "forgotYourPassword": "ភ្លេចពាក្យសម្ងាត់របស់អ្នកមែនទេ?",
   "forgotPasswordDescription": "សូមបញ្ចូលអ៊ីមែលដែលភ្ជាប់ជាមួយគណនីរបស់អ្នក ហើយយើងនឹងផ្ញើ​ Link ទៅកាន់អ៊ីមែលទៅអ្នកដើម្បីកំណត់ពាក្យសម្ងាត់របស់អ្នកឡើងវិញ។",
   "sendRequest": "ដាក់ស្នើ",
-  "passwordResetLinkSent": "Link សម្រាប់ផ្លាស់ប្ដូរលេខសម្ងាត់ផ្ញើរួចរាល់"
+  "passwordResetLinkSent": "Link សម្រាប់ផ្លាស់ប្ដូរលេខសម្ងាត់ផ្ញើរួចរាល់",
+  "resetPassword": "កំណត់ពាក្យសម្ងាត់ឡើងវិញ",
+  "resetPasswordDescription": "សូមបំពេញលេខសម្ងាត់ពីរដង និងព្យាយាមកុំឲ្យភ្លេច",
+  "passwordIsRequired": "លេខសម្ងាត់តម្រូវឲ្យបំពេញ",
+  "confirmPasswordIsRequired": "ពាក្យសម្ងាត់ដែលបញ្ជាក់តម្រូវឲ្យបំពេញ",
+  "logout": "ចាកចេញ"
 }

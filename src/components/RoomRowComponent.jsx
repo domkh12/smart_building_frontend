@@ -1,4 +1,14 @@
-import {Checkbox, List, ListItem, ListItemText, TableCell, TableRow, Typography} from "@mui/material";
+import {
+    Checkbox,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    TableCell,
+    TableRow,
+    Tooltip,
+    Typography
+} from "@mui/material";
 import {FaEye, FaPen, FaTrashCan} from "react-icons/fa6";
 import {useDispatch} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
@@ -7,12 +17,14 @@ import MoreActionComponent from "./MoreActionComponent";
 import useTranslate from "../hook/useTranslate.jsx";
 import {setIdRoomToDelete, setIsQuickEditRoomOpen, setRoomDataForQuickEdit} from "../redux/feature/room/roomSlice.js";
 import {setIsOpenConfirmDelete} from "../redux/feature/actions/actionSlice.js";
+import useAuth from "../hook/useAuth.jsx";
+import React from "react";
 
 function RoomRowComponent({room}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {t} = useTranslate();
-
+    const {isAdmin, isManager} = useAuth();
     let content;
     if (room) {
 
@@ -22,7 +34,10 @@ function RoomRowComponent({room}) {
         };
 
         var handleEdit = () => navigate(`/dash/rooms/${room.id}`);
-        var handleView = () => navigate(`/dash/rooms/${room.id}/view`);
+        var handleView = () => {
+            if (isManager) navigate(`/dash/rooms/${room.id}/view`);
+            else if (isAdmin) navigate(`/admin/rooms/${room.id}/view`);
+        }
 
         var menuActions = [
             {
@@ -64,7 +79,7 @@ function RoomRowComponent({room}) {
                                     (
                                         <Link
                                             className="hover:underline"
-                                            to={`/dash/rooms/${room.id}/view`}
+                                            to={(isManager) ? `/dash/rooms/${room.id}/view` : (isAdmin) ? `/admin/rooms/${room.id}/view`:``}
                                         >
                                             {room?.name}
                                         </Link>
@@ -96,13 +111,31 @@ function RoomRowComponent({room}) {
                         px: 0,
                     }}
                 >
-                    <div className="flex justify-center items-center">
-                        <EditButtonComponent handleQuickEdit={() => {
-                            dispatch(setIsQuickEditRoomOpen(true))
-                            dispatch(setRoomDataForQuickEdit(room))
-                        }}/>
-                        <MoreActionComponent menuItems={menuActions}/>
-                    </div>
+                    {
+                        !isAdmin ? <div className="flex justify-center items-center">
+                                <EditButtonComponent handleQuickEdit={() => {
+                                    dispatch(setIsQuickEditRoomOpen(true))
+                                    dispatch(setRoomDataForQuickEdit(room))
+                                }}/>
+                                <MoreActionComponent menuItems={menuActions}/>
+                            </div> :
+                            <Tooltip
+                                sx={{
+                                    color: "",
+                                }}
+                                title={t('view')}
+                                placement="top"
+                                arrow
+                            >
+                                <IconButton size="large" onClick={handleView} sx={{
+                                    backgroundColor: "transparent",
+                                    "&:hover": {backgroundColor: "transparent"}
+                                }}>
+                                    <FaEye className="w-6 h-6"/>
+                                </IconButton>
+                            </Tooltip>
+                    }
+
                 </TableCell>
             </TableRow>
         );

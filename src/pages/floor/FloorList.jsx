@@ -31,6 +31,7 @@ import SkeletonTableRowComponent from "../../components/SkeletonTableRowComponen
 import FilterChipsComponent from "../../components/FilterChipsComponent.jsx";
 import {setIsFiltered} from "../../redux/feature/actions/actionSlice.js";
 import {useGetAllNameBuildingQuery} from "../../redux/feature/building/buildingApiSlice.js";
+import useAuth from "../../hook/useAuth.jsx";
 const QuickEditFloorComponent = lazy(() => import("../../components/QuickEditFloorComponent.jsx"));
 
 function FloorList() {
@@ -44,7 +45,11 @@ function FloorList() {
     const pageSize = useSelector((state) => state.floor.pageSize);
     const mode = useSelector((state) => state.theme.mode);
 
-    const {data: building, isLoading: isLoadingBuilding, isSuccess: isSuccessBuilding} = useGetAllNameBuildingQuery("buildingNameList");
+    const {
+        data: building,
+        isLoading: isLoadingBuilding,
+        isSuccess: isSuccessBuilding
+    } = useGetAllNameBuildingQuery("buildingNameList");
 
     const {
         data: floorData,
@@ -123,7 +128,7 @@ function FloorList() {
 
     let content;
 
-    if (isLoadingGetFloor && isLoadingBuilding) content = <LoadingFetchingDataComponent/>;
+    if (isLoadingGetFloor || isLoadingBuilding) content = <LoadingFetchingDataComponent/>;
 
     if (isSuccessGetFloor && isSuccessBuilding) {
         const {ids, entities, totalElements, pageNo, pageSize} = floorData;

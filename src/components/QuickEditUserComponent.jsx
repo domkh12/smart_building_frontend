@@ -1,4 +1,5 @@
 import {
+    Backdrop,
     Box,
     Button,
     FormControl,
@@ -25,8 +26,8 @@ import {
     useGetAllRolesQuery,
     useUpdateUserMutation,
 } from "../redux/feature/users/userApiSlice";
-import {useEffect, useState} from "react";
-import LoadingFetchingDataComponent from "./LoadingFetchingDataComponent";
+import {useEffect} from "react";
+import CircularProgress from '@mui/material/CircularProgress';
 import {
     setCaptionSnackBar,
     setIsOpenSnackBar,
@@ -57,14 +58,6 @@ function QuickEditUserComponent() {
             error: errorUpdateUser,
         },
     ] = useUpdateUserMutation();
-
-    const style = {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100vh",
-    };
 
     const validationSchema = Yup.object().shape({
         fullName: Yup.string()
@@ -163,7 +156,15 @@ function QuickEditUserComponent() {
 
     let content;
 
-    if (!gender && !role && !floor) content = <LoadingFetchingDataComponent/>;
+    if (!gender && !role && !floor) content = (
+        <Backdrop
+            sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+            open={open}
+            onClick={handleClose}
+        >
+            <CircularProgress color="inherit" />
+        </Backdrop>
+    );
 
     if (gender && role && floor)
         content = (
@@ -207,6 +208,13 @@ function QuickEditUserComponent() {
                         const errorDateOfBirth = errors.dateOfBirth && touched.dateOfBirth;
                         return (
                             <Form>
+                                <Typography
+                                    variant="h6"
+                                    sx={{padding: "24px", color: mode === "dark" ? "#fff": "#000"
+                                    }}
+                                >
+                                    {t('quickUpdate')}
+                                </Typography>
                                 <Box className="grid grid-cols-1 sm:grid-cols-2 gap-5 px-[24px]">
                                     <TextField
                                         label={t("fullName")}
@@ -382,8 +390,6 @@ function QuickEditUserComponent() {
                                             value={values.roomId}
                                         />
                                     )}
-
-
                                 </Box>
                                 <Box
                                     sx={{
@@ -417,27 +423,25 @@ function QuickEditUserComponent() {
     return (
         <Modal
             open={open}
+            onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             closeAfterTransition
         >
-            <Box sx={style}>
+            <Box>
                 <Box
                     sx={{
                         backgroundColor: "background.paper",
                         borderRadius: "16px",
-                        width: "100%",
-                        mx: 5,
+                        width: "95%",
                         maxWidth: "720px",
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
                     }}
                 >
-                    <Typography
-                        variant="h6"
-                        sx={{padding: "24px", color: mode === "dark" ? "#fff": "#000"
-                        }}
-                    >
-                        {t('quickUpdate')}
-                    </Typography>
+
                     {isErrorUpdateUser && (
                         <Box sx={{px: "24px"}}>
                             <AlertMessageComponent/>

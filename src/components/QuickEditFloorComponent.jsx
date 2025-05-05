@@ -26,10 +26,6 @@ function QuickEditFloorComponent() {
         error: errorUpdateFloor,
     },] = useUpdateFloorMutation();
 
-    const style = {
-        display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100vh",
-    };
-
     const validationSchema = Yup.object().shape({
         name: Yup.string()
             .required("Floor name is required")
@@ -65,14 +61,22 @@ function QuickEditFloorComponent() {
 
     content = (<Modal
         open={isQuickEditFloorOpen}
+        onClose={() => dispatch(setIsQuickEditFloorOpen(false))}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         closeAfterTransition
     >
-        <Box sx={style}>
+        <Box>
             <Box
                 sx={{
-                    backgroundColor: "background.paper", borderRadius: "16px", width: "100%", mx: 5, maxWidth: "720px",
+                    backgroundColor: "background.paper",
+                    borderRadius: "16px",
+                    width: "95%",
+                    maxWidth: "720px",
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
                 }}
             >
                 <Typography

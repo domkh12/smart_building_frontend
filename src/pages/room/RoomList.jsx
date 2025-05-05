@@ -35,6 +35,7 @@ import SkeletonTableRowComponent from "../../components/SkeletonTableRowComponen
 import FilterChipsComponent from "../../components/FilterChipsComponent.jsx";
 import {setIsFiltered} from "../../redux/feature/actions/actionSlice.js";
 import QuickEditRoomComponent from "../../components/QuickEditRoomComponent.jsx";
+import useAuth from "../../hook/useAuth.jsx";
 
 function RoomList() {
     const navigate = useNavigate();
@@ -46,8 +47,23 @@ function RoomList() {
     const pageNo = useSelector((state) => state.room.pageNo);
     const pageSize = useSelector((state) => state.room.pageSize);
     const mode = useSelector((state) => state.theme.mode);
+    const {isAdmin, isManager} = useAuth();
 
-    const {data: building, isLoading: isLoadingBuilding, isSuccess: isSuccessBuilding} = useGetAllNameBuildingQuery("buildingNameList")
+    const handleBackClick = () => {
+        if (isManager) {
+            navigate("/dash");
+        }else if (isAdmin) {
+            navigate("/admin");
+        }
+    }
+
+    const {
+        data: building,
+        isLoading: isLoadingBuilding,
+        isSuccess: isSuccessBuilding
+    } = useGetAllNameBuildingQuery("buildingNameList", {
+        skip: isAdmin,
+    });
 
     const {data: roomData, isSuccess, isLoading} = useGetRoomQuery({
         pageNo,
@@ -96,7 +112,7 @@ function RoomList() {
             elevation={0}
             component="button"
             className="text-black hover:underline"
-            onClick={() => navigate("/dash")}
+            onClick={handleBackClick}
             key={1}
         >
             {t("dashboard")}
@@ -146,9 +162,9 @@ function RoomList() {
 
     let content;
 
-    if (isLoading && isLoadingBuilding) content = <LoadingFetchingDataComponent/>;
+    if (isLoading || (!isAdmin && isLoadingBuilding)) content = <LoadingFetchingDataComponent/>;
 
-    if (isSuccess && isSuccessBuilding) {
+    if (isSuccess && (isAdmin || isSuccessBuilding)) {
         const {ids, entities, totalElements, pageSize, pageNo} = roomData;
         const {
             ids: idsFilter,
@@ -159,8 +175,6 @@ function RoomList() {
         } = roomDataFilter || {};
 
         const displayTotalElements = debounceInputSearch !== "" || buildingFilter.length > 0 ? totalElementsFilter : totalElements;
-
-        console.log(displayTotalElements)
 
         const tableContent = debounceInputSearch !== "" || buildingFilter.length > 0 ? (idsFilter?.length ? (idsFilter.map((roomId) =>
             <RoomRowComponent key={roomId}
@@ -182,8 +196,8 @@ function RoomList() {
                 <MainHeaderComponent
                     breadcrumbs={breadcrumbs}
                     title={t("list")}
-                    btnTitle={t("newRoom")}
-                    onClick={() => navigate("/dash/rooms/new")}
+                    btnTitle={!isAdmin ? t("newRoom") : undefined}
+                    onClick={!isAdmin ? () => navigate("/dash/rooms/new") : undefined}
                 />
 
                 <div>

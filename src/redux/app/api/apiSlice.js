@@ -77,7 +77,8 @@ export const apiSlice = createApi({
         "Role",
         "Gender",
         "SignupMethod",
-        "Profile"
+        "Profile",
+        "MultiStatus"
     ],
     endpoints: (builder) => ({}),
 });

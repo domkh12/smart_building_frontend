@@ -11,6 +11,7 @@ import TranslateComponent from "../../components/TranslateComponent";
 import ProfileDrawerComponent from "../../components/ProfileDrawerComponent";
 import {useGetUserProfileQuery} from "../../redux/feature/auth/authApiSlice";
 import { setChangedSite } from "../../redux/feature/site/siteSlice";
+import UtilSearchComponent from "../../components/UtilSearchComponent.jsx";
 
 function NavBarDashboardManager() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -49,12 +50,7 @@ function NavBarDashboardManager() {
         </div>
 
         <div className="flex lg:gap-2 items-center flex-nowrap">
-          <button className="hidden  bg-black bg-opacity-5 hover:bg-opacity-10 w-[100px] h-[40px] rounded-xl gap-2 xl:flex justify-evenly items-center px-[7px] mr-[8px] shadow-inner">
-            <SearchTwoToneIcon className="w-5 h-5 text-opacity-50" />
-            <Typography variant="body1" component="span" className="text-black bg-white px-[7px] py-[2px] rounded-lg shadow-sm">
-              ⌘ K
-            </Typography>
-          </button>
+          <UtilSearchComponent/>
           <div>
             <ToolTipButtonComponent title={"Search"} icon={IoSearch} />
           </div>

@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectCurrentToken } from "../redux/feature/auth/authSlice";
+import {useGetUserProfileQuery} from "../redux/feature/auth/authApiSlice.js";
 
 const useWebSocket = (destination) => {
   const socketClient = useRef(null);
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [messages, setMessages] = useState([]);
   const token = useSelector(selectCurrentToken);
-  const user = useSelector((state) => state.users.user);
+  const {data: user} = useGetUserProfileQuery("profileList");
 
   const connect = async () => {
     setLoading(true);
@@ -29,7 +29,7 @@ const useWebSocket = (destination) => {
     socketClient.current.debug = () => {};
 
     socketClient.current.connect(
-      { Authorization: `Bearer ${token}`, uuid: user?.uuid },
+      { Authorization: `Bearer ${token}`, id: user.id },
       () => onConnected(destination),
       onError
     );
@@ -51,7 +51,10 @@ const useWebSocket = (destination) => {
   };
 
   useEffect(() => {
+    if (!user?.id || !token) return;
+
     connect();
+
     return () => {
       if (socketClient.current) {
         socketClient.current.disconnect(() => {
@@ -60,7 +63,7 @@ const useWebSocket = (destination) => {
         socketClient.current = null;
       }
     };
-  }, [user?.uuid , token]);
+  }, [user?.id, token]);
 
   return { loading, error, messages };
 };

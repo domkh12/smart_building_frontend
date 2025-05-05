@@ -5,6 +5,8 @@ import KeyboardArrowRightRoundedIcon from "@mui/icons-material/KeyboardArrowRigh
 import SpaceDashboardTwoToneIcon from "@mui/icons-material/SpaceDashboardTwoTone";
 import KeyboardArrowLeftRoundedIcon from "@mui/icons-material/KeyboardArrowLeftRounded";
 import SettingsRemoteIcon from "@mui/icons-material/SettingsRemote";
+import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
+import TipsAndUpdatesTwoToneIcon from "@mui/icons-material/TipsAndUpdatesTwoTone";
 
 import {
     Box,
@@ -24,7 +26,6 @@ import {listItemButtonStyle} from "./../../assets/style";
 import {toggleCollapsed} from "../../redux/feature/actions/actionSlice.js";
 import PopupState, {bindHover, bindPopover} from "material-ui-popup-state";
 import HoverPopover from "material-ui-popup-state/HoverPopover";
-import useAuth from "./../../hook/useAuth";
 import useTranslate from "./../../hook/useTranslate";
 
 function SideBarAdmin() {
@@ -299,6 +300,127 @@ function SideBarAdmin() {
                                     unmountOnExit
                                 >
 
+                                    {/* Floor Menu */}
+
+                                    <ListItemButton
+                                        sx={{
+                                            borderRadius: "10px",
+                                            mb: "5px",
+                                            ...(isCollapsed && {
+                                                padding: "5px",
+                                            }),
+                                            ...listItemButtonStyle,
+                                        }}
+                                        onClick={() => navigate("/admin/rooms")}
+                                        selected={location.pathname === "/admin/rooms"}
+                                    >
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: 0,
+                                                ...(!isCollapsed && {
+                                                    mr: 1,
+                                                }),
+                                            }}
+                                            className={`${
+                                                isCollapsed &&
+                                                "flex flex-col justify-center items-center w-full"
+                                            }`}
+                                        >
+                                            <MeetingRoomTwoToneIcon className="w-6 h-6"/>
+                                            {isCollapsed && (
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            component="span"
+                                                            variant="caption"
+                                                            sx={{
+                                                                display: "inline",
+                                                            }}
+                                                        >
+                                                            {t("room")}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            )}
+                                        </ListItemIcon>
+
+                                        {!isCollapsed && (
+                                            <ListItemText
+                                                primary={
+                                                    <Typography
+                                                        component="span"
+                                                        variant="body1"
+                                                        sx={{
+                                                            display: "inline",
+                                                        }}
+                                                    >
+                                                        {t("room")}
+                                                    </Typography>
+                                                }
+                                            />
+                                        )}
+                                    </ListItemButton>
+
+                                    {/* Device Menu */}
+
+                                    <ListItemButton
+                                        sx={{
+                                            borderRadius: "10px",
+                                            mb: "5px",
+                                            ...(isCollapsed && {
+                                                padding: "5px",
+                                            }),
+                                            ...listItemButtonStyle,
+                                        }}
+                                        onClick={() => navigate("/admin/devices")}
+                                        selected={location.pathname === "/admin/devices"}
+                                    >
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: 0,
+                                                ...(!isCollapsed && {
+                                                    mr: 1,
+                                                }),
+                                            }}
+                                            className={`${
+                                                isCollapsed &&
+                                                "flex flex-col justify-center items-center w-full"
+                                            }`}
+                                        >
+                                            <TipsAndUpdatesTwoToneIcon className="w-6 h-6"/>
+                                            {isCollapsed && (
+                                                <ListItemText
+                                                    secondary={
+                                                        <Typography
+                                                            component="span"
+                                                            variant="caption"
+                                                            sx={{
+                                                                display: "inline",
+                                                            }}
+                                                        >
+                                                            {t("device")}
+                                                        </Typography>
+                                                    }
+                                                />
+                                            )}
+                                        </ListItemIcon>
+
+                                        {!isCollapsed && (
+                                            <ListItemText
+                                                primary={
+                                                    <Typography
+                                                        component="span"
+                                                        variant="body1"
+                                                        sx={{
+                                                            display: "inline",
+                                                        }}
+                                                    >
+                                                        {t("device")}
+                                                    </Typography>
+                                                }
+                                            />
+                                        )}
+                                    </ListItemButton>
 
                                     {/* User Menu */}
 

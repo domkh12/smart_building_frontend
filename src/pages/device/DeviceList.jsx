@@ -31,6 +31,7 @@ import SkeletonTableRowComponent from "../../components/SkeletonTableRowComponen
 import FilterChipsComponent from "../../components/FilterChipsComponent.jsx";
 import {setIsFiltered} from "../../redux/feature/actions/actionSlice.js";
 import QuickEditDeviceComponent from "../../components/QuickEditDeviceComponent.jsx";
+import useAuth from "../../hook/useAuth.jsx";
 
 function DeviceList() {
     const navigate = useNavigate();
@@ -44,9 +45,17 @@ function DeviceList() {
     const pageSize = useSelector((state) => state.device.pageSize);
     const isQuickEditDeviceOpen = useSelector((state) => state.device.isOpenQuickEditDevice);
     const mode = useSelector((state) => state.theme.mode);
+    const { isAdmin, isManager } = useAuth();
+
+    const handleBackClick = () => {
+        if (isManager) navigate("/dash");
+        else if(isAdmin) navigate("/admin");
+    }
 
     const {data: deviceType, isSuccess : isSuccessDeviceType, isLoading : isLoadingDeviceType} = useGetAllDeviceTypesQuery("deviceTypeList");
-    const {data: building, isSuccess : isSuccessBuilding, isLoading : isLoadingBuilding} = useGetAllNameBuildingQuery("buildingNameList")
+    const {data: building, isSuccess : isSuccessBuilding, isLoading : isLoadingBuilding} = useGetAllNameBuildingQuery("buildingNameList",{
+        skip: isAdmin
+    })
 
     const {
         data: deviceDataFilter,
@@ -104,7 +113,7 @@ function DeviceList() {
             elevation={0}
             component="button"
             className="text-black hover:underline"
-            onClick={() => navigate("/dash")}
+            onClick={handleBackClick}
             key={1}
         >
             {t("dashboard")}
@@ -135,9 +144,9 @@ function DeviceList() {
 
     let content;
 
-    if (isLoadingGetDevice || isLoadingDeviceType || isLoadingBuilding) content = <LoadingFetchingDataComponent/>;
+    if (isLoadingGetDevice || isLoadingDeviceType || (!isAdmin && isLoadingBuilding)) content = <LoadingFetchingDataComponent/>;
 
-    if (isSuccessGetDevice && isSuccessBuilding && isSuccessDeviceType) {
+    if (isSuccessGetDevice && (isAdmin || isSuccessBuilding)  && isSuccessDeviceType) {
         const {ids, entities, totalElements, pageNo, pageSize} = deviceData;
         const {ids: idsDeviceFilter, entities: entitiesFilter, totalElementsFilter, pageSizeFilter, pageNoFilter} = deviceDataFilter || {};
 
@@ -158,12 +167,12 @@ function DeviceList() {
 
         content = (<div data-aos="fade-left">
                 <SeoComponent title="Device List"/>
-                <MainHeaderComponent
-                    breadcrumbs={breadcrumbs}
-                    title={t("list")}
-                    btnTitle={t("newDeviceType")}
-                    onClick={() => navigate("/dash/devices/new")}
-                />
+            <MainHeaderComponent
+                breadcrumbs={breadcrumbs}
+                title={t("list")}
+                btnTitle={isManager ? t("newDeviceType") : undefined}
+                onClick={isManager ? () => navigate("/dash/devices/new") : undefined}
+            />
 
                 <div>
                     <Card sx={{...cardStyle}}>

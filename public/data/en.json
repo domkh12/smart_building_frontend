@@ -188,5 +188,10 @@
   "forgotYourPassword" : "Forgot your password?",
   "forgotPasswordDescription" : "Please enter the email address associated with your account and we'll email you a link to reset your password.",
   "sendRequest" : "Send request",
-  "passwordResetLinkSent" : "Password reset link sent"
+  "passwordResetLinkSent" : "Password reset link sent",
+  "resetPassword": "Reset password",
+  "resetPasswordDescription": "Just type it twice and try not to forget it.",
+  "passwordIsRequired": "Password is required",
+  "confirmPasswordIsRequired": "Confirm password is required",
+  "logout": "Logout"
 }

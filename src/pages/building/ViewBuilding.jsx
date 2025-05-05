@@ -7,7 +7,7 @@ import {useEffect} from "react";
 function ViewBuilding() {
     const {id} = useParams();
 
-    const { data: building, isFetching, isSuccess, isError, error, d } = useGetBuildingByIdQuery(id);
+    const { data: building, isFetching, isSuccess, isError, error, refetch } = useGetBuildingByIdQuery(id);
 
     useEffect(() => {
         refetch();

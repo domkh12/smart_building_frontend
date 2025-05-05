@@ -25,6 +25,7 @@ import {
 import { setIsOpenConfirmDelete } from "../redux/feature/actions/actionSlice";
 import useAuth from "../hook/useAuth";
 import useTranslate from "../hook/useTranslate.jsx";
+import useWebSocket from "../hook/useWebSocket.jsx";
 
 function stringToColor(string) {
   let hash = 0;
@@ -87,6 +88,8 @@ function UserRowComponent({ userId, user }) {
     dispatch(setIsOpenQuickEdit(true));
     dispatch(setUserForQuickEdit(user));
   };
+
+  const {messages} = useWebSocket("/topic/online-status");
 
   const StyledBadge = styled(Badge)(({ theme, isonline }) => ({
     "& .MuiBadge-badge": {
@@ -197,7 +200,7 @@ function UserRowComponent({ userId, user }) {
                   overlap="circular"
                   anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                   variant="dot"
-                  isonline={String(user?.isOnline)}
+                  isonline={messages.id === user.id ? String(messages.isOnline)  : String(user?.isOnline)}
                 >
                   <Avatar
                     alt={user.fullName}

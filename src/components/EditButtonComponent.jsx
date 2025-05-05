@@ -1,5 +1,4 @@
 import { IconButton, Tooltip } from "@mui/material";
-import React from "react";
 import { FaPen } from "react-icons/fa6";
 import useTranslate from "../hook/useTranslate.jsx";
 

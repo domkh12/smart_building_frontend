@@ -38,19 +38,19 @@ function ViewBuildingDetail({ building }) {
             <ImageDetailComponent image={building?.image}/>
             <div className="flex flex-col gap-3 mt-5">
                 <Typography variant="body1">
-                    <span className="text-gray-cus">Building id </span>
+                    <span >Building id </span>
                     {`${"\u00a0"}:${"\u00a0"}${building?.id}`}
                 </Typography>
                 <Typography variant="body1">
-                    <span className="text-gray-cus">Building name </span>
+                    <span >Building name </span>
                     {`${"\u00a0"}:${"\u00a0"}${building?.name}`}
                 </Typography>
                 <Typography variant="body1">
-                    <span className="text-gray-cus">Floor quantity </span>
+                    <span >Floor quantity </span>
                     {`${"\u00a0"}:${"\u00a0"}${building?.floorQty}`}
                 </Typography>
                 <Typography variant="body1">
-                    <span className="text-gray-cus">Created at </span>
+                    <span >Created at </span>
                     {`${"\u00a0"}:${"\u00a0"}${building?.createdAt}`}
                 </Typography>
             </div>

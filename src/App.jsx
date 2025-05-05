@@ -1,15 +1,14 @@
-import {lazy, Suspense, useEffect, useState} from "react";
+import {lazy, Suspense, useEffect} from "react";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {createTheme, CssBaseline, ThemeProvider, useMediaQuery} from "@mui/material";
+import { CssBaseline, ThemeProvider} from "@mui/material";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import RequireAuth from "./pages/auth/RequireAuth.jsx";
 import {ROLES} from "./config/roles.js";
-import {deepOrange, deepPurple} from "@mui/material/colors";
 import {useSelector} from "react-redux";
 import {getTheme} from "./redux/feature/theme/theme.js";
-import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
-
+const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword.jsx"));
+const ResetPassword = lazy(() => import("./pages/auth/ResetPassword.jsx"));
 const AdminLayout = lazy(() => import("./pages/layoutAdmin/AdminLayout.jsx"));
 const WaveLoadingComponent = lazy(() => import("./components/WaveLoadingComponent.jsx"));
 const ManagerLayout = lazy(() => import("./pages/layoutManager/ManagerLayout.jsx"));
@@ -80,6 +79,7 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="unauthorize" element={<Error403Component/>}/>
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
 
                 {/* Protected routes */}
                 <Route element={<PersistLogin/>}>
@@ -105,6 +105,16 @@ function App() {
                                         <Route path="new" element={<AddNewUser/>}/>
                                         <Route path=":id" element={<EditUser/>}/>
                                         <Route path=":id/view" element={<ViewUser/>}/>
+                                    </Route>
+
+                                    <Route path="rooms">
+                                        <Route index element={<RoomList/>}/>
+                                        <Route path=":id/view" element={<ViewRoom/>}/>
+                                    </Route>
+
+                                    <Route path="devices">
+                                        <Route index element={<DeviceList/>}/>
+                                        <Route path=":id/view" element={<ViewDevice/>}/>
                                     </Route>
 
                                 </Route>

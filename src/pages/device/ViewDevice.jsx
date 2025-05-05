@@ -19,7 +19,7 @@ function ViewDevice() {
 
   else if (isSuccess && device) content = <ViewDeviceDetail device={device} />
   else if (isError) {
-    content = <div>Error: {error.message}</div>;
+    content = <div>Error: {error.data.error.description}</div>;
   } else {
     content = <div>Unexpected state: No building data found.</div>;
   }

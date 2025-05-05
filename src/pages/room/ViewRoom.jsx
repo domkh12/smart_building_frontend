@@ -19,7 +19,7 @@ function ViewRoom() {
 
   else if (isSuccess && room) content = <ViewRoomDetail room={room} />;
   else if (isError) {
-    content = <div>Error: {error.message}</div>;
+    content = <div>Error: {error.data.error.description}</div>;
   } else {
     content = <div>Unexpected state: No building data found.</div>;
   }

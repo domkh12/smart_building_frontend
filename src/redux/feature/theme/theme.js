@@ -41,6 +41,22 @@ export const getTheme = (mode) =>
                 }
             },
 
+            MuiListSubheader: {
+                variants: [
+                    {
+                        props: {variant: 'cus1'},
+                        style: {
+                            color: mode === 'dark' ? '#E0E0F6' : '#2C3092',
+                            backgroundColor: mode === 'dark' ? '#1C252E' : '#D5D6E9',
+                            borderRadius: "5px",
+                            pointerEvents: "none",
+                            fontWeight: 600,
+                            fontSize: '0.875rem',
+                        }
+                    }
+                ]
+            },
+
             MuiTextField: {
                 styleOverrides: {
                     root: {

@@ -264,12 +264,20 @@ function AddNewUser() {
         }
     };
 
+    const handleBackClick1 = () => {
+        if (isManager) {
+            navigate("/dash");
+        }else if (isAdmin) {
+            navigate("/admin");
+        }
+    }
+
     const breadcrumbs = [
         <Paper
             elevation={0}
             component="button"
             className="text-black hover:underline"
-            onClick={() => navigate("/dash")}
+            onClick={handleBackClick1}
             key={1}
         >
             {t("dashboard")}
