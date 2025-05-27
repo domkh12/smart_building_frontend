@@ -2,18 +2,36 @@ import { Card, styled, Typography } from "@mui/material";
 import {
   GaugeContainer,
   GaugeReferenceArc,
-  GaugeValueArc,
   useGaugeState,
 } from "@mui/x-charts";
-import React from "react";
+import {useEffect, useState} from "react";
 import { FaSmog } from "react-icons/fa";
 import { cardStyle } from "../assets/style";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {clearMessageFromWS} from "../redux/feature/message/messageSlice.js";
+import StatusDeviceComponent from "./StatusDeviceComponent.jsx";
 
-function GaugePM2_5Component({ value }) {
+function GaugePM2_5Component({ value, device }) {
   const mode = useSelector((state) => state.theme.mode);
+  const dispatch = useDispatch();
+  const [isOnline, setIsOnline] = useState(device?.status === "Active");
+  const deviceStatus = useSelector((state) => state.message.deviceStatus);
   const valueMin = 0;
   const valueMax = 100;
+
+  useEffect(() => {
+    if (deviceStatus?.length > 0) {
+      const deviceStatusObject = deviceStatus.find(
+          (deviceStatus) => deviceStatus?.deviceId == device?.id
+      );
+      if (deviceStatusObject) {
+        setIsOnline(deviceStatusObject?.status === "Active" ? true : false);
+      }
+      if (deviceStatusObject?.status === "Inactive") {
+        dispatch(clearMessageFromWS());
+      }
+    }
+  }, [deviceStatus]);
 
   const clampedValue = Math.min(Math.max(value, valueMin), valueMax);
 
@@ -50,9 +68,10 @@ function GaugePM2_5Component({ value }) {
 
   return (
     <Card
-      sx={{ ...cardStyle }}
+      sx={{ ...cardStyle, position: "relative" }}
       className="flex flex-col items-center justify-center py-5"
     >
+      <StatusDeviceComponent isOnline={isOnline}/>
       <Typography
         variant="h6"
         className="flex justify-center items-center gap-2"
@@ -90,7 +109,7 @@ function GaugePM2_5Component({ value }) {
             <GaugePointer />
           </GaugeContainer>
         </div>
-        <Typography variant="h4">{value}µg/m³</Typography>
+        <Typography variant="h4">{value ? `${value} µg/m³` : `__`}</Typography>
       </div>
     </Card>
   );

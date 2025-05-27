@@ -38,6 +38,7 @@ import {useGetSitesListMutation} from "../../redux/feature/site/siteApiSlice";
 import {setRoomId} from "../../redux/feature/room/roomSlice.js";
 import OTPInput from "react-otp-input";
 import useLocalStorage from "../../hook/useLocalStorage.jsx";
+import LogoTwoComponent from "../../components/LogoTwoComponent.jsx";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -247,11 +248,11 @@ export default function Login() {
     if (step === 1) {
         content = (
             <>
-                <SeoComponent title="Login"/>
+                <SeoComponent title="Smart Building System NPIC"/>
                 <nav
                     className="fixed top-0 left-0 w-full bg-white bg-opacity-5 lg:bg-opacity-0 z-20 backdrop-blur-3xl lg:backdrop-blur-0">
                     <Paper className="flex justify-between items-center xxs:flex-nowrap flex-wrap">
-                        <LogoComponent/>
+                        <LogoTwoComponent/>
                         <Paper className="pr-[20px] flex gap-[16px]  items-center">
                             <TranslateComponent/>
                             <SettingComponent/>
@@ -276,7 +277,7 @@ export default function Login() {
                         {({values, touched, errors, handleChange, handleBlur}) => (
                             <Form>
                                 <section className="h-screen">
-                                    <Stack direction="row" spacing={2} sx={{
+                                    <Stack direction="row" sx={{
                                         justifyContent: "center",
                                         alignItems: "center",
                                         height: "100%",
@@ -452,11 +453,11 @@ export default function Login() {
         content = (
 
             <>
-                <SeoComponent title="Login"/>
+                <SeoComponent title="Smart Building System NPIC"/>
                 <nav
                     className="fixed top-0 left-0 w-full bg-white bg-opacity-5 lg:bg-opacity-0 z-20 backdrop-blur-3xl lg:backdrop-blur-0">
                     <Paper className="flex justify-between items-center xxs:flex-nowrap flex-wrap">
-                        <LogoComponent/>
+                        <LogoTwoComponent/>
                         <Paper className="pr-[20px] flex gap-[16px]  items-center">
                             <TranslateComponent/>
                             <SettingComponent/>
@@ -481,7 +482,7 @@ export default function Login() {
                         {({values, touched, errors, handleChange, handleBlur}) => (
                             <Form>
                                 <section className="h-screen">
-                                    <Stack direction="row" spacing={2} sx={{
+                                    <Stack direction="row" sx={{
                                         justifyContent: "center",
                                         alignItems: "center",
                                         height: "100%",

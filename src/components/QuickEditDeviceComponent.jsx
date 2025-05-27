@@ -3,15 +3,13 @@ import useTranslate from "../hook/useTranslate.jsx";
 import * as Yup from "yup";
 import {useEffect} from "react";
 import {setCaptionSnackBar, setIsOpenSnackBar} from "../redux/feature/actions/actionSlice.js";
-import {Box, Button, Card, Modal, TextField, Typography} from "@mui/material";
+import {Box, Button, Modal, TextField, Typography} from "@mui/material";
 import {Form, Formik} from "formik";
-import {buttonStyleContained, buttonStyleOutlined, cardStyle} from "../assets/style.js";
+import {buttonStyleContained, buttonStyleOutlined} from "../assets/style.js";
 import {useUpdateSingleDeviceMutation} from "../redux/feature/device/deviceApiSlice.js";
 import {setIsOpenQuickEditDevice} from "../redux/feature/device/deviceSlice.js";
 import SelectSingleComponent from "./SelectSingleComponent.jsx";
-import ButtonComponent from "./ButtonComponent.jsx";
 import {useGetAllDeviceTypesQuery} from "../redux/feature/device/deviceTypeApiSlice.js";
-import {setIsQuickEditBuildingOpen} from "../redux/feature/building/buildingSlice.js";
 import {LoadingButton} from "@mui/lab";
 
 function QuickEditDeviceComponent() {
@@ -86,6 +84,11 @@ function QuickEditDeviceComponent() {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
+                        overflow: "auto",
+                        maxHeight: "90vh",
+                        boxShadow: "0px 10px 15px -3px rgb(0 0 0 / 20%), 0px 4px 6px -2px rgb(0 0 0 / 15%)",
+                        display: "flex",
+                        flexDirection: "column",
                     }}
                 >
                     <Typography

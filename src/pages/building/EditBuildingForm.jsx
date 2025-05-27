@@ -54,7 +54,7 @@ function EditBuildingForm({ building }) {
       await updateBuilding({
         id: building.id,
         name: values.name,
-        image: profileImageUri,
+        image: profileImageUri ? profileImageUri : building.image,
       });
     } catch (err) {
       console.log(err);

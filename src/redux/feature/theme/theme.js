@@ -32,11 +32,28 @@ export const getTheme = (mode) =>
 
         components: {
 
+            MuiPopover: {
+                styleOverrides: {
+                    paper: {
+                        borderRadius: "10px",
+                    },
+                },
+            },
+
+            MuiToggleButton: {
+              styleOverrides: {
+                  root: {
+                      textTransform: 'none',
+                      border: "none",
+                      borderRadius: "8px"
+                  },
+              }
+            },
+
             MuiCssBaseline: {
                 styleOverrides: {
                     body: {
-                        backgroundColor: mode === 'dark' ? '#121212' : '#fafafa',
-                        transition: 'background-color 0.3s ease'
+                        background: mode === 'dark' ? '#141A21 !important' : '#fafafa',
                     }
                 }
             },
@@ -115,11 +132,11 @@ export const getTheme = (mode) =>
                         borderRadius: '8px',
                     },
                     contained: {
-                        backgroundColor: deepPurple[600],
+                        // backgroundColor: deepPurple[600],
                         borderRadius: '8px',
-                        '&:hover': {
-                            backgroundColor: deepPurple[700],
-                        },
+                        // '&:hover': {
+                        //     backgroundColor: deepPurple[700],
+                        // },
                     },
                     root: {
                         textTransform: 'none',

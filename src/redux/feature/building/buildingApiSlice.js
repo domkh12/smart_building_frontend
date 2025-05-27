@@ -78,7 +78,10 @@ export const buildingApiSlice = apiSlice.injectEndpoints({
                 url: `/buildings/${id}`, method: "PUT", body: {
                     ...initialState,
                 },
-            }), invalidatesTags: (result, error, arg) => [{type: "Building", id: arg.id},],
+            }), invalidatesTags: (result, error, arg) => [
+                {type: "Building", id: arg.id},
+                {type: "BuildingName", id: "LIST"},
+            ],
         }),
 
         deleteBuilding: builder.mutation({

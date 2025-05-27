@@ -1,10 +1,12 @@
 import {Button, Paper} from "@mui/material";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "../hook/useLocalStorage.jsx";
+import useTranslate from "../hook/useTranslate.jsx";
 
 function Error401Component() {
   const navigate = useNavigate();
+  const {t} = useTranslate()
     const [authData, setAuthData] = useLocalStorage('authData', {
         isRemember: false,
         userRoles: "",
@@ -32,7 +34,7 @@ function Error401Component() {
         variant="contained"
         onClick={() => navigate("/login")}
       >
-        Go to login
+          {t('goToLogin')}
       </Button>
     </Paper>
   );

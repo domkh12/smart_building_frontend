@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { selectMenuStyle } from "../assets/style";
 import {
   FormControl,
   MenuItem,
   Select,
   FormHelperText,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
+import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
+import DataNotFound from "./DataNotFound";
+import useTranslate from "../hook/useTranslate.jsx";
 
 function SelectRoomComponent({
   label,
@@ -19,12 +23,12 @@ function SelectRoomComponent({
   selectFistValue,
 }) {
   const [valueSelect, setValueSelect] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const { t } = useTranslate();
+
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
-    sx: {
-      // ...selectMenuStyle,
-    },
     PaperProps: {
       style: {
         maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
@@ -32,13 +36,51 @@ function SelectRoomComponent({
       },
     },
   };
-  console.log("options", options);
+
   const hasError = error && touched;
 
   const handleChange = (event) => {
     setValueSelect(event.target.value);
     onChange(event.target.value);
   };
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
+  const filterOptions = (options, searchText) => {
+    if (!searchText) return options;
+    const searchLower = searchText.toLowerCase();
+    return options.filter(option =>
+      option[optionLabelKey].toLowerCase().includes(searchLower)
+    );
+  };
+
+  const renderMenuItems = () => {
+    if (!options || options.length === 0) return <DataNotFound />;
+
+    const filteredOptions = filterOptions(options, searchText);
+    
+    if (filteredOptions.length === 0) return <DataNotFound />;
+
+    return filteredOptions.map((option) => (
+      <MenuItem
+        key={option?.id}
+        value={option?.id}
+        sx={{
+          borderRadius: "5px",
+        }}
+      >
+        <div className="flex items-center">
+          {option[optionLabelKey]}
+        </div>
+      </MenuItem>
+    ));
+  };
+
+  // Ensure the value exists in options before using it
+  const currentValue = selectFistValue || valueSelect;
+  const isValidValue = options?.some(option => option.id === currentValue);
 
   return (
     <FormControl
@@ -51,9 +93,18 @@ function SelectRoomComponent({
         labelId={`${label}_label`}
         id={label}
         label={label}
-        MenuProps={MenuProps}
-        value={selectFistValue ? selectFistValue : valueSelect}
+        MenuProps={{
+          ...MenuProps,
+          autoFocus: false,
+          disableAutoFocus: true,
+          disableEnforceFocus: true
+        }}
+        value={isValidValue ? currentValue : ""}
         onChange={handleChange}
+        renderValue={(value) => {
+          const selectedOption = options?.find(option => option.id === value);
+          return selectedOption ? selectedOption[optionLabelKey] : '';
+        }}
         sx={{
           "& .MuiOutlinedInput-notchedOutline": {
             borderColor: "transparent",
@@ -79,22 +130,34 @@ function SelectRoomComponent({
           },
         }}
       >
-        {options?.length
-          ? options.map((option) => (
-              <MenuItem
-                key={option.uuid}
-                sx={{
-                  borderRadius: "5px",
-                }}
-                value={option.uuid}
-              >
-                <div className="flex items-center">
-
-                  {option[optionLabelKey]}
-                </div>
-              </MenuItem>
-            ))
-          : null}
+        <div>
+          <TextField
+            size="small"
+            variant="outlined"
+            placeholder={t('search')}
+            value={searchText}
+            onChange={handleSearchChange}
+            autoFocus
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+            onKeyDown={(event) => {
+              event.stopPropagation();
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchTwoToneIcon />
+                </InputAdornment>
+              ),
+            }}
+            sx={{
+              margin: "8px",
+              width: "calc(100% - 16px)",
+            }}
+          />
+        </div>
+        {renderMenuItems()}
       </Select>
       <FormHelperText error={hasError}>
         {hasError ? error : null}

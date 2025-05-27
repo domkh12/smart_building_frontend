@@ -88,12 +88,12 @@ function ViewFloorDetail({floor}) {
                 </div>
                 <div className="flex flex-col gap-3 mt-5">
                     <Typography variant="body1">
-                        <span >Floor name </span>
-                        {`${"\u00a0"}:${"\u00a0"}${floor?.name}`}
-                    </Typography>
-                    <Typography variant="body1">
                         <span >Floor id </span>
                         {`${"\u00a0"}:${"\u00a0"}${floor?.id}`}
+                    </Typography>
+                    <Typography variant="body1">
+                        <span >Floor name </span>
+                        {`${"\u00a0"}:${"\u00a0"}${floor?.name}`}
                     </Typography>
                     <Typography variant="body1">
                         <span >Room quantity </span>
@@ -103,34 +103,6 @@ function ViewFloorDetail({floor}) {
                         <span >Created at </span>
                         {`${"\u00a0"}:${"\u00a0"}${floor?.createdAt}`}
                     </Typography>
-                    {/* <div className="flex gap-2">
-            <Typography variant="body1">{`${t("color")}${"\u00a0"}:`}</Typography>
-            <div
-              className="w-5 h-5 rounded-full border-[2px]"
-              style={{ backgroundColor: floor.color }}
-            ></div>
-            <Typography variant="body1">{floor.color}</Typography>
-          </div>
-          <Typography variant="body1">
-            <span >{t("licensePlateType")}</span>
-            {`${"\u00a0"}:${"\u00a0"}${floor.licensePlateType.name}`}
-          </Typography>
-          <Typography variant="body1">
-            <span >Total parking hours</span>
-            {`${"\u00a0"}:${"\u00a0"}${floor?.totalParkingHours || "N/A"}`}
-          </Typography>
-          <Typography variant="body1">
-            <span >Total parking fee</span>
-            {`${"\u00a0"}:${"\u00a0"}${floor?.totalParkingFees || "N/A"}`}
-          </Typography>
-          <Typography variant="body1">
-            <span >Last parking lot</span>
-            {`${"\u00a0"}:${"\u00a0"}${floor.lastParkingLot || "N/A"}`}
-          </Typography>
-          <Typography variant="body1">
-            <span >Last parking-time</span>
-            {`${"\u00a0"}:${"\u00a0"}${floor.lastParkingTime || "N/A"}`}
-          </Typography> */}
                 </div>
             </Card>
         </>

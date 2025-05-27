@@ -97,11 +97,10 @@ function EditRoomForm({ room }) {
      const updatedResponse = await updateRoom({
         id: room.id,
         name: values.name,
-        image: profileImageUri,
+        image: profileImageUri ? profileImageUri : room.image,
         floorId: values.floorId,
       });
       let roomId = updatedResponse.data.id;
-      console.log("roomId", roomId)
       const updatedDeviceLocalData = deviceLocalData.map(device => {
         return { ...device, roomId: roomId };
       });
@@ -250,7 +249,7 @@ function EditRoomForm({ room }) {
                             optionLabelKey="name"
                             itemsLabelKey="floors"
                             groupLabelKey="name"
-                            selectFistValue={room.floor.id}
+                            selectFistValue={values.floorId}
                           />
                         </div>
                         <div className="flex flex-col justify-end items-end">

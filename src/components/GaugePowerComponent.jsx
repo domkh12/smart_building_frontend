@@ -1,26 +1,43 @@
-import { Card, Typography } from "@mui/material";
+import {Card, Tooltip, Typography} from "@mui/material";
 import {
   axisClasses,
-  GaugeContainer,
-  GaugeReferenceArc,
-  GaugeValueArc,
   LineChart,
   lineElementClasses,
   markElementClasses,
-  useGaugeState,
 } from "@mui/x-charts";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import { GiElectric } from "react-icons/gi";
 import { cardStyle } from "../assets/style";
 import useTranslate from "../hook/useTranslate.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {clearMessageFromWS} from "../redux/feature/message/messageSlice.js";
+import StatusDeviceComponent from "./StatusDeviceComponent.jsx";
 
-function GaugePowerComponent({ value }) {
+function GaugePowerComponent({ value, device}) {
   const { t } = useTranslate();
+  const dispatch = useDispatch();
+  const [isOnline, setIsOnline] = useState(device?.status === "Active");
+  const deviceStatus = useSelector((state) => state?.message?.deviceStatus);
+  useEffect(() => {
+    if (deviceStatus?.length > 0) {
+      const deviceStatusObject = deviceStatus.find(
+          (deviceStatus) => deviceStatus?.deviceId == device?.id
+      );
+      if (deviceStatusObject) {
+        setIsOnline(deviceStatusObject?.status === "Active" ? true : false);
+        if (deviceStatusObject?.status === "Inactive") {
+          dispatch(clearMessageFromWS());
+        }
+      }
+    }
+  }, [deviceStatus]);
+
   return (
     <Card
-      sx={{ ...cardStyle }}
+      sx={{ ...cardStyle, position: "relative" }}
       className="flex flex-col justify-center items-center py-5"
     >
+     <StatusDeviceComponent isOnline={isOnline}/>
       <Typography variant="h6" className="flex justify-center items-center gap-2">
         <GiElectric className="w-5 h-5" /> {t("power")}
       </Typography>
@@ -53,7 +70,7 @@ function GaugePowerComponent({ value }) {
             })}
           />
         </div>
-        <Typography variant="h4">{value} W</Typography>
+        <Typography variant="h4">{value ? `${value} W` : `__`}</Typography>
       </div>
     </Card>
   );

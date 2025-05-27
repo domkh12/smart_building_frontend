@@ -77,6 +77,11 @@ function QuickEditFloorComponent() {
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
+                    overflow: "auto",
+                    maxHeight: "90vh",
+                    boxShadow: "0px 10px 15px -3px rgb(0 0 0 / 20%), 0px 4px 6px -2px rgb(0 0 0 / 15%)",
+                    display: "flex",
+                    flexDirection: "column",
                 }}
             >
                 <Typography

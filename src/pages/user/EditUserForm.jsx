@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useEffect, useState} from "react";
 import useTranslate from "../../hook/useTranslate.jsx";
 import useAuth from "../../hook/useAuth.jsx";
@@ -285,7 +285,7 @@ function EditUserForm({user}) {
                         phoneNumber: user.phoneNumber,
                         profileImage: user.profileImage,
                         dateOfBirth: dayjs(user.dateOfBirth),
-                        roleId: Array.isArray(user.roles) ? user.roles.map(role => role.id) : [],
+                        roleId: user.roles[0].id,
                         roomId: Array.isArray(user.rooms) ? user.rooms.map(room => room.id) : [],
                         isVerified: user.isVerified,
                     }}
@@ -301,7 +301,6 @@ function EditUserForm({user}) {
                           setFieldValue,
                       }) => {
                         const errorDateOfBirth = errors.dateOfBirth && touched.dateOfBirth;
-
                         const handleRoleChange = (value) => {
                             setFieldValue("roleId", [value]);
                         };
@@ -531,7 +530,6 @@ function EditUserForm({user}) {
                                                     />
                                                 )}
 
-                                                {isManager && (
                                                     <SelectComponent
                                                         label={t("room")}
                                                         options={floor}
@@ -544,7 +542,7 @@ function EditUserForm({user}) {
                                                         optionLabelKey="name"
                                                         value={values.roomId}
                                                     />
-                                                )}
+
                                             </div>
 
                                             <div className="col-span-2 flex justify-end mt-[20px]">

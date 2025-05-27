@@ -193,5 +193,16 @@
   "resetPasswordDescription": "Just type it twice and try not to forget it.",
   "passwordIsRequired": "Password is required",
   "confirmPasswordIsRequired": "Confirm password is required",
-  "logout": "Logout"
+  "logout": "Logout",
+  "deviceStatus": "Device Status",
+  "powerConsumption": "Power Consumption",
+  "active": "Active",
+  "inActive": "Inactive",
+  "goToLogin": "Go to login",
+  "noResultFound": "No result found",
+  "noMatchesFoundFor": "No matches found for",
+  "checkYourKeyword": "Try checking your spelling or using different keywords.",
+  "deleteWarningDescription": "This action cannot be undone. All associated data will be permanently deleted.",
+  "updateSuccess": "Update success",
+  "analysis": "Analysis"
 }

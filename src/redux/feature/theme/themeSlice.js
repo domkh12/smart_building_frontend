@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // Read saved mode from localStorage or fallback to 'light'
-const savedMode = localStorage.getItem('themeMode') || 'dark';
+const savedMode = localStorage.getItem('themeMode') || 'light';
 
 const initialState = {
     mode: savedMode,

@@ -16,6 +16,8 @@ import ButtonComponent from "../../components/ButtonComponent.jsx";
 import {useUpdateSingleDeviceMutation} from "../../redux/feature/device/deviceApiSlice.js";
 import LoadingFetchingDataComponent from "../../components/LoadingFetchingDataComponent.jsx";
 import {useGetAllDeviceTypesQuery} from "../../redux/feature/device/deviceTypeApiSlice.js";
+import QuickEditDeviceTypeComponent from "../../components/QuickEditDeviceTypeComponent.jsx";
+import {setIdDeviceTypeToEdit, setIsQuickEditDeviceTypeOpen} from "../../redux/feature/device/deviceSlice.js";
 
 
 function EditDeviceForm({ device }) {
@@ -58,7 +60,7 @@ function EditDeviceForm({ device }) {
             await updateSingleDevice({
                 id: device.id,
                 name: values.name,
-                image: profileImageUri,
+                image: profileImageUri ? profileImageUri : device.image,
                 deviceTypeId: values.deviceTypeId,
                 roomId: device.room.id,
             });
@@ -193,6 +195,12 @@ function EditDeviceForm({ device }) {
                                                         touched={touched.deviceTypeId}
                                                         optionLabelKey="name"
                                                         selectFistValue={values.deviceTypeId}
+                                                        isEditable={true}
+                                                        onClickQuickEdit={(value) => {
+
+                                                            dispatch(setIdDeviceTypeToEdit(value));
+                                                            dispatch(setIsQuickEditDeviceTypeOpen(true));
+                                                        }}
                                                     />
 
                                                 </div>
@@ -211,6 +219,7 @@ function EditDeviceForm({ device }) {
                         }}
                     </Formik>
                 </div>
+                <QuickEditDeviceTypeComponent/>
             </>
         );
     }

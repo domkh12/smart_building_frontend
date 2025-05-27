@@ -53,11 +53,12 @@ function EditFloorForm({ floor }) {
                 const uploadResponse = await uploadImage(formData).unwrap();
                 profileImageUri = uploadResponse.uri;
             }
+            console.log(values)
 
             await updateFloor({
                 id: floor.id,
                 name: values.name,
-                image: profileImageUri,
+                image: profileImageUri ? profileImageUri : floor.image,
                 buildingId: values.buildingId,
             });
         } catch (err) {
@@ -192,7 +193,7 @@ function EditFloorForm({ floor }) {
                                                         error={errors.buildingId}
                                                         touched={touched.buildingId}
                                                         optionLabelKey="name"
-                                                        selectFistValue={floor.building.id}
+                                                        selectFistValue={values.buildingId}
                                                     />
                                                 </div>
                                                 <div className="col-span-2 flex justify-end mt-[20px]">

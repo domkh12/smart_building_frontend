@@ -7,13 +7,33 @@ import {
 import { LiaTemperatureHighSolid } from "react-icons/lia";
 import { cardStyle } from "../assets/style";
 import useTranslate from "../hook/useTranslate.jsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import {clearMessageFromWS} from "../redux/feature/message/messageSlice.js";
+import StatusDeviceComponent from "./StatusDeviceComponent.jsx";
 
-function GaugeTemperatureComponent({ value }) {
+function GaugeTemperatureComponent({ value, device }) {
   const { t } = useTranslate();
+  const dispatch = useDispatch();
   const mode = useSelector((state) => state.theme.mode);
+  const [isOnline, setIsOnline] = useState(device?.status === "Active");
+  const deviceStatus = useSelector((state) => state.message.deviceStatus);
   const valueMin = 16;
   const valueMax = 50;
+
+  useEffect(() => {
+    if (deviceStatus?.length > 0) {
+      const deviceStatusObject = deviceStatus.find(
+          (deviceStatus) => deviceStatus?.deviceId == device?.id
+      );
+      if (deviceStatusObject) {
+        setIsOnline(deviceStatusObject?.status === "Active" ? true : false);
+      }
+      if (deviceStatusObject?.status === "Inactive") {
+        dispatch(clearMessageFromWS());
+      }
+    }
+  }, [deviceStatus]);
 
   const clampedValue = Math.min(Math.max(value, valueMin), valueMax);
 
@@ -50,9 +70,10 @@ function GaugeTemperatureComponent({ value }) {
 
   return (
     <Card
-      sx={{ ...cardStyle }}
+      sx={{ ...cardStyle, position: "relative" }}
       className="flex flex-col items-center justify-center py-5"
     >
+      <StatusDeviceComponent isOnline={isOnline}/>
       <Typography
         variant="h6"
         className="flex justify-center items-center gap-2"
@@ -90,7 +111,7 @@ function GaugeTemperatureComponent({ value }) {
             <GaugePointer />
           </GaugeContainer>
         </div>
-        <Typography variant="h4">{value}&deg;C</Typography>
+        <Typography variant="h4"> {value ? `${value} \u00B0C` : `__`}</Typography>
       </div>
     </Card>
   );

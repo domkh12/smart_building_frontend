@@ -13,10 +13,15 @@ const roomSlice = createSlice({
     roomId: [],
     isQuickEditRoomOpen: false,
     roomDataForQuickEdit: {},
-    idRoomToDelete: ""
+    idRoomToDelete: "",
+    selectFirstRoomById: localStorage.getItem("selectFirstRoomById") ? localStorage.getItem("selectFirstRoomById") : ""
 
   },
   reducers: {
+    setSelectFirstRoomById(state, action) {
+      state.selectFirstRoomById = action.payload;
+      localStorage.setItem("selectFirstRoomById", action.payload);
+    },
     setIdRoomToDelete(state, action){
       state.idRoomToDelete = action.payload;
     },
@@ -57,6 +62,7 @@ const roomSlice = createSlice({
 });
 
 export const {
+  setSelectFirstRoomById,
   setIdRoomToDelete,
   setRoomDataForQuickEdit,
   setIsQuickEditRoomOpen,

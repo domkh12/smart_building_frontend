@@ -9,7 +9,7 @@ const initialState = roomAdapter.getInitialState();
 export const roomApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getRoom: builder.query({
-            query: ({pageNo = 1, pageSize = 20}) => ({
+            query: ({pageNo = 1, pageSize = 5}) => ({
                 url: `/rooms?pageNo=${pageNo}&pageSize=${pageSize}`,
                 validateStatus: (response, result) => {
                     return response.status === 200 && !result.isError;

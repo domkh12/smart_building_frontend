@@ -2,21 +2,38 @@ import {Card, styled, Typography} from "@mui/material";
 import {
     GaugeContainer,
     GaugeReferenceArc,
-    GaugeValueArc,
     useGaugeState,
 } from "@mui/x-charts";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {MdOutlineWaves} from "react-icons/md";
 import {cardStyle} from "../assets/style";
-import useWebsocketServer from "../hook/useWebsocketServer";
 import useTranslate from "../hook/useTranslate.jsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {clearMessageFromWS} from "../redux/feature/message/messageSlice.js";
+import StatusDeviceComponent from "./StatusDeviceComponent.jsx";
 
-function GaugeHumidityComponent({value}) {
+function GaugeHumidityComponent({value, device}) {
     const {t} = useTranslate();
+    const dispatch = useDispatch();
     const mode = useSelector((state) => state.theme.mode);
+    const [isOnline, setIsOnline] = useState(device?.status === "Active");
+    const deviceStatus = useSelector((state) => state.message.deviceStatus);
     const valueMin = 0;
     const valueMax = 100;
+
+    useEffect(() => {
+        if (deviceStatus?.length > 0) {
+            const deviceStatusObject = deviceStatus.find(
+                (deviceStatus) => deviceStatus?.deviceId == device?.id
+            );
+            if (deviceStatusObject) {
+                setIsOnline(deviceStatusObject?.status === "Active" ? true : false);
+            }
+            if (deviceStatusObject?.status === "Inactive") {
+                dispatch(clearMessageFromWS());
+            }
+        }
+    }, [deviceStatus]);
 
     const clampedValue = Math.min(Math.max(value, valueMin), valueMax);
 
@@ -53,9 +70,10 @@ function GaugeHumidityComponent({value}) {
 
     return (
         <Card
-            sx={{...cardStyle}}
+            sx={{...cardStyle, position: "relative"}}
             className="flex flex-col items-center justify-center py-5"
         >
+            <StatusDeviceComponent isOnline={isOnline}/>
             <Typography
                 variant="h6"
                 className="flex justify-center items-center gap-2"
@@ -95,7 +113,7 @@ function GaugeHumidityComponent({value}) {
                         <GaugePointer/>
                     </GaugeContainer>
                 </div>
-                <Typography variant="h4">{value}%</Typography>
+                <Typography variant="h4">{value ? `${value} %` : `__`}</Typography>
             </div>
         </Card>
     );

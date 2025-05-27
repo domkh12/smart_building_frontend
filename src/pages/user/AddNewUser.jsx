@@ -133,6 +133,14 @@ function AddNewUser() {
                     .required("Room is required"),
             }
             : {}),
+        ...(isAdmin ?
+            {
+                roomId: Yup.array()
+                    .test("len", "Room must not be empty", (val) => {
+                        return val ? val.length !== 0 : false;
+                    })
+                    .required("Room is required"),
+            } : {})
     });
 
     const handleMouseDownPassword = (event) => {
@@ -267,7 +275,7 @@ function AddNewUser() {
     const handleBackClick1 = () => {
         if (isManager) {
             navigate("/dash");
-        }else if (isAdmin) {
+        } else if (isAdmin) {
             navigate("/admin");
         }
     }

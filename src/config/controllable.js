@@ -1,10 +1,10 @@
 export const CONTROLLABLE = [
   {
-    id: 0,
+    id: 1,
     name: "Read",
   },
   {
-    id: 1,
+    id: 2,
     name: "Read/Write",
   },
 ];

@@ -57,7 +57,7 @@ function AddNewDevice() {
         name: values.name,
         image: profileImageUri,
         description: values.description,
-        controllable: values.controllable,
+        controllable: values.controllable === 2 ? true : false,
       });
     } catch (err) {
       console.log(err);

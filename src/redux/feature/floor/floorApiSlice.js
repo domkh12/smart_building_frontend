@@ -75,7 +75,11 @@ export const floorApiSlice = apiSlice.injectEndpoints({
                     ...initialState
                 }
             }),
-            invalidatesTags: (result, error, arg) => [{type: "Floor", arg: arg.id}, {type: "FloorName", id: "LIST"}],
+            invalidatesTags: (result, error, arg) => [
+                {type: "Floor", arg: arg.id},
+                {type: "FloorName", id: "LIST"},
+                {type: "BuildingName", id: "LIST"}
+            ],
         }),
 
         deleteFloor: builder.mutation({
@@ -85,7 +89,11 @@ export const floorApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: (result, error, arg) => [{type: "Building", id: arg.id}, {
                 type: "Floor",
                 id: "LIST"
-            }, {type: "Device", id: "LIST"}, {type: "Room", id: "LIST"}, {type: "FloorName", id: "LIST"}],
+            }, {type: "Device", id: "LIST"},
+                {type: "Room", id: "LIST"},
+                {type: "FloorName", id: "LIST"},
+                {type: "BuildingName", id: "LIST"}
+            ],
         }),
 
         getAllFloorName: builder.query({

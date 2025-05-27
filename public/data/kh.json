@@ -192,5 +192,16 @@
   "resetPasswordDescription": "សូមបំពេញលេខសម្ងាត់ពីរដង និងព្យាយាមកុំឲ្យភ្លេច",
   "passwordIsRequired": "លេខសម្ងាត់តម្រូវឲ្យបំពេញ",
   "confirmPasswordIsRequired": "ពាក្យសម្ងាត់ដែលបញ្ជាក់តម្រូវឲ្យបំពេញ",
-  "logout": "ចាកចេញ"
+  "logout": "ចាកចេញ",
+  "deviceStatus": "ស្ថានភាពឧបករណ៍",
+  "powerConsumption": "ការប្រើប្រាស់ថាមពល",
+  "active": "ដំណើរការ",
+  "inActive": "មិនដំណើរការ",
+  "goToLogin": "ត្រឡប់ទៅកាន់ Login",
+  "noResultFound": "រកមិនឃើញលទ្ធផល",
+  "noMatchesFoundFor": "រកមិនឃើញ",
+  "checkYourKeyword": "សាកល្បងពិនិត្យអក្ខរាវិរុទ្ធរបស់អ្នក ឬប្រើពាក្យគន្លឹះផ្សេងទៀត",
+  "deleteWarningDescription": "សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។ ទិន្នន័យដែលពាក់ព័ន្ធទាំងអស់នឹងត្រូវបានលុបជាអចិន្ត្រៃយ៍។",
+  "updateSuccess": "កែប្រែបានជោគជ័យ",
+  "analysis": "ការវិភាគ"
 }

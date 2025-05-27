@@ -10,9 +10,9 @@ function LogoComponent() {
       </div>
 
       <div
-        className={`flex flex-col text-nowrap transition-all duration-500 ${
-          isCollapsed ? "opacity-0 pointer-events-none w-0" : "opacity-100"
-        }`}
+        className={`flex flex-col text-nowrap transition-all duration-500
+        ${isCollapsed ? "opacity-0 pointer-events-none w-0" : "opacity-100"}
+        `}
       >
         <Typography variant="h6" className="text-[16px] xs:text-xl tracking-wide">
           ប្រព័ន្ធអគារឆ្លាតវៃ

@@ -11,6 +11,7 @@ import {Alert, Box, Paper, Stack, TextField, Typography} from "@mui/material";
 import {Form, Formik} from "formik";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {MdKeyboardArrowLeft} from "react-icons/md";
+import LogoTwoComponent from "../../components/LogoTwoComponent.jsx";
 
 function ForgotPassword() {
     const [message, setMessage] = useState(null);
@@ -51,7 +52,7 @@ function ForgotPassword() {
             <Paper elevation={0}
                    className="fixed top-0 left-0 w-full bg-white bg-opacity-5 lg:bg-opacity-0 z-20 backdrop-blur-3xl lg:backdrop-blur-0">
                 <div className="flex justify-between items-center xxs:flex-nowrap flex-wrap">
-                    <LogoComponent/>
+                    <LogoTwoComponent/>
                     <div className="pr-[20px] flex gap-[16px]  items-center">
                         <TranslateComponent/>
                         <SettingComponent/>
@@ -71,7 +72,7 @@ function ForgotPassword() {
                     {({values, touched, errors, handleChange, handleBlur}) => (
                         <Form>
                             <section className="h-screen">
-                                <Stack direction="row" spacing={2} sx={{
+                                <Stack direction="row" sx={{
                                     justifyContent: "center",
                                     alignItems: "center",
                                     height: "100%",

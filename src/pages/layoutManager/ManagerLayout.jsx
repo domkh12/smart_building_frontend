@@ -18,12 +18,14 @@ import { setUserProfile } from "../../redux/feature/auth/authSlice";
 import SettingDrawerComponent from "../../components/SettingDrawerComponent";
 import WaveLoadingComponent from "../../components/WaveLoadingComponent.jsx";
 import {Box, Paper} from "@mui/material";
+import {useGetAnalysisQuery} from "../../redux/feature/analysis/analysisApiSlice.js";
+import {setAnalysisData} from "../../redux/feature/analysis/analysisSlice.js";
+import {setOpenUtilSearch} from "../../redux/feature/app/appSlice.js";
 
 function ManagerLayout() {
   const isPaginationSuccess = useSelector(
     (state) => state.action.isPaginationSuccess
   );
-  // const user = useSelector((state) => state.users.user);
   const mainContentRef = useRef(null);
   const dispatch = useDispatch();
   const [scrolling, setScrolling] = useState();
@@ -92,7 +94,7 @@ function ManagerLayout() {
     const handleKeyDown = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
         event.preventDefault();
-        alert("Search Text");
+        dispatch(setOpenUtilSearch(true));
       }
     };
 
@@ -132,7 +134,7 @@ function ManagerLayout() {
             </header>
             <Box component="main"
               ref={mainContentRef}
-              className="xl:px-[40px] px-[10px] sm:px-[20px] pt-[8px] pb-[64px] "
+              className="xl:px-[40px] px-[10px] sm:px-[20px] pt-[8px] pb-[64px]"
             >
               <Outlet />
             </Box>

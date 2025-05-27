@@ -8,27 +8,35 @@ import {
     MenuItem,
     FormHelperText,
     ListSubheader,
+    TextField,
+    InputAdornment,
 } from "@mui/material";
-import {selectMenuStyle, selectStyle} from "../assets/style";
+import {selectStyle} from "../assets/style";
 import {useSelector} from "react-redux";
+import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
+import useTranslate from "../hook/useTranslate.jsx";
+import DataNotFound from "./DataNotFound";
 
 const SelectComponent = ({
-                             label,
-                             options,
-                             onChange,
-                             fullWidth,
-                             error,
-                             touched,
-                             optionLabelKey = "",
-                             groupLabelKey = "",
-                             itemsLabelKey = "items",
-                             value,
-                             width60,
-                             selectFistValue,
-                         }) => {
+    label,
+    options,
+    onChange,
+    fullWidth,
+    error,
+    touched,
+    optionLabelKey = "",
+    groupLabelKey = "",
+    itemsLabelKey = "items",
+    value,
+    width60,
+    selectFistValue,
+}) => {
     const [valueSelect, setValueSelect] = useState([]);
     const [selectedids, setSelectedids] = useState([]);
+    const [searchText, setSearchText] = useState("");
     const mode = useSelector((state) => state.theme.mode);
+    const { t } = useTranslate();
+
     useEffect(() => {
         if (selectFistValue) {
             if (options) {
@@ -85,28 +93,30 @@ const SelectComponent = ({
         selectFistValue,
     ]);
 
-    const handleChange = (event) => {
-        const selectedValues = event.target.value;
-        let selectedidsArray = [];
+    const handleSearchChange = (event) => {
+        setSearchText(event.target.value);
+    };
 
-        if (groupLabelKey) {
-            options.forEach((group) => {
-                const items = group[itemsLabelKey] || [];
-                items.forEach((item) => {
-                    if (selectedValues.includes(item[optionLabelKey])) {
-                        selectedidsArray.push(item.id);
-                    }
-                });
-            });
+    const filterOptions = (options, searchText) => {
+        if (!searchText) return options;
+
+        const searchLower = searchText.toLowerCase();
+
+        if (!groupLabelKey) {
+            return options?.filter(option =>
+                option[optionLabelKey].toLowerCase().includes(searchLower)
+            );
         } else {
-            selectedidsArray = options
-                .filter((option) => selectedValues.includes(option[optionLabelKey]))
-                .map((option) => option.id);
+            return options?.map(group => ({
+                ...group,
+                [itemsLabelKey]: group[itemsLabelKey]?.filter(item =>
+                    item[optionLabelKey].toLowerCase().includes(searchLower)
+                )
+            })).filter(group =>
+                group[groupLabelKey].toLowerCase().includes(searchLower) ||
+                group[itemsLabelKey]?.length > 0
+            );
         }
-
-        setValueSelect(selectedValues);
-        setSelectedids(selectedidsArray);
-        onChange(selectedidsArray);
     };
 
     const ITEM_HEIGHT = 48;
@@ -137,12 +147,13 @@ const SelectComponent = ({
     const hasError = Boolean(error && touched);
 
     const renderMenuItems = () => {
-        if (!options || options?.length === 0) return null;
+        if (!options || options?.length === 0) return <DataNotFound />;
 
+        const filteredOptions = filterOptions(options, searchText);
         let menuItems = [];
 
         if (!groupLabelKey) {
-            menuItems = options?.map((option) => (
+            menuItems = filteredOptions?.map((option) => (
                 <MenuItem
                     key={option.id}
                     value={option[optionLabelKey]}
@@ -164,44 +175,74 @@ const SelectComponent = ({
                 </MenuItem>
             ));
         } else {
-            options?.forEach((group) => {
-                menuItems.push(
-                    <ListSubheader
-                        variant="cus1"
-                        key={group[groupLabelKey]}
-                    >
-                        {group[groupLabelKey]}
-                    </ListSubheader>
-                );
+            filteredOptions?.forEach((group) => {
+                const showGroup = searchText.toLowerCase() === '' ||
+                    group[groupLabelKey].toLowerCase().includes(searchText.toLowerCase()) ||
+                    group[itemsLabelKey]?.length > 0;
 
-                const items = group[itemsLabelKey] || [];
-                items?.forEach((option) => {
+                if (showGroup) {
                     menuItems.push(
-                        <MenuItem
-                            key={option.id}
-                            value={option[optionLabelKey]}
-                            sx={{
-                                borderRadius: "5px",
-                                height: "40px",
-                                padding: "0",
-                                "& .MuiTypography-root": {
-                                    fontSize: "15px",
-                                },
-                                paddingRight: "10px",
-
-                            }}
+                        <ListSubheader
+                            variant="cus1"
+                            key={group[groupLabelKey]}
                         >
-                            <Checkbox
-                                disableRipple
-                                checked={valueSelect.includes(option[optionLabelKey])}
-                            />
-                            <ListItemText primary={option[optionLabelKey]}/>
-                        </MenuItem>
+                            {group[groupLabelKey]}
+                        </ListSubheader>
                     );
-                });
+
+                    const items = group[itemsLabelKey] || [];
+                    items?.forEach((option) => {
+                        menuItems.push(
+                            <MenuItem
+                                key={option.id}
+                                value={option[optionLabelKey]}
+                                sx={{
+                                    borderRadius: "5px",
+                                    height: "40px",
+                                    padding: "0",
+                                    "& .MuiTypography-root": {
+                                        fontSize: "15px",
+                                    },
+                                    paddingRight: "10px",
+                                }}
+                            >
+                                <Checkbox
+                                    disableRipple
+                                    checked={valueSelect.includes(option[optionLabelKey])}
+                                />
+                                <ListItemText primary={option[optionLabelKey]}/>
+                            </MenuItem>
+                        );
+                    });
+                }
             });
         }
-        return menuItems;
+        
+        return menuItems.length > 0 ? menuItems : <DataNotFound />;
+    };
+
+    const handleChange = (event) => {
+        const selectedValues = event.target.value;
+        let selectedidsArray = [];
+
+        if (groupLabelKey) {
+            options.forEach((group) => {
+                const items = group[itemsLabelKey] || [];
+                items.forEach((item) => {
+                    if (selectedValues.includes(item[optionLabelKey])) {
+                        selectedidsArray.push(item.id);
+                    }
+                });
+            });
+        } else {
+            selectedidsArray = options
+                .filter((option) => selectedValues.includes(option[optionLabelKey]))
+                .map((option) => option.id);
+        }
+
+        setValueSelect(selectedValues);
+        setSelectedids(selectedidsArray);
+        onChange(selectedidsArray);
     };
 
     return (
@@ -227,11 +268,37 @@ const SelectComponent = ({
                     ...(hasError && {
                         "& .MuiOutlinedInput-notchedOutline": {
                             borderColor: "#f44336",
-
                         },
                     }),
                 }}
             >
+                <div>
+                    <TextField
+                        size="small"
+                        variant="outlined"
+                        placeholder={t('search')}
+                        value={searchText}
+                        onChange={handleSearchChange}
+                        autoFocus
+                        onClick={(event) => {
+                            event.stopPropagation();
+                        }}
+                        onKeyDown={(event) => {
+                            event.stopPropagation();
+                        }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchTwoToneIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                        sx={{
+                            margin: "8px",
+                            width: "calc(100% - 16px)",
+                        }}
+                    />
+                </div>
                 {renderMenuItems()}
             </Select>
             <FormHelperText error={hasError}>

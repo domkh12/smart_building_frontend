@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const actionSlice = createSlice({
   name: "action",
   initialState: {
-    isCollapsed: false,
+    isCollapsed: true,
     isLoadingBar: false,
     isPaginationSuccess: false,
     isScrolling: false,

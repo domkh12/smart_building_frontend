@@ -54,9 +54,6 @@ function NavBarDashboardAdmin() {
 
         <div className="flex lg:gap-2 items-center flex-nowrap">
           <UtilSearchComponent />
-          <div>
-            <ToolTipButtonComponent title={"Search"} icon={IoSearch} />
-          </div>
 
           <TranslateComponent />
 

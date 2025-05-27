@@ -177,7 +177,6 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
                             <LoadingButton
                                 variant="contained"
                                 loading={isLoading}
-                                loadingIndicator="Logging out..."
                                 sx={{
                                     color: "#B60A00",
                                     width: "100%",

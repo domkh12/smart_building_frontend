@@ -86,9 +86,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    verifySites: builder.mutation({
-      query: ({ uuid, token }) => ({
-        url: `/auth/verify-sites?uuid=${uuid}&token=${token}`,
+    changeRoom: builder.mutation({
+      query: ({ id }) => ({
+        url: `/auth/change-rooms/${id}`,
         method: "POST",
       }),
       
@@ -154,6 +154,6 @@ export const {
   useVerifyTwoFaMutation,
   useDisableTwoFaMutation,
   useVerify2FALoginMutation,
-  useVerifySitesMutation,
+  useChangeRoomMutation,
   useGetUserProfileQuery,
 } = authApiSlice;

@@ -14,6 +14,27 @@ const initialState = analysisAdapter.getInitialState();
 
 export const analysisApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+
+        getAnalysis: builder.query({
+           query: ({date_from, date_to}) => ({
+               url: `/analysis?date_from=${date_from}&date_to=${date_to}`,
+               validateStatus: (response, result) => {
+                   return response.status === 200 && !result.isError;
+               },
+           }),
+            transformResponse: (responseData) => {
+                return responseData;
+            },
+            providesTags: (result, error, arg) => {
+                if (result?.ids) {
+                    return [
+                        {type: "Analysis", id: "LIST"},
+                        ...result.ids.map((id) => ({type: "Analysis", id})),
+                    ];
+                } else return [{type: "Analysis", id: "LIST"}];
+            },
+        }),
+
         getPower: builder.query({
             query: ({range = ""}) => ({
                 url: `/analysis/power-usage?range=${range}`,
@@ -29,7 +50,7 @@ export const analysisApiSlice = apiSlice.injectEndpoints({
                 };
             },
             providesTags: (result, error, arg) => {
-                return [{type: "Analysis", id: "LIST"}];
+                return [{type: "PowerUsage", id: "LIST"}];
             },
         }),
 
@@ -56,4 +77,4 @@ export const analysisApiSlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const {useGetPowerQuery, useGetTotalCountsMutation} = analysisApiSlice;
+export const {useGetAnalysisQuery, useGetPowerQuery, useGetTotalCountsMutation} = analysisApiSlice;

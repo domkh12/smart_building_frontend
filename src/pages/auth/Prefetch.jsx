@@ -22,6 +22,7 @@ function Prefetch() {
             // store.dispatch(floorApiSlice.util.prefetch("getFloor", "floorList", {force: true}));
         }else if (isAdmin){
             store.dispatch(userApiSlice.util.prefetch("getUsers", "usersList", {force: true}));
+            store.dispatch(roomApiSlice.util.prefetch("getAllRoomNames", "roomNameList", {force: true}));
         }else if (isManager) {
             store.dispatch(userApiSlice.util.prefetch("getAllSignUpMethods", "signupMethodList", {force: true}));
             store.dispatch(userApiSlice.util.prefetch("findAllGender", "genderList", {force: true}));

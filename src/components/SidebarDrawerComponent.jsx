@@ -23,6 +23,7 @@ import ApartmentTwoToneIcon from "@mui/icons-material/ApartmentTwoTone";
 import ElevatorTwoToneIcon from "@mui/icons-material/ElevatorTwoTone";
 import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
 import TipsAndUpdatesTwoToneIcon from "@mui/icons-material/TipsAndUpdatesTwoTone";
+import LogoTwoComponent from "./LogoTwoComponent.jsx";
 
 function SidebarDrawerComponent() {
   const [isOverviewOpen, setIsOverviewOpen] = useState(true);
@@ -70,7 +71,7 @@ function SidebarDrawerComponent() {
       {open && (
         <Drawer open={open} onClose={() => setOpen(false)} elevation={0}>
           <Paper elevation={0} sx={{ width: 280, height: "100%" }} role="presentation">
-            <LogoComponent />
+            <LogoTwoComponent/>
             <div className="px-[16px] overflow-auto">
               <List
                 component="div"

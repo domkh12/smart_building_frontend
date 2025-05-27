@@ -7,6 +7,7 @@ import RequireAuth from "./pages/auth/RequireAuth.jsx";
 import {ROLES} from "./config/roles.js";
 import {useSelector} from "react-redux";
 import {getTheme} from "./redux/feature/theme/theme.js";
+const AnalysisUser = lazy(() => import("./pages/analysis/AnalysisUser.jsx"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword.jsx"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword.jsx"));
 const AdminLayout = lazy(() => import("./pages/layoutAdmin/AdminLayout.jsx"));
@@ -57,6 +58,7 @@ function App() {
 
     const mode = useSelector((state) => state.theme.mode);
     const theme = getTheme(mode);
+
     window.addEventListener("vite:preloadError", (event) => {
         event.preventDefault();
         window.location.reload();
@@ -199,6 +201,7 @@ function App() {
                                     <Route index element={<DeviceControlUser/>}/>
                                     <Route path="accounts" element={<Profile/>}/>
                                     <Route path="devices-control" element={<DeviceControlUser/>}/>
+                                    <Route path="analysis" element={<AnalysisUser />}/>
                                 </Route>
                             </Route>
                             {/*User End*/}

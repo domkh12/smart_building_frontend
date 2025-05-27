@@ -1,5 +1,5 @@
 import { apiSlice } from "../../app/api/apiSlice";
-import {setDeviceTypeNames} from "./deviceSlice";
+import {setDeviceTypeDataById, setDeviceTypeNames} from "./deviceSlice";
 
 export const deviceTypeApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -38,10 +38,51 @@ export const deviceTypeApiSlice = apiSlice.injectEndpoints({
           console.log(error);
         }
       },
+    }),
+
+    updateDeviceType: builder.mutation({
+      query: ({id, ...initialState}) => ({
+        url: `/device-types/${id}`,
+        method: "PUT",
+        body: {
+          ...initialState,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [{type: "DeviceType", id: "LIST"}],
+    }),
+
+    getDeviceTypeById: builder.mutation({
+      query: (id) => ({
+        url: `/device-types/${id}`,
+        method: "GET",
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setDeviceTypeDataById({ data }));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }),
+
+    deleteDeviceTypeById: builder.mutation({
+      query: ({id}) => ({
+        url: `/device-types/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, arg) => [{type: "DeviceType", id: "LIST"}],
     })
 
 
   }),
 });
 
-export const { useGetDeviceTypeNamesMutation, useGetAllDeviceTypesQuery, useAddNewDeviceTypeMutation } = deviceTypeApiSlice;
+export const {
+  useDeleteDeviceTypeByIdMutation,
+  useGetDeviceTypeByIdMutation,
+  useUpdateDeviceTypeMutation,
+  useGetDeviceTypeNamesMutation,
+  useGetAllDeviceTypesQuery,
+  useAddNewDeviceTypeMutation
+} = deviceTypeApiSlice;

@@ -18,6 +18,7 @@ import LogoComponent from "./LogoComponent.jsx";
 import {IoIosArrowDown, IoIosArrowForward} from "react-icons/io";
 import {listItemButtonStyle} from "../assets/style.js";
 import SpaceDashboardTwoToneIcon from "@mui/icons-material/SpaceDashboardTwoTone";
+import LogoTwoComponent from "./LogoTwoComponent.jsx";
 
 function SidebarDrawerUserComponent() {
     const [isOverviewOpen, setIsOverviewOpen] = useState(true);
@@ -45,7 +46,7 @@ function SidebarDrawerUserComponent() {
             {open && (
                 <Drawer open={open} onClose={() => setOpen(false)} elevation={0}>
                     <Paper elevation={0} sx={{width: 280, height: "100%"}} role="presentation">
-                        <LogoComponent/>
+                        <LogoTwoComponent/>
                         <div className="px-[16px] overflow-auto">
                             <List
                                 component="div"

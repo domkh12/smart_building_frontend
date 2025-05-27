@@ -4,7 +4,6 @@ import useTranslate from "../hook/useTranslate.jsx";
 import ToolTipButtonComponent from "./ToolTipButtonComponent.jsx";
 import {CgMenuLeftAlt} from "react-icons/cg";
 import {
-    Box,
     Collapse,
     Drawer,
     List,
@@ -20,6 +19,9 @@ import {listItemButtonStyle} from "../assets/style.js";
 import SpaceDashboardTwoToneIcon from "@mui/icons-material/SpaceDashboardTwoTone";
 import SettingsRemoteIcon from "@mui/icons-material/SettingsRemote";
 import AccountBoxTwoToneIcon from "@mui/icons-material/AccountBoxTwoTone";
+import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
+import TipsAndUpdatesTwoToneIcon from "@mui/icons-material/TipsAndUpdatesTwoTone";
+import LogoTwoComponent from "./LogoTwoComponent.jsx";
 
 function SidebarDrawerAdminComponent() {
     const [isOverviewOpen, setIsOverviewOpen] = useState(true);
@@ -55,7 +57,7 @@ function SidebarDrawerAdminComponent() {
             {open && (
                 <Drawer open={open} onClose={() => setOpen(false)} elevation={0}>
                     <Paper elevation={0} sx={{ width: 280 }} role="presentation">
-                        <LogoComponent />
+                        <LogoTwoComponent/>
                         <div className="px-[16px] overflow-auto">
                             <List
                                 component="div"
@@ -200,6 +202,84 @@ function SidebarDrawerAdminComponent() {
                                 }
                             >
                                 <Collapse in={isManagementOpen} timeout="auto" unmountOnExit>
+
+                                    {/* Room Menu */}
+                                    <ListItemButton
+                                        sx={{
+                                            borderRadius: "10px",
+
+                                            mb: "5px",
+                                            ...listItemButtonStyle,
+                                        }}
+                                        onClick={() => {
+                                            handleNavigation("/admin/rooms");
+                                            setOpen(false);
+                                        }}
+                                        selected={location.pathname === "/admin/rooms"}
+                                    >
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: 0,
+                                                mr: 1,
+                                            }}
+                                        >
+                                            <MeetingRoomTwoToneIcon className="w-6 h-6" />
+                                        </ListItemIcon>
+
+                                        <ListItemText
+                                            primary={
+                                                <Typography
+                                                    component="span"
+                                                    variant="body1"
+                                                    sx={{
+
+                                                        display: "inline",
+                                                    }}
+                                                >
+                                                    {t("room")}
+                                                </Typography>
+                                            }
+                                        />
+                                    </ListItemButton>
+
+                                    {/*Device Menu */}
+                                    <ListItemButton
+                                        sx={{
+                                            borderRadius: "10px",
+
+                                            mb: "5px",
+                                            ...listItemButtonStyle,
+                                        }}
+                                        onClick={() => {
+                                            handleNavigation("/admin/devices");
+                                            setOpen(false);
+                                        }}
+                                        selected={location.pathname === "/admin/devices"}
+                                    >
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: 0,
+                                                mr: 1,
+                                            }}
+                                        >
+                                            <TipsAndUpdatesTwoToneIcon className="w-6 h-6" />
+                                        </ListItemIcon>
+
+                                        <ListItemText
+                                            primary={
+                                                <Typography
+                                                    component="span"
+                                                    variant="body1"
+                                                    sx={{
+
+                                                        display: "inline",
+                                                    }}
+                                                >
+                                                    {t("device")}
+                                                </Typography>
+                                            }
+                                        />
+                                    </ListItemButton>
 
                                     {/* User Menu */}
                                     <ListItemButton

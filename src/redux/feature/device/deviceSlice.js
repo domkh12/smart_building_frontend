@@ -24,9 +24,25 @@ const deviceSlice = createSlice({
         brakerOrSwitchDevices: [],
         fanDevices: [],
         isOpenQuickEditDevice: false,
-        deviceDataForQuickEdit: {}
+        deviceDataForQuickEdit: {},
+        isQuickEditDeviceTypeOpen: false,
+        idDeviceTypeToEdit: "",
+        deviceTypeDataById: {},
+        idDeviceTypeToDelete: "",
     },
     reducers: {
+        setIdDeviceTypeToDelete(state, action) {
+            state.idDeviceTypeToDelete = action.payload;
+        },
+        setDeviceTypeDataById(state, action) {
+            state.deviceTypeDataById = action.payload;
+        },
+        setIdDeviceTypeToEdit(state, action) {
+            state.idDeviceTypeToEdit = action.payload;
+        },
+        setIsQuickEditDeviceTypeOpen(state, action) {
+            state.isQuickEditDeviceTypeOpen = action.payload;
+        },
         setDeviceDataForQuickEdit(state, action){
           state.deviceDataForQuickEdit = action.payload;
         },
@@ -106,6 +122,10 @@ const deviceSlice = createSlice({
 });
 
 export const {
+    setIdDeviceTypeToDelete,
+    setDeviceTypeDataById,
+    setIdDeviceTypeToEdit,
+    setIsQuickEditDeviceTypeOpen,
     setDeviceDataForQuickEdit,
     setIsOpenQuickEditDevice,
     setDeviceDataByRoom,

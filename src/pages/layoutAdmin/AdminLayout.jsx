@@ -17,6 +17,7 @@ import { setUserProfile } from "../../redux/feature/auth/authSlice";
 import WaveLoadingComponent from "../../components/WaveLoadingComponent.jsx";
 import {Paper} from "@mui/material";
 import {useGetUserProfileQuery} from "../../redux/feature/auth/authApiSlice.js";
+import {setOpenUtilSearch} from "../../redux/feature/app/appSlice.js";
 
 function AdminLayout() {
   const isPaginationSuccess = useSelector(
@@ -100,7 +101,7 @@ function AdminLayout() {
     const handleKeyDown = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === "k") {
         event.preventDefault();
-        alert("Search Text");
+        dispatch(setOpenUtilSearch(true));
       }
     };
 

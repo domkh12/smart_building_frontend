@@ -105,6 +105,15 @@ function QuickEditUserComponent() {
                     .required("Room is required"),
             }
             : {}),
+
+        ...(isAdmin
+            ? {
+                roomId: Yup.array()
+                    .test("len", "Room must not be empty", (val) => {
+                        return val ? val.length !== 0 : false;
+                    })
+                    .required("Room is required"),
+            } : {})
     });
 
     const handleSubmit = async (values, {setSubmitting}) => {
@@ -158,11 +167,11 @@ function QuickEditUserComponent() {
 
     if (!gender && !role && !floor) content = (
         <Backdrop
-            sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+            sx={(theme) => ({color: '#fff', zIndex: theme.zIndex.drawer + 1})}
             open={open}
             onClick={handleClose}
         >
-            <CircularProgress color="inherit" />
+            <CircularProgress color="inherit"/>
         </Backdrop>
     );
 
@@ -210,7 +219,8 @@ function QuickEditUserComponent() {
                             <Form>
                                 <Typography
                                     variant="h6"
-                                    sx={{padding: "24px", color: mode === "dark" ? "#fff": "#000"
+                                    sx={{
+                                        padding: "24px", color: mode === "dark" ? "#fff" : "#000"
                                     }}
                                 >
                                     {t('quickUpdate')}
@@ -376,20 +386,19 @@ function QuickEditUserComponent() {
                                         />
                                     )}
 
-                                    {isManager && (
-                                        <SelectComponent
-                                            label={t("room")}
-                                            options={floor}
-                                            onChange={handleRoomChange}
-                                            fullWidth={true}
-                                            error={errors.roomId}
-                                            touched={touched.roomId}
-                                            groupLabelKey="name"
-                                            itemsLabelKey="rooms"
-                                            optionLabelKey="name"
-                                            value={values.roomId}
-                                        />
-                                    )}
+                                    <SelectComponent
+                                        label={t("room")}
+                                        options={floor}
+                                        onChange={handleRoomChange}
+                                        fullWidth={true}
+                                        error={errors.roomId}
+                                        touched={touched.roomId}
+                                        groupLabelKey="name"
+                                        itemsLabelKey="rooms"
+                                        optionLabelKey="name"
+                                        value={values.roomId}
+                                    />
+
                                 </Box>
                                 <Box
                                     sx={{
@@ -439,6 +448,11 @@ function QuickEditUserComponent() {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
+                        overflow: "auto",
+                        maxHeight: "90vh",
+                        boxShadow: "0px 10px 15px -3px rgb(0 0 0 / 20%), 0px 4px 6px -2px rgb(0 0 0 / 15%)",
+                        display: "flex",
+                        flexDirection: "column",
                     }}
                 >
 

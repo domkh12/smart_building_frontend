@@ -1,4 +1,4 @@
-import {Card, Grid2, Switch, Typography} from "@mui/material";
+import {Button, Card, Grid2, Switch, Typography} from "@mui/material";
 import {cardStyle} from "../../assets/style.js";
 import {Gauge, gaugeClasses} from "@mui/x-charts";
 import useTranslate from "../../hook/useTranslate.jsx";
@@ -16,6 +16,10 @@ import TemperatureAndHumidityCardComponent from "../../components/TemperatureAnd
 import Pm2_5AndPowerCardComponent from "../../components/Pm2_5AndPowerCardComponent.jsx";
 import {setDeviceDataByRoom} from "../../redux/feature/device/deviceSlice.js";
 import SwitchControlCardUserComponent from "../../components/SwitchControlCardUserComponent.jsx";
+import DrawerSensorComponent from "../../components/DrawerSensorComponent.jsx";
+import {setIsOpenDrawerSensor} from "../../redux/feature/actions/actionSlice.js";
+import {MdOutlineSensors} from "react-icons/md";
+import DrawerSensorUserComponent from "../../components/DrawerSensorUserComponent.jsx";
 
 function DeviceControlUser() {
     const [isLoading, setIsLoading] = useState(true);
@@ -26,24 +30,25 @@ function DeviceControlUser() {
     const {roomId} = useAuth();
     const {
         sendMessage,
-        loading
+        loading,
+        isConnected
     } = useWebsocketServer(!isSuccessGetRoomId ? null : `/app/chat/${roomFetchedById?.data?.id}`);
     const {
         messages,
-        loading: loadingReciveMessage
+        loading: loadingReciveMessage,
+        isConnected: isConnectedReciveMessage,
     } = useWebsocketServer(!isSuccessGetRoomId ? null : `/topic/messages/${roomFetchedById?.data?.id}`);
     const temperatureValue = useSelector((state) => state.message?.temperatureValue);
     const humidityValue = useSelector((state) => state.message?.humidityValue);
     const pm2_5Value = useSelector((state) => state.message?.pm2_5Value);
     const powerValue = useSelector((state) => state.message?.powerValue);
-
     const fanDevices = useSelector((state) => state.device.fanDevices);
     const lightDevices = useSelector((state) => state.device.lightDevices);
     const airConditionerDevices = useSelector((state) => state.device.airConditionerDevices);
     const messageSentToWs = useSelector((state) => state.message.messageSentToWs);
 
     useEffect(() => {
-        if (messageSentToWs){
+        if (messageSentToWs) {
             sendMessage(messageSentToWs);
         }
     }, [messageSentToWs]);
@@ -59,20 +64,17 @@ function DeviceControlUser() {
     }, [messages]);
 
     useEffect(() => {
-        if (!loading || !loadingReciveMessage) {
+        if (isConnectedReciveMessage && isConnected) {
             setIsLoading(false);
         }
-    }, [loading, loadingReciveMessage]);
+    }, [isConnected, isConnectedReciveMessage]);
 
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true);
             try {
                 await Promise.all([getByRoomId({id: roomId[0]})]);
             } catch (error) {
                 console.error("Error fetching data:", error);
-            }finally {
-                setIsLoading(false);
             }
         };
         fetchData();
@@ -81,34 +83,49 @@ function DeviceControlUser() {
 
     let content;
 
-    if (isLoading) content = <LoadingFetchingDataComponent/>
+    if (loading || loadingReciveMessage) content = <LoadingFetchingDataComponent/>
 
     if (!isLoading) content = (
         <>
 
-            <Grid2 container spacing={2}>
-                <Grid2 size={{xs: 12, md: 6}}>
-                    <TemperatureAndHumidityCardComponent temperatureValue={temperatureValue}
-                                                         humidityValue={humidityValue}/>
+            <div className="lg:block hidden">
+                <Grid2 container spacing={2}>
+                    <Grid2 size={{xs: 12, md: 6}}>
+                        <TemperatureAndHumidityCardComponent temperatureValue={temperatureValue}
+                                                             humidityValue={humidityValue}
+                                                             devices={roomFetchedById?.data?.devices}/>
+                    </Grid2>
+                    <Grid2 size={{xs: 12, md: 6}}>
+                        <Pm2_5AndPowerCardComponent pm2_5Value={pm2_5Value} powerValue={powerValue}/>
+                    </Grid2>
                 </Grid2>
-                <Grid2 size={{xs: 12, md: 6}}>
-                    <Pm2_5AndPowerCardComponent pm2_5Value={pm2_5Value} powerValue={powerValue}/>
-                </Grid2>
-            </Grid2>
-
+            </div>
 
             {/* section switch*/}
             <Grid2 container spacing={2} sx={{mt: 2}}>
-                <Grid2 size={{xs: 12, sm: 4}}>
-                    <SwitchControlCardUserComponent icon={<HiLightBulb className="w-32 h-32 text-gray-500"/>} title={t('light')} devices={lightDevices}/>
+                <Grid2 size={{xs: 12, md: 4}}>
+                    <SwitchControlCardUserComponent icon={<HiLightBulb className="w-32 h-32 text-gray-500"/>}
+                                                    title={t('light')} devices={lightDevices}/>
                 </Grid2>
-                <Grid2 size={{xs: 12, sm: 4}}>
-                    <SwitchControlCardUserComponent icon={<PiFanFill className="w-32 h-32 text-gray-500"/>} title={t('fan')} devices={fanDevices}/>
+                <Grid2 size={{xs: 12, md: 4}}>
+                    <SwitchControlCardUserComponent icon={<PiFanFill className="w-32 h-32 text-gray-500"/>}
+                                                    title={t('fan')} devices={fanDevices}/>
                 </Grid2>
-                <Grid2 size={{xs: 12, sm: 4}}>
-                    <SwitchControlCardUserComponent icon={<TbAirConditioning className="w-32 h-32 text-gray-500"/>} title={t('airConditioner')} devices={airConditionerDevices}/>
+                <Grid2 size={{xs: 12, md: 4}}>
+                    <SwitchControlCardUserComponent icon={<TbAirConditioning className="w-32 h-32 text-gray-500"/>}
+                                                    title={t('airConditioner')} devices={airConditionerDevices}/>
                 </Grid2>
             </Grid2>
+            <div className="fixed top-20 right-0 lg:hidden">
+                <Button
+                    variant="contained"
+                    sx={{borderRadius: 0}}
+                    onClick={() => dispatch(setIsOpenDrawerSensor(true))}
+
+                ><MdOutlineSensors className="w-7 h-7"/></Button>
+            </div>
+            <DrawerSensorUserComponent powerValue={powerValue} temperatureValue={temperatureValue}
+                                   humidityValue={humidityValue} pm2_5Value={pm2_5Value} roomFetchedById={roomFetchedById}/>
         </>
     )
 
