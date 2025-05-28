@@ -21,6 +21,7 @@ import {
 import LoadingFetchingDataComponent from "./LoadingFetchingDataComponent.jsx";
 import {FiPlus} from "react-icons/fi";
 import useAuth from "../hook/useAuth.jsx";
+import {Slide, toast} from "react-toastify";
 
 function QuickEditRoomComponent() {
     const isQuickEditRoomOpen = useSelector((state) => state.room.isQuickEditRoomOpen);
@@ -98,28 +99,29 @@ function QuickEditRoomComponent() {
     useEffect(() => {
         if (isSuccessUpdateRoom) {
             dispatch(setIsQuickEditRoomOpen(false))
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("updateSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isSuccessUpdateRoom]);
 
     useEffect(() => {
         if (isErrorUpdateRoom) {
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setErrorSnackbar(true));
-            dispatch(
-                setCaptionSnackBar(`${errorUpdateRoom?.data?.error?.description}`)
-            );
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
-
-            setTimeout(() => {
-                dispatch(setErrorSnackbar(false));
-            }, 3500);
+            toast.success(`${errorUpdateRoom?.data?.error?.description}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isErrorUpdateRoom]);
 

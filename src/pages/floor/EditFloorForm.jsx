@@ -16,6 +16,7 @@ import SelectSingleComponent from "../../components/SelectSingleComponent.jsx";
 import ButtonComponent from "../../components/ButtonComponent.jsx";
 import {useUpdateFloorMutation} from "../../redux/feature/floor/floorApiSlice.js";
 import {useGetAllNameBuildingQuery} from "../../redux/feature/building/buildingApiSlice.js";
+import {Slide, toast} from "react-toastify";
 
 function EditFloorForm({ floor }) {
     console.log(floor)
@@ -69,28 +70,29 @@ function EditFloorForm({ floor }) {
     useEffect(() => {
         if (isSuccessUpdateFloor) {
             navigate("/dash/floors");
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("updateSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isSuccessUpdateFloor]);
 
     useEffect(() => {
         if (isErrorUpdateFloor) {
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setErrorSnackbar(true));
-            dispatch(
-                setCaptionSnackBar(`${errorUpdateFloor?.data?.error?.description}`)
-            );
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
-
-            setTimeout(() => {
-                dispatch(setErrorSnackbar(false));
-            }, 3500);
+            toast.error(`${errorUpdateFloor?.data?.error?.description}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isErrorUpdateFloor]);
 

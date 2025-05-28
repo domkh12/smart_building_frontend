@@ -38,7 +38,6 @@ function useWebsocketServer(destination) {
     setIsConnected(true);
     socketClient.current.subscribe(destination, async (message) => {
       const update = JSON.parse(message.body);
-      console.log("Received message:", update);
       setMessages(typeof update === "string" ? JSON.parse(update) : update);
     });
   };

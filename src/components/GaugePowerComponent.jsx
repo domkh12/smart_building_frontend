@@ -18,13 +18,15 @@ function GaugePowerComponent({ value, device}) {
   const dispatch = useDispatch();
   const [isOnline, setIsOnline] = useState(device?.status === "Active");
   const deviceStatus = useSelector((state) => state?.message?.deviceStatus);
+
   useEffect(() => {
     if (deviceStatus?.length > 0) {
       const deviceStatusObject = deviceStatus.find(
           (deviceStatus) => deviceStatus?.deviceId == device?.id
       );
+
       if (deviceStatusObject) {
-        setIsOnline(deviceStatusObject?.status === "Active" ? true : false);
+        setIsOnline(deviceStatusObject?.status === "Active");
         if (deviceStatusObject?.status === "Inactive") {
           dispatch(clearMessageFromWS());
         }

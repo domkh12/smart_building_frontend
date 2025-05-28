@@ -213,7 +213,7 @@ function EditUserForm({user}) {
                 email: values.email,
                 address: values.address,
                 phoneNumber: values.phoneNumber,
-                roleId: values.roleId,
+                roleId: [values.roleId],
                 profileImage: profileImageUri || user.profileImage,
                 isVerified: values.isVerified,
                 isDeleted: false,
@@ -302,7 +302,7 @@ function EditUserForm({user}) {
                       }) => {
                         const errorDateOfBirth = errors.dateOfBirth && touched.dateOfBirth;
                         const handleRoleChange = (value) => {
-                            setFieldValue("roleId", [value]);
+                            setFieldValue("roleId", value);
                         };
 
                         const handleRoomChange = (value) => {

@@ -20,6 +20,7 @@ import * as Yup from "yup";
 import LoadingFetchingDataComponent from "../../components/LoadingFetchingDataComponent";
 import SelectSingleComponent from "../../components/SelectSingleComponent";
 import {useGetAllNameBuildingQuery} from "../../redux/feature/building/buildingApiSlice.js";
+import {Slide, toast} from "react-toastify";
 
 function AddNewFloor() {
     const [profileImageFile, setProfileImageFile] = useState(null);
@@ -70,28 +71,29 @@ function AddNewFloor() {
     useEffect(() => {
         if (isSuccessAddNewFloor) {
             navigate("/dash/floors");
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("createSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isSuccessAddNewFloor]);
 
     useEffect(() => {
         if (isErrorAddNewFloor) {
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setErrorSnackbar(true));
-            dispatch(
-                setCaptionSnackBar(`${errorAddNewFloor?.data?.error?.description}`)
-            );
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
-
-            setTimeout(() => {
-                dispatch(setErrorSnackbar(false));
-            }, 3500);
+            toast.error(`${errorAddNewFloor?.data?.error?.description}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isErrorAddNewFloor]);
 

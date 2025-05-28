@@ -10,7 +10,6 @@ const ToggleSwitchButtonComponent = ({device, messages, sendMessage}) => {
     const [isChecked, setIsChecked] = useState(false);
     const [isOnline, setIsOnline] = useState(device?.status === "Active");
     const deviceStatus = useSelector((state) => state.message.deviceStatus);
-
     const user = useSelector((state) => state.auth.userProfile);
 
     useEffect(() => {
@@ -25,12 +24,12 @@ const ToggleSwitchButtonComponent = ({device, messages, sendMessage}) => {
     }, [deviceStatus]);
 
     useEffect(() => {
-        const switchMessages = messages.filter(message => message.messageType === "SWITCH");
-        const deviceSwitch = messages.filter(message => message.deviceId == device.id);
-        if (deviceSwitch && switchMessages) {
-            const deviceValue = deviceSwitch.find(message => message.value);
-            if (deviceValue) {
-                setIsChecked(deviceValue.value == "1");
+        const switchMessages = messages.some(message => message?.messageType === "SWITCH");
+        const deviceSwitchIdMatch = messages.some(message => message?.deviceId == device?.id);
+        const deviceSwitch = messages.find(message => message?.deviceId == device?.id);
+        if (deviceSwitchIdMatch && switchMessages) {
+            if (deviceSwitch) {
+                setIsChecked(deviceSwitch?.value == "1");
             }
         }
     }, [messages]);

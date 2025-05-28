@@ -18,6 +18,7 @@ import LoadingFetchingDataComponent from "../../components/LoadingFetchingDataCo
 import {useGetAllDeviceTypesQuery} from "../../redux/feature/device/deviceTypeApiSlice.js";
 import QuickEditDeviceTypeComponent from "../../components/QuickEditDeviceTypeComponent.jsx";
 import {setIdDeviceTypeToEdit, setIsQuickEditDeviceTypeOpen} from "../../redux/feature/device/deviceSlice.js";
+import {Slide, toast} from "react-toastify";
 
 
 function EditDeviceForm({ device }) {
@@ -72,28 +73,29 @@ function EditDeviceForm({ device }) {
     useEffect(() => {
         if (isSuccessUpdateSingleDevice) {
             navigate("/dash/devices");
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("updateSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isSuccessUpdateSingleDevice]);
 
     useEffect(() => {
         if (isErrorUpdateSingleDevice) {
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setErrorSnackbar(true));
-            dispatch(
-                setCaptionSnackBar(`${errorUpdateSingleDevice?.data?.error?.description}`)
-            );
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
-
-            setTimeout(() => {
-                dispatch(setErrorSnackbar(false));
-            }, 3500);
+            toast.error(`${errorUpdateSingleDevice?.data?.error?.description}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isErrorUpdateSingleDevice]);
 

@@ -14,7 +14,7 @@ import {
     ListSubheader, Paper,
     Typography
 } from "@mui/material";
-import LogoComponent from "./LogoComponent.jsx";
+import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
 import {IoIosArrowDown, IoIosArrowForward} from "react-icons/io";
 import {listItemButtonStyle} from "../assets/style.js";
 import SpaceDashboardTwoToneIcon from "@mui/icons-material/SpaceDashboardTwoTone";
@@ -121,6 +121,43 @@ function SidebarDrawerUserComponent() {
                                         />
                                     </ListItemButton>
 
+                                    <ListItemButton
+                                        sx={{
+                                            borderRadius: "10px",
+
+                                            mb: "5px",
+                                            ...listItemButtonStyle,
+                                        }}
+                                        onClick={() => {
+                                            handleNavigation("/user/analysis");
+                                            setOpen(false);
+                                        }}
+                                        selected={location.pathname === "/user/analysis"}
+                                    >
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: 0,
+                                                mr: 1,
+                                            }}
+                                        >
+                                            <AnalyticsTwoToneIcon className="w-6 h-6"/>
+                                        </ListItemIcon>
+
+                                        <ListItemText
+                                            primary={
+                                                <Typography
+                                                    component="span"
+                                                    variant="body1"
+                                                    sx={{
+
+                                                        display: "inline",
+                                                    }}
+                                                >
+                                                    {t("analysis")}
+                                                </Typography>
+                                            }
+                                        />
+                                    </ListItemButton>
                                 </Collapse>
                             </List>
 

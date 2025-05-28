@@ -64,7 +64,7 @@ function DeviceControl() {
         dispatch(setMessagesFromWS(messages));
     }, [messages]);
 
-    // Check if room has controllable device
+    // Check if room has a controllable device
     useEffect(() => {
         const hasControllable = roomFetchedById?.data?.devices?.some(
             (device) => device.deviceType?.controllable
@@ -109,7 +109,7 @@ function DeviceControl() {
 
     let content;
 
-    if (roomName.length === 0) content = (
+    if (roomName?.length === 0) content = (
         <Card sx={{width: "100%", height: "100%", ...cardStyle}}>
             <div className="py-10">
                 <DataNotFound/>
@@ -117,9 +117,9 @@ function DeviceControl() {
         </Card>
     )
 
-    if (isLoading && roomName.length > 0) content = <LoadingFetchingDataComponent/>;
+    if (isLoading && roomName?.length > 0) content = <LoadingFetchingDataComponent/>;
 
-    if (!isLoading && isConnected && isConnectedForSend && roomName.length > 0) {
+    if (!isLoading && isConnected && isConnectedForSend && roomName?.length > 0) {
 
         const hasMatchingDevices = deviceType?.some(dt =>
             dt?.controllable &&

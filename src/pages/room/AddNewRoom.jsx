@@ -35,6 +35,7 @@ import {
   setNewDevicecalData,
 } from "../../redux/feature/device/deviceSlice";
 import {useAddNewDeviceMutation} from "../../redux/feature/device/deviceApiSlice.js";
+import {Slide, toast} from "react-toastify";
 
 function AddNewRoom() {
   const [profileImageFile, setProfileImageFile] = useState(null);
@@ -108,28 +109,29 @@ function AddNewRoom() {
   useEffect(() => {
     if (isSuccessAddNewRoom) {
       navigate("/dash/rooms");
-      dispatch(setIsOpenSnackBar(true));
-      dispatch(setCaptionSnackBar(t("createSuccess")));
-      setTimeout(() => {
-        dispatch(setIsOpenSnackBar(false));
-      }, 3000);
+      toast.success(t("updateSuccess"), {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+      });
     }
   }, [isSuccessAddNewRoom]);
 
   useEffect(() => {
     if (isErrorAddNewRoom) {
-      dispatch(setIsOpenSnackBar(true));
-      dispatch(setErrorSnackbar(true));
-      dispatch(
-        setCaptionSnackBar(`${errorAddNewRoom?.data?.error?.description}`)
-      );
-      setTimeout(() => {
-        dispatch(setIsOpenSnackBar(false));
-      }, 3000);
-
-      setTimeout(() => {
-        dispatch(setErrorSnackbar(false));
-      }, 3500);
+      toast.error(`${errorAddNewRoom?.data?.error?.description}`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+      });
     }
   }, [isErrorAddNewRoom]);
 

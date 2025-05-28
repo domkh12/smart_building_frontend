@@ -41,6 +41,7 @@ import {
 import useAuth from "../../hook/useAuth.jsx";
 
 import {useGetAllFloorNameQuery} from "../../redux/feature/floor/floorApiSlice.js";
+import {Slide, toast} from "react-toastify";
 
 function AddNewUser() {
     const navigate = useNavigate();
@@ -213,28 +214,29 @@ function AddNewUser() {
             } else if (isManager) {
                 navigate("/dash/users")
             }
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("createSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isSuccessAddNewUser, navigate, dispatch]);
 
     useEffect(() => {
         if (isErrorAddNewUser) {
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setErrorSnackbar(true));
-            dispatch(
-                setCaptionSnackBar(`${errorAddNewUser?.data?.error?.description}`)
-            );
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
-
-            setTimeout(() => {
-                dispatch(setErrorSnackbar(false));
-            }, 3500);
+            toast.error(`${errorAddNewUser?.data?.error?.description}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isErrorAddNewUser, dispatch]);
 

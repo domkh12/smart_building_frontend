@@ -11,6 +11,7 @@ import {buttonStyleContained, buttonStyleOutlined} from "../assets/style.js";
 import {LoadingButton} from "@mui/lab";
 import SelectSingleComponent from "./SelectSingleComponent.jsx";
 import {useGetAllNameBuildingQuery} from "../redux/feature/building/buildingApiSlice.js";
+import {Slide, toast} from "react-toastify";
 
 function QuickEditFloorComponent() {
     const isQuickEditFloorOpen = useSelector((state) => state.floor.isQuickEditFloorOpen);
@@ -36,11 +37,15 @@ function QuickEditFloorComponent() {
     useEffect(() => {
         if (isSuccessUpdateFloor) {
             dispatch(setIsQuickEditFloorOpen(false))
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("updateSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isSuccessUpdateFloor]);
 

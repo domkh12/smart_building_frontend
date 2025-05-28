@@ -7,8 +7,8 @@ import useTranslate from "../hook/useTranslate.jsx";
 import {useUpdateBuildingMutation} from "../redux/feature/building/buildingApiSlice.js";
 import {setIsQuickEditBuildingOpen} from "../redux/feature/building/buildingSlice.js";
 import {useEffect} from "react";
-import {setCaptionSnackBar, setIsOpenSnackBar} from "../redux/feature/actions/actionSlice.js";
 import {LoadingButton} from "@mui/lab";
+import {Slide, toast} from "react-toastify";
 
 function QuickEditBuildingComponent() {
     const isQuickEditBuildingOpen = useSelector((state) => state.building.isQuickEditBuildingOpen);
@@ -35,12 +35,16 @@ function QuickEditBuildingComponent() {
 
     useEffect(() => {
         if (isSuccessUpdateBuilding) {
+            toast.success(t("updateSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
             dispatch(setIsQuickEditBuildingOpen(false))
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
         }
     }, [isSuccessUpdateBuilding]);
 

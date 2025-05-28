@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useTranslate from "../../hook/useTranslate";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,7 @@ import { Form, Formik } from "formik";
 import { cardStyle } from "../../assets/style";
 import ImageUploadComponent from "../../components/ImageUploadComponent";
 import ButtonComponent from "../../components/ButtonComponent";
+import {Slide, toast} from "react-toastify";
 
 function EditBuildingForm({ building }) {
   const [profileImageFile, setProfileImageFile] = useState(null);
@@ -66,28 +67,29 @@ function EditBuildingForm({ building }) {
   useEffect(() => {
     if (isSuccessUpdateBuilding) {
       navigate("/dash/buildings");
-      dispatch(setIsOpenSnackBar(true));
-      dispatch(setCaptionSnackBar(t("createSuccess")));
-      setTimeout(() => {
-        dispatch(setIsOpenSnackBar(false));
-      }, 3000);
+      toast.success(t("updateSuccess"), {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+      });
     }
   }, [isSuccessUpdateBuilding]);
 
   useEffect(() => {
     if (isErrorUpdateBuilding) {
-      dispatch(setIsOpenSnackBar(true));
-      dispatch(setErrorSnackbar(true));
-      dispatch(
-        setCaptionSnackBar(`${errorUpdateBuilding?.data?.error?.description}`)
-      );
-      setTimeout(() => {
-        dispatch(setIsOpenSnackBar(false));
-      }, 3000);
-
-      setTimeout(() => {
-        dispatch(setErrorSnackbar(false));
-      }, 3500);
+      toast.error(`${errorUpdateBuilding?.data?.error?.description}`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+      });
     }
   }, [isErrorUpdateBuilding]);
 

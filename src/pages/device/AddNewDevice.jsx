@@ -19,6 +19,7 @@ import ButtonComponent from "../../components/ButtonComponent";
 import { useAddNewDeviceTypeMutation } from "../../redux/feature/device/deviceTypeApiSlice";
 import SelectSingleComponent from "../../components/SelectSingleComponent";
 import { CONTROLLABLE } from "../../config/controllable";
+import {Slide, toast} from "react-toastify";
 
 function AddNewDevice() {
   const [profileImageFile, setProfileImageFile] = useState(null);
@@ -67,28 +68,29 @@ function AddNewDevice() {
   useEffect(() => {
     if (isSuccess) {
       navigate("/dash/devices");
-      dispatch(setIsOpenSnackBar(true));
-      dispatch(setCaptionSnackBar(t("createSuccess")));
-      setTimeout(() => {
-        dispatch(setIsOpenSnackBar(false));
-      }, 3000);
+      toast.success(t("createSuccess"), {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+      });
     }
   }, [isSuccess]);
 
   useEffect(() => {
     if (isErrorAddNewDeviceType) {
-      dispatch(setIsOpenSnackBar(true));
-      dispatch(setErrorSnackbar(true));
-      dispatch(
-        setCaptionSnackBar(`${errorAddNewDeviceType?.data?.error?.description}`)
-      );
-      setTimeout(() => {
-        dispatch(setIsOpenSnackBar(false));
-      }, 3000);
-
-      setTimeout(() => {
-        dispatch(setErrorSnackbar(false));
-      }, 3500);
+      toast.error(`${errorAddNewDeviceType?.data?.error?.description}`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+      });
     }
   }, [isErrorAddNewDeviceType, dispatch]);
 

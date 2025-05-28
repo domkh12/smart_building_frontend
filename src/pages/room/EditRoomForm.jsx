@@ -33,6 +33,7 @@ import ButtonComponent from "../../components/ButtonComponent";
 import AddNewDeviceDialogComponent from "../../components/AddNewDeviceDialogComponent";
 import { setCaptionSnackBar, setErrorSnackbar, setIsOpenSnackBar } from "../../redux/feature/actions/actionSlice";
 import {useAddNewDeviceMutation} from "../../redux/feature/device/deviceApiSlice.js";
+import {Slide, toast} from "react-toastify";
 
 function EditRoomForm({ room }) {
   const [profileImageFile, setProfileImageFile] = useState(null);
@@ -116,28 +117,29 @@ function EditRoomForm({ room }) {
   useEffect(() => {
     if (isSuccessUpdateRoom) {
       navigate("/dash/rooms");
-      dispatch(setIsOpenSnackBar(true));
-      dispatch(setCaptionSnackBar(t("createSuccess")));
-      setTimeout(() => {
-        dispatch(setIsOpenSnackBar(false));
-      }, 3000);
+      toast.success(t("updateSuccess"), {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+      });
     }
   }, [isSuccessUpdateRoom]);
 
   useEffect(() => {
     if (isErrorUpdateRoom) {
-      dispatch(setIsOpenSnackBar(true));
-      dispatch(setErrorSnackbar(true));
-      dispatch(
-        setCaptionSnackBar(`${errorUpdateRoom?.data?.error?.description}`)
-      );
-      setTimeout(() => {
-        dispatch(setIsOpenSnackBar(false));
-      }, 3000);
-
-      setTimeout(() => {
-        dispatch(setErrorSnackbar(false));
-      }, 3500);
+      toast.error(`${errorUpdateRoom?.data?.error?.description}`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        transition: Slide,
+      });
     }
   }, [isErrorUpdateRoom]);
 

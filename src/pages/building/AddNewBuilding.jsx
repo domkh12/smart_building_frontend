@@ -17,6 +17,7 @@ import {
     setErrorSnackbar,
     setIsOpenSnackBar,
 } from "../../redux/feature/actions/actionSlice";
+import {Slide, toast} from "react-toastify";
 
 function AddNewBuilding() {
     const [profileImageFile, setProfileImageFile] = useState(null);
@@ -60,28 +61,29 @@ function AddNewBuilding() {
     useEffect(() => {
         if (isSuccessAddNewBuilding) {
             navigate("/dash/buildings");
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("updateSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isSuccessAddNewBuilding]);
 
     useEffect(() => {
         if (isErrorAddNewBuilding) {
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setErrorSnackbar(true));
-            dispatch(
-                setCaptionSnackBar(`${errorAddNewBuilding?.data?.error?.description}`)
-            );
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
-
-            setTimeout(() => {
-                dispatch(setErrorSnackbar(false));
-            }, 3500);
+            toast.error(`${errorAddNewBuilding?.data?.error?.description}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isErrorAddNewBuilding]);
 

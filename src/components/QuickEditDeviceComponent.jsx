@@ -11,6 +11,7 @@ import {setIsOpenQuickEditDevice} from "../redux/feature/device/deviceSlice.js";
 import SelectSingleComponent from "./SelectSingleComponent.jsx";
 import {useGetAllDeviceTypesQuery} from "../redux/feature/device/deviceTypeApiSlice.js";
 import {LoadingButton} from "@mui/lab";
+import {Slide, toast} from "react-toastify";
 
 function QuickEditDeviceComponent() {
     const isQuickEditDeviceOpen = useSelector((state) => state.device.isOpenQuickEditDevice);
@@ -38,12 +39,16 @@ function QuickEditDeviceComponent() {
 
     useEffect(() => {
         if (isSuccessUpdateDevice) {
+            toast.success(t("updateSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
             dispatch(setIsOpenQuickEditDevice(false))
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
         }
     }, [isSuccessUpdateDevice]);
 

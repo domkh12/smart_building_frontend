@@ -35,6 +35,7 @@ import {
 import AlertMessageComponent from "./AlertMessageComponent";
 import {useGetAllFloorNameQuery} from "../redux/feature/floor/floorApiSlice.js";
 import {LoadingButton} from "@mui/lab";
+import {Slide, toast} from "react-toastify";
 
 function QuickEditUserComponent() {
     const open = useSelector((state) => state.users.isOpenQuickEdit);
@@ -129,7 +130,7 @@ function QuickEditUserComponent() {
                 email: values.email,
                 address: values.address,
                 phoneNumber: values.phoneNumber,
-                roleId: values.roleId,
+                roleId: [values.roleId],
                 profileImage: user.profileImage,
                 isVerified: user.isVerified,
                 isDeleted: false,
@@ -144,20 +145,30 @@ function QuickEditUserComponent() {
 
     useEffect(() => {
         if (isSuccessUpdateUser) {
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            handleClose();
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("createSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
+            dispatch(setIsOpenQuickEdit(false));
         }
     }, [isSuccessUpdateUser]);
 
     useEffect(() => {
         if (isErrorUpdateUser) {
-            dispatch(
-                setCaptionSnackBar(`${errorUpdateUser?.data?.error?.description}`)
-            );
+            toast.error(`${errorUpdateUser?.data?.error?.description}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isErrorUpdateUser]);
 
@@ -186,7 +197,7 @@ function QuickEditUserComponent() {
                         address: user.address ? user.address : "",
                         phoneNumber: user.phoneNumber ? user.phoneNumber : "",
                         dateOfBirth: initialDateOfBirth || null,
-                        roleId: Array.isArray(user.roles) ? user.roles.map(role => role.id) : [],
+                        roleId: user.roles[0].id,
                         roomId: Array.isArray(user.rooms) ? user.rooms.map(room => room.id) : [],
                     }}
                     validationSchema={validationSchema}
@@ -202,7 +213,7 @@ function QuickEditUserComponent() {
                       }) => {
 
                         const handleRoleChange = (value) => {
-                            setFieldValue("roleId", [value]);
+                            setFieldValue("roleId", value);
                         };
 
                         const handleRoomChange = (value) => {
@@ -455,13 +466,6 @@ function QuickEditUserComponent() {
                         flexDirection: "column",
                     }}
                 >
-
-                    {isErrorUpdateUser && (
-                        <Box sx={{px: "24px"}}>
-                            <AlertMessageComponent/>
-                        </Box>
-                    )}
-
                     {content}
 
                 </Box>

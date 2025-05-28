@@ -1,6 +1,4 @@
 import {Button, Card, Grid2, Switch, Typography} from "@mui/material";
-import {cardStyle} from "../../assets/style.js";
-import {Gauge, gaugeClasses} from "@mui/x-charts";
 import useTranslate from "../../hook/useTranslate.jsx";
 import {HiLightBulb} from "react-icons/hi";
 import {useEffect, useState} from "react";
@@ -16,7 +14,6 @@ import TemperatureAndHumidityCardComponent from "../../components/TemperatureAnd
 import Pm2_5AndPowerCardComponent from "../../components/Pm2_5AndPowerCardComponent.jsx";
 import {setDeviceDataByRoom} from "../../redux/feature/device/deviceSlice.js";
 import SwitchControlCardUserComponent from "../../components/SwitchControlCardUserComponent.jsx";
-import DrawerSensorComponent from "../../components/DrawerSensorComponent.jsx";
 import {setIsOpenDrawerSensor} from "../../redux/feature/actions/actionSlice.js";
 import {MdOutlineSensors} from "react-icons/md";
 import DrawerSensorUserComponent from "../../components/DrawerSensorUserComponent.jsx";
