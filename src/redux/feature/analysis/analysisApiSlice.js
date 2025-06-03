@@ -73,8 +73,28 @@ export const analysisApiSlice = apiSlice.injectEndpoints({
             },
         }),
 
+        getAnalysisByRoomId: builder.query({
+            query: ({roomId, dateFrom, dateTo}) => ({
+                url: `/analysis/rooms/${roomId}?date_from=${dateFrom}&date_to=${dateTo}`,
+                validateStatus: (response, result) => {
+                    return response.status === 200 && !result.isError;
+                },
+            }),
+            transformResponse: (responseData) => {
+                return responseData;
+            },
+            providesTags: (result, error, arg) => {
+                if (result?.ids) {
+                    return [
+                        {type: "AnalysisByRoomId", id: "LIST"},
+                        ...result.ids.map((id) => ({type: "AnalysisByRoomId", id})),
+                    ];
+                } else return [{type: "AnalysisByRoomId", id: "LIST"}];
+            },
+        })
+
 
     }),
 });
 
-export const {useGetAnalysisQuery, useGetPowerQuery, useGetTotalCountsMutation} = analysisApiSlice;
+export const {useGetAnalysisByRoomIdQuery, useGetAnalysisQuery, useGetPowerQuery, useGetTotalCountsMutation} = analysisApiSlice;

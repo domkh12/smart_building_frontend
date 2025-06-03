@@ -1,12 +1,14 @@
 import ReactApexChart from "react-apexcharts";
 import {useState} from "react";
 
-function StepLineChartForUserComponent() {
-    const [state, setState] = useState({
+function StepLineChartForUserComponent({data}) {
+
+    const [state] = useState({
 
         series: [{
-            data: [1,0,1,0,1,0,1,0,1,0]
+            data: data.series[0].data || []
         }],
+
         options: {
             chart: {
                 type: 'line',
@@ -14,6 +16,9 @@ function StepLineChartForUserComponent() {
                 toolbar: {
                     show: false
                 }
+            },
+            xaxis: {
+                categories: data.xAxis || [],
             },
             stroke: {
                 curve: 'stepline',
@@ -27,8 +32,15 @@ function StepLineChartForUserComponent() {
                 }
             },
             title: {
-                text: 'Step Line Chart',
+                text: data.deviceName || "",
                 align: 'left'
+            },
+            tooltip: {
+                y: {
+                    title: {
+                        formatter: () => ""
+                    }
+                }
             }
         },
 
