@@ -204,5 +204,8 @@
   "checkYourKeyword": "Try checking your spelling or using different keywords.",
   "deleteWarningDescription": "This action cannot be undone. All associated data will be permanently deleted.",
   "updateSuccess": "Update success",
-  "analysis": "Analysis"
+  "analysis": "Analysis",
+  "codeEsp32": "Code ESP32",
+  "esp32WithWifi": "ESP32 with wifi",
+  "esp32WithEthernet": "ESP32 with ethernet"
 }

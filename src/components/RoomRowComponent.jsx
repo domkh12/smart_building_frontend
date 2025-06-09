@@ -15,10 +15,15 @@ import {Link, useNavigate} from "react-router-dom";
 import EditButtonComponent from "./EditButtonComponent";
 import MoreActionComponent from "./MoreActionComponent";
 import useTranslate from "../hook/useTranslate.jsx";
-import {setIdRoomToDelete, setIsQuickEditRoomOpen, setRoomDataForQuickEdit} from "../redux/feature/room/roomSlice.js";
-import {setIsOpenConfirmDelete} from "../redux/feature/actions/actionSlice.js";
+import {
+    setIdRoomToDelete,
+    setIsQuickEditRoomOpen,
+    setRoomDataForEsp32Code,
+    setRoomDataForQuickEdit
+} from "../redux/feature/room/roomSlice.js";
+import {setIsOpenConfirmDelete, setIsOpenEsp32CodeModal} from "../redux/feature/actions/actionSlice.js";
 import useAuth from "../hook/useAuth.jsx";
-import React from "react";
+import {FaCode} from "react-icons/fa";
 
 function RoomRowComponent({room}) {
     const dispatch = useDispatch();
@@ -113,6 +118,13 @@ function RoomRowComponent({room}) {
                 >
                     {
                         !isAdmin ? <div className="flex justify-center items-center">
+                                <EditButtonComponent handleQuickEdit={() => {
+                                    dispatch(setIsOpenEsp32CodeModal(true))
+                                    dispatch(setRoomDataForEsp32Code(room))
+                                }}
+                                icon={<FaCode className="w-6 h-6"/>}
+                                tooltipTitle={t('codeEsp32')}
+                                />
                                 <EditButtonComponent handleQuickEdit={() => {
                                     dispatch(setIsQuickEditRoomOpen(true))
                                     dispatch(setRoomDataForQuickEdit(room))

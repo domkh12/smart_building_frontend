@@ -203,5 +203,8 @@
   "checkYourKeyword": "សាកល្បងពិនិត្យអក្ខរាវិរុទ្ធរបស់អ្នក ឬប្រើពាក្យគន្លឹះផ្សេងទៀត",
   "deleteWarningDescription": "សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។ ទិន្នន័យដែលពាក់ព័ន្ធទាំងអស់នឹងត្រូវបានលុបជាអចិន្ត្រៃយ៍។",
   "updateSuccess": "កែប្រែបានជោគជ័យ",
-  "analysis": "ការវិភាគ"
+  "analysis": "ការវិភាគ",
+  "codeEsp32": "កូដ ESP32",
+  "esp32WithWifi": "ESP32 ជាមួយ wifi",
+  "esp32WithEthernet": "ESP32 ជាមួយ ethernet"
 }

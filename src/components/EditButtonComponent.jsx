@@ -2,20 +2,20 @@ import { IconButton, Tooltip } from "@mui/material";
 import { FaPen } from "react-icons/fa6";
 import useTranslate from "../hook/useTranslate.jsx";
 
-function EditButtonComponent({ handleQuickEdit }) {
+function EditButtonComponent({ handleQuickEdit, icon, tooltipTitle }) {
   const {t} = useTranslate();
   return (
     <Tooltip
       sx={{
         color: "",
       }}
-      title={t('quickEdit')}
+      title={tooltipTitle? tooltipTitle : t('quickEdit')}
       placement="top"
       arrow
     >
       <IconButton size="large" onClick={handleQuickEdit} sx={{backgroundColor: "transparent",
           "&:hover": {backgroundColor: "transparent"}}}>
-        <FaPen className="w-5 h-5" />
+          {icon ? icon : <FaPen className="w-5 h-5" />}
       </IconButton>
     </Tooltip>
   );

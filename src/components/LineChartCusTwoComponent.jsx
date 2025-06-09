@@ -2,15 +2,16 @@ import ReactApexChart from "react-apexcharts";
 import {useState} from "react";
 
 function LineChartCusTwoComponent({data}) {
-    console.log(data);
+
     const [state] = useState({
 
         series: [{
+            name: '',
             data: data.series[0].data || [],
         }],
         options: {
             chart: {
-                height: 350,
+                height: 500,
                 type: 'area',
                 toolbar: {
                     show: false
@@ -46,7 +47,7 @@ function LineChartCusTwoComponent({data}) {
                 series={state.series}
                 type="line"
                 width="100%"
-                height="100%"
+                height="300px"
             />
         </>
     )

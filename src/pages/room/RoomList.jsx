@@ -36,6 +36,7 @@ import FilterChipsComponent from "../../components/FilterChipsComponent.jsx";
 import {setIsFiltered} from "../../redux/feature/actions/actionSlice.js";
 import QuickEditRoomComponent from "../../components/QuickEditRoomComponent.jsx";
 import useAuth from "../../hook/useAuth.jsx";
+import ModalCodeEsp32Component from "../../components/ModalCodeEsp32Component.jsx";
 
 function RoomList() {
     const navigate = useNavigate();
@@ -48,7 +49,8 @@ function RoomList() {
     const pageSize = useSelector((state) => state.room.pageSize);
     const mode = useSelector((state) => state.theme.mode);
     const {isAdmin, isManager} = useAuth();
-
+    const roomDataEsp32Code = useSelector((state) => state.room.roomDataForEsp32Code);
+    console.log(roomDataEsp32Code)
     const handleBackClick = () => {
         if (isManager) {
             navigate("/dash");
@@ -268,6 +270,7 @@ function RoomList() {
                     </Card>
                 </div>
                 <QuickEditRoomComponent/>
+                {Object.keys(roomDataEsp32Code).length > 0 && <ModalCodeEsp32Component/>}
             </div>
         );
     }

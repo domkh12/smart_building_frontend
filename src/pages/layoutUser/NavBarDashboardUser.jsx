@@ -77,13 +77,13 @@ function NavBarDashboardUser() {
 
                     <TranslateComponent/>
 
-                    <IconButton
-                        aria-label="settings"
-                        size="large"
-                        className="active-scale hover-scale"
-                    >
-                        <NotificationsNoneTwoToneIcon className="w-6 h-6"/>
-                    </IconButton>
+                    {/*<IconButton*/}
+                    {/*    aria-label="settings"*/}
+                    {/*    size="large"*/}
+                    {/*    className="active-scale hover-scale"*/}
+                    {/*>*/}
+                    {/*    <NotificationsNoneTwoToneIcon className="w-6 h-6"/>*/}
+                    {/*</IconButton>*/}
 
                     <SettingComponent/>
                     <div className="relative p-[2px] flex justify-center items-center active-scale hover-scale">

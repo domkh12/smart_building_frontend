@@ -48,7 +48,7 @@ function StepLineChartForUserComponent({data}) {
     });
     return(
         <>
-            <ReactApexChart options={state.options} series={state.series} type="line" height={200} />
+            <ReactApexChart options={state.options} series={state.series} type="line" height="300px" />
         </>
     )
 }

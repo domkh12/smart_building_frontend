@@ -14,9 +14,13 @@ const actionSlice = createSlice({
     isOpenConfirmDelete: false,
     isFiltered: false,
     isOpenSettingDrawer: false,
-    isOpenDrawerSensor: false
+    isOpenDrawerSensor: false,
+    isOpenEsp32CodeModal: false,
   },
   reducers: {
+    setIsOpenEsp32CodeModal(state, action) {
+      state.isOpenEsp32CodeModal = action.payload;
+    },
     setIsOpenDrawerSensor(state, action) {
       state.isOpenDrawerSensor = action.payload;
     },
@@ -57,6 +61,7 @@ const actionSlice = createSlice({
 });
 
 export const {
+  setIsOpenEsp32CodeModal,
   setIsOpenDrawerSensor,
   setIsOpenSettingDrawer,
   toggleCollapsed,

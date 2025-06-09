@@ -1,11 +1,12 @@
 import ReactApexChart from "react-apexcharts";
-import {useState} from "react";
+import {useMemo} from "react";
 
-function LineChartCusOneComponent({ values = [], textColor = "#000" }) {
-    const [state] = useState({
+function LineChartCusOneComponent({ values = [], xaxis = [], textColor = "#000" }) {
+
+    const chartConfig = useMemo(() => ({
         series: [{
             name: '',
-            data: values.length > 0 ? values : [10, 41, 35, 51, 49, 62, 69, 91, 148]
+            data: values
         }],
         options: {
             chart: {
@@ -16,8 +17,13 @@ function LineChartCusOneComponent({ values = [], textColor = "#000" }) {
                 toolbar: {
                     show: false
                 },
+                height: 350,
                 animations: {
-                    enabled: true
+                    enabled: false,
+                    easing: 'linear',
+                    dynamicAnimation: {
+                        speed: 1000
+                    }
                 },
                 parentHeightOffset: 0,
                 sparkline: {
@@ -36,7 +42,7 @@ function LineChartCusOneComponent({ values = [], textColor = "#000" }) {
                 show: false
             },
             xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                categories: xaxis,
                 axisBorder: {
                     show: false
                 },
@@ -54,13 +60,13 @@ function LineChartCusOneComponent({ values = [], textColor = "#000" }) {
                 show: false
             }
         },
-    });
+    }), [values, xaxis, textColor]);
 
     return (
         <div style={{ width: '90px', height: '90px' }}>
             <ReactApexChart
-                options={state.options}
-                series={state.series}
+                options={chartConfig.options}
+                series={chartConfig.series}
                 type="line"
                 width="100%"
                 height="100%"
