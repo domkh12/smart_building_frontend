@@ -67,6 +67,7 @@ function ProfileDrawerComponent({open: initialOpen, onClose}) {
             });
             // await connectedUser({uuid: user?.uuid, isOnline: false});
             await sendLogout().unwrap();
+            localStorage.removeItem("selectFirstRoomById");
             navigate("/login");
             onClose();
         } catch (err) {

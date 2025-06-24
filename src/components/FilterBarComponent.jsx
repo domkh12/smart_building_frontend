@@ -174,7 +174,7 @@ function FilterBarComponent({
                         onSearchChange={handleSearchChange}
                         value={searchQuery}
                     />
-                    <TableActionMenuComponent/>
+                    {/*<TableActionMenuComponent/>*/}
                 </div>
             </div>
         </>);

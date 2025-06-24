@@ -24,6 +24,7 @@ import DrawerSensorComponent from "../../components/DrawerSensorComponent.jsx";
 import {setIsOpenDrawerSensor} from "../../redux/feature/actions/actionSlice.js";
 import {clearMessageFromWS, setMessagesFromWS} from "../../redux/feature/message/messageSlice.js";
 import {clearSelectFirstValueOfSelectBox, setSelectFirstRoomById} from "../../redux/feature/room/roomSlice.js";
+import DoorSwitchButtonComponent from "../../components/DoorSwitchButtonComponent.jsx";
 
 
 function DeviceControl() {
@@ -151,6 +152,8 @@ function DeviceControl() {
                                         fullWidth={false}
                                         optionLabelKey="name"
                                         selectFistValue={parseInt(selectFirstRoomById)}
+                                        floorLabel="floor"
+                                        buildingLabel="building"
                                     />
                                     <SearchComponent onSearchChange={handleSearchChange}/>
                                 </div>
@@ -170,7 +173,7 @@ function DeviceControl() {
                                             ) ? (
                                                 <div
                                                     key={dt?.id}
-                                                    className="grid grid-cols-1 relative px-[20px] gap-[10px] py-[20px] xxs:grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5 border mx-5 mb-10 rounded-lg mt-5 pt-10"
+                                                    className="grid grid-cols-1 min-h-[120px] relative px-[20px] gap-[10px] py-[20px] xxs:grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5 border mx-5 mb-10 rounded-lg mt-5 pt-10"
                                                 >
                                                     <div
                                                         className="absolute -top-4 left-5 bg-black text-white px-6 py-2 rounded-full">
@@ -185,14 +188,27 @@ function DeviceControl() {
                                                                             device.deviceType?.id === dt?.id) :
                                                                         device.deviceType?.id === dt?.id
                                                             )
-                                                            .map((filteredDevice) => (
-                                                                <ToggleSwitchButtonComponent
-                                                                    device={filteredDevice}
-                                                                    key={filteredDevice?.id}
-                                                                    messages={messages}
-                                                                    sendMessage={handleSendMessage}
-                                                                />
-                                                            ))
+                                                            .map((filteredDevice) => {
+                                                                if (filteredDevice.deviceType?.name.toLowerCase() === "door") {
+                                                                    return (
+                                                                        <DoorSwitchButtonComponent
+                                                                            key={filteredDevice?.id}
+                                                                            device={filteredDevice}
+                                                                            messages={messages}
+                                                                            sendMessage={handleSendMessage}
+                                                                        />
+                                                                    );
+                                                                } else {
+                                                                    return (
+                                                                        <ToggleSwitchButtonComponent
+                                                                            device={filteredDevice}
+                                                                            key={filteredDevice?.id}
+                                                                            messages={messages}
+                                                                            sendMessage={handleSendMessage}
+                                                                        />
+                                                                    );
+                                                                }
+                                                            })
                                                     ) : (
                                                         <div className="py-10">
                                                             <DataNotFound/>

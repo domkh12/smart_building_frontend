@@ -2,7 +2,7 @@ import {Box, Button, Switch, Typography} from "@mui/material";
 import {useState, useEffect} from "react";
 import {PiFanFill} from "react-icons/pi";
 import {useSelector} from "react-redux";
-import {BsFillLightbulbOffFill} from "react-icons/bs";
+import {BsDoorOpenFill, BsFillDoorClosedFill, BsFillLightbulbOffFill} from "react-icons/bs";
 import {BsFillLightbulbFill} from "react-icons/bs";
 import {TbAirConditioning, TbAirConditioningDisabled} from "react-icons/tb";
 
@@ -67,30 +67,25 @@ const ToggleSwitchButtonComponent = ({device, messages, sendMessage}) => {
         const lowerCaseTypeName = typeName.toLowerCase();
         switch (lowerCaseTypeName) {
             case "light":
-                return isChecked ? (
-                    <BsFillLightbulbFill className="w-10 h-10 text-orange-500"/>
-                ) : (
-                    <BsFillLightbulbOffFill className="w-10 h-10 text-orange-500"/>
+                return (
+                    isChecked ?
+                        (<BsFillLightbulbFill className="w-10 h-10 text-orange-500"/>):
+                        (<BsFillLightbulbOffFill className="w-10 h-10 text-orange-500"/>)
                 );
             case "fan":
-                return (
-                    <PiFanFill
-                        className={`w-10 h-10 text-orange-500 ${isChecked && "animate-spin"} `}
-                    />
-                );
+                return (<PiFanFill className={`w-10 h-10 text-orange-500 ${isChecked && "animate-spin"} `}/>);
             case "ac":
                 return (
-                    isChecked ? (
-                        <TbAirConditioning
-                            className={`w-10 h-10 text-orange-500`}
-                        />
-                    ) : (
-                        <TbAirConditioningDisabled
-                            className={`w-10 h-10 text-orange-500`}
-                        />
-                    )
-
-                )
+                    isChecked ?
+                        (<TbAirConditioning className={`w-10 h-10 text-orange-500`}/>):
+                        (<TbAirConditioningDisabled className={`w-10 h-10 text-orange-500`}/>)
+                );
+            case "door":
+                return (
+                    isChecked ?
+                        (<BsDoorOpenFill className={`w-10 h-10 text-orange-500`}/>):
+                        (<BsFillDoorClosedFill className={`w-10 h-10 text-orange-500`}/>)
+                );
         }
     };
 

@@ -34,7 +34,6 @@ function Dashboard() {
     const {isManager, isAdmin} = useAuth();
     const dateFrom = useSelector((state) => state.analysis.dateFrom);
     const dateTo = useSelector((state) => state.analysis.dateTo);
-    console.log(dateFrom, dateTo)
     const {data: analysis, isLoading: isLoadingGetAnalysis, isSuccess} = useGetAnalysisQuery({date_from: dateFrom, date_to: dateTo});
     const [getTotalCounts, {
         isSuccess: isSuccessGetAllTotalCount,
@@ -86,36 +85,36 @@ function Dashboard() {
         <>
             <div className="flex justify-between items-center gap-5 mb-8">
                 <Typography variant={sm ? "h5" : "body1"}>{t('welcomeBack')}</Typography>
-                <div className="flex items-center gap-5">
-                        <>
-                            <ToggleButtonGroup
-                                value={selectedPeriod}
-                                exclusive
-                                onChange={(event, newPeriod) => {
-                                    if (newPeriod !== null) {
-                                        dispatch(setSelectedPeriod(newPeriod))
-                                    }
-                                }}
-                            >
-                                <ToggleButton
-                                    value={selectedPeriod}
-                                    color="primary"
-                                    onClick={handleCustomClick}
-                                    sx={{justifyContent: "center", alignItems: "center", gap: 1}}
-                                >
-                                    {selectedPeriod === 'custom'
-                                        ? (selectedDate ? selectedDate.format('MMM YYYY') : 'Custom')
-                                        : selectedPeriod === 'month'
-                                            ? 'Last month'
-                                            : selectedPeriod === '30days'
-                                                ? 'Last 30days'
-                                                : 'Last 7days'
-                                    }
-                                    <IoIosArrowDown/>
-                                </ToggleButton>
-                            </ToggleButtonGroup>
-                        </>
-                </div>
+                {/*<div className="flex items-center gap-5">*/}
+                {/*        <>*/}
+                {/*            <ToggleButtonGroup*/}
+                {/*                value={selectedPeriod}*/}
+                {/*                exclusive*/}
+                {/*                onChange={(event, newPeriod) => {*/}
+                {/*                    if (newPeriod !== null) {*/}
+                {/*                        dispatch(setSelectedPeriod(newPeriod))*/}
+                {/*                    }*/}
+                {/*                }}*/}
+                {/*            >*/}
+                {/*                <ToggleButton*/}
+                {/*                    value={selectedPeriod}*/}
+                {/*                    color="primary"*/}
+                {/*                    onClick={handleCustomClick}*/}
+                {/*                    sx={{justifyContent: "center", alignItems: "center", gap: 1}}*/}
+                {/*                >*/}
+                {/*                    {selectedPeriod === 'custom'*/}
+                {/*                        ? (selectedDate ? selectedDate.format('MMM YYYY') : 'Custom')*/}
+                {/*                        : selectedPeriod === 'month'*/}
+                {/*                            ? 'Last month'*/}
+                {/*                            : selectedPeriod === '30days'*/}
+                {/*                                ? 'Last 30days'*/}
+                {/*                                : 'Last 7days'*/}
+                {/*                    }*/}
+                {/*                    <IoIosArrowDown/>*/}
+                {/*                </ToggleButton>*/}
+                {/*            </ToggleButtonGroup>*/}
+                {/*        </>*/}
+                {/*</div>*/}
 
             </div>
 

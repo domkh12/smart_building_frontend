@@ -6,7 +6,7 @@ function LineChartCusOneComponent({ values = [], xaxis = [], textColor = "#000" 
     const chartConfig = useMemo(() => ({
         series: [{
             name: '',
-            data: values
+            data: values || [76, 85, 101, 98, 87, 105, 91, 114, 94]
         }],
         options: {
             chart: {

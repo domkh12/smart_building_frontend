@@ -23,7 +23,7 @@ function AnalysisUser() {
     if (isLoading) content = <LoadingFetchingDataComponent/>;
 
     if (isSuccess) content = <>
-        <Typography variant="h6" align={"right"}>{t('last24hrs')}</Typography>
+        <Typography variant="body1" align={"right"}>{t('last24hrs')}</Typography>
         <Grid2 container spacing={2} sx={{mt: 2}}>
             {
                 analysisByRoomIdData?.map((item, index) => {

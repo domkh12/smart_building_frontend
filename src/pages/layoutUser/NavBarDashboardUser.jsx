@@ -68,6 +68,8 @@ function NavBarDashboardUser() {
                             optionLabelKey="name"
                             onChange={handleChange}
                             selectFistValue={roomId[0]}
+                            floorLabel="floor"
+                            buildingLabel="building"
                         />
                     )}
                 </div>

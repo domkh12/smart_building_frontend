@@ -109,7 +109,7 @@ function QuickEditUserComponent() {
 
         ...(isAdmin
             ? {
-                roomId: Yup.array()
+                roomId: Yup.string()
                     .test("len", "Room must not be empty", (val) => {
                         return val ? val.length !== 0 : false;
                     })
@@ -145,7 +145,7 @@ function QuickEditUserComponent() {
 
     useEffect(() => {
         if (isSuccessUpdateUser) {
-            toast.success(t("createSuccess"), {
+            toast.success(t("updateSuccess"), {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -408,6 +408,8 @@ function QuickEditUserComponent() {
                                         itemsLabelKey="rooms"
                                         optionLabelKey="name"
                                         value={values.roomId}
+                                        floorLabel="floor"
+                                        buildingLabel="building"
                                     />
 
                                 </Box>

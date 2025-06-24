@@ -20,7 +20,6 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import {setCaptionSnackBar, setErrorSnackbar, setIsOpenSnackBar} from "../../redux/feature/actions/actionSlice.js";
 import LoadingFetchingDataComponent from "../../components/LoadingFetchingDataComponent.jsx";
 import SeoComponent from "../../components/SeoComponent.jsx";
 import MainHeaderComponent from "../../components/MainHeaderComponent.jsx";
@@ -32,6 +31,7 @@ import {DatePicker} from "@mui/x-date-pickers";
 import SelectComponent from "../../components/SelectComponent.jsx";
 import ButtonComponent from "../../components/ButtonComponent.jsx";
 import {useGetAllFloorNameQuery} from "../../redux/feature/floor/floorApiSlice.js";
+import {Slide, toast} from "react-toastify";
 
 function EditUserForm({user}) {
     const navigate = useNavigate();
@@ -100,7 +100,7 @@ function EditUserForm({user}) {
 
         ...(isManager
             ? {
-                roleId: Yup.array()
+                roleId: Yup.string()
                     .test("len", "Role must not be empty", (val) => {
                         return val ? val.length !== 0 : false;
                     })
@@ -168,29 +168,29 @@ function EditUserForm({user}) {
             }else if (isAdmin){
                 navigate("/admin/users");
             }
-
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setCaptionSnackBar(t("createSuccess")));
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
+            toast.success(t("updateSuccess"), {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isSuccessUpdateUser]);
 
     useEffect(() => {
         if (isErrorUpdateUser) {
-            dispatch(setIsOpenSnackBar(true));
-            dispatch(setErrorSnackbar(true));
-            dispatch(
-                setCaptionSnackBar(`${errorUpdateUser?.data?.error?.description}`)
-            );
-            setTimeout(() => {
-                dispatch(setIsOpenSnackBar(false));
-            }, 3000);
-
-            setTimeout(() => {
-                dispatch(setErrorSnackbar(false));
-            }, 3500);
+            toast.error(`${errorUpdateUser?.data?.error?.description}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                transition: Slide,
+            });
         }
     }, [isErrorUpdateUser]);
 
@@ -541,6 +541,8 @@ function EditUserForm({user}) {
                                                         itemsLabelKey="rooms"
                                                         optionLabelKey="name"
                                                         value={values.roomId}
+                                                        floorLabel="floor"
+                                                        buildingLabel="building"
                                                     />
 
                                             </div>

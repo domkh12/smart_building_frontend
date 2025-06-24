@@ -30,16 +30,10 @@ import useTranslate from "../../hook/useTranslate.jsx";
 import SelectComponent from "../../components/SelectComponent.jsx";
 import SelectSingleComponent from "../../components/SelectSingleComponent.jsx";
 import LoadingFetchingDataComponent from "../../components/LoadingFetchingDataComponent.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import ProfileUploadComponent from "../../components/ProfileUploadComponent.jsx";
 import SeoComponent from "../../components/SeoComponent.jsx";
-import {
-    setCaptionSnackBar,
-    setErrorSnackbar,
-    setIsOpenSnackBar,
-} from "../../redux/feature/actions/actionSlice.js";
 import useAuth from "../../hook/useAuth.jsx";
-
 import {useGetAllFloorNameQuery} from "../../redux/feature/floor/floorApiSlice.js";
 import {Slide, toast} from "react-toastify";
 
@@ -693,6 +687,8 @@ function AddNewUser() {
                                                     groupLabelKey="name"
                                                     itemsLabelKey="rooms"
                                                     optionLabelKey="name"
+                                                    floorLabel="floor"
+                                                    buildingLabel="building"
                                                 />
                                             </div>
 

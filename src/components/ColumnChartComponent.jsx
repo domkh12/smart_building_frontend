@@ -1,9 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import {Card, Typography} from "@mui/material";
+import {Card, FormControl, MenuItem, Select, Typography} from "@mui/material";
 import { useSelector } from "react-redux";
+import useTranslate from "../hook/useTranslate.jsx";
 
 function ColumnChartComponent({title}) {
+    const {t} = useTranslate();
+    const [timeFilter, setTimeFilter] = useState("24h");
+    const handleChange = (event) => {
+        setTimeFilter(event.target.value);
+    };
     const mode = useSelector((state) => state.theme.mode);
     const [series] = useState([{
         name: 'Power',
@@ -67,9 +73,28 @@ function ColumnChartComponent({title}) {
 
     return (
         <Card sx={{ p: 3, mx: "auto" }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>
-                {title}
-            </Typography>
+            <div className="flex justify-between">
+                <div>
+                    <Typography variant="subtitle1">{title}</Typography>
+                    <Typography variant="h4" sx={{fontWeight: "700", my: 2}}>
+                        {/*{totalPower >= 1000 ? `${(totalPower / 1000).toFixed(2)} KW` : `${totalPower} W`}*/}10
+                    </Typography>
+                </div>
+                <FormControl sx={{m: 1, minWidth: 120}} size="small">
+                    <Select
+                        value={timeFilter}
+                        sx={{borderRadius: "8px"}}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value="24h">{t('last24hrs')}</MenuItem>
+                        <MenuItem value="7d">{t('last7days')}</MenuItem>
+                        <MenuItem value="28d">{t('last28days')}</MenuItem>
+                        <MenuItem value="90d">{t('last90days')}</MenuItem>
+                        <MenuItem value="365d">{t('last365days')}</MenuItem>
+                        <MenuItem value="lifetime">{t('lifetime')}</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
             <ReactApexChart options={options} series={series} type="bar" height={350} />
         </Card>
     );
