@@ -1,267 +1,391 @@
-import {Box, Grid2, Popover, Typography, useMediaQuery} from "@mui/material";
+import {Box, Card, Grid2, Typography, useMediaQuery} from "@mui/material";
 import TotalCountComponent from "../../components/TotalCountComponent.jsx";
 import useTranslate from "../../hook/useTranslate.jsx";
-import {useEffect, useState} from "react";
-import {useGetAnalysisQuery, useGetTotalCountsMutation} from "../../redux/feature/analysis/analysisApiSlice.js";
-import {useDispatch, useSelector} from "react-redux";
+import {useMemo} from "react";
 import LoadingFetchingDataComponent from "../../components/LoadingFetchingDataComponent.jsx";
 import {FaBuilding} from "react-icons/fa";
 import {ImUsers} from "react-icons/im";
 import {FaMicrochip} from "react-icons/fa6";
 import {MdElevator, MdMeetingRoom} from "react-icons/md";
 import useAuth from "../../hook/useAuth.jsx";
-import ColumnChartComponent from "../../components/ColumnChartComponent.jsx";
-import PieChartComponent from "../../components/PieChartComponent.jsx";
-import {IoIosArrowDown} from "react-icons/io";
-import {ToggleButtonGroup, ToggleButton} from '@mui/material';
-import {DatePicker} from "@mui/x-date-pickers";
-import {setSelectedPeriod} from "../../redux/feature/analysis/analysisSlice.js";
+import ReactApexChart from "react-apexcharts";
+import {useGetAnalysisQuery} from "../../redux/feature/analysis/analysisApiSlice.js";
 
 function Dashboard() {
-    const dispatch = useDispatch();
     const {t} = useTranslate();
-    const [isLoading, setIsLoading] = useState(true);
-    const totalUserCount = useSelector((state) => state.analysis.totalCountUser);
-    const totalCountBuilding = useSelector((state) => state.analysis.totalCountBuilding);
-    const totalCountDevice = useSelector((state) => state.analysis.totalCountDevice);
-    const totalCountRoom = useSelector((state) => state.analysis.totalCountRoom);
-    const totalFloorCount = useSelector((state) => state.analysis.totalFloorCount);
     const sm = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const lg = useMediaQuery(theme => theme.breakpoints.up('lg'));
-    const selectedPeriod= useSelector((state) => state.analysis.selectedPeriod);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedDate, setSelectedDate] = useState(null);
     const {isManager, isAdmin} = useAuth();
-    const dateFrom = useSelector((state) => state.analysis.dateFrom);
-    const dateTo = useSelector((state) => state.analysis.dateTo);
-    const {data: analysis, isLoading: isLoadingGetAnalysis, isSuccess} = useGetAnalysisQuery({date_from: dateFrom, date_to: dateTo});
-    const [getTotalCounts, {
-        isSuccess: isSuccessGetAllTotalCount,
-        isLoading: isLoadingGetAllTotalCount,
-        isError: isErrorGetAllTotalCount,
-        error: errorGetAllTotalCount
-    }] = useGetTotalCountsMutation()
 
-    useEffect(() => {
-        if (!isLoadingGetAllTotalCount && isSuccessGetAllTotalCount) {
-            setIsLoading(false);
+    const {
+        data: analysisData,
+        isSuccess,
+        isLoading,
+        isError,
+        error
+    } = useGetAnalysisQuery({
+        dateFrom: '',
+        dateTo: '',
+    });
+    console.log({analysisData});
+
+    // Generate chart data from mock data
+    const chartData = useMemo(() => {
+        // Guard clause - ensure powerUsage data exists
+        if (!analysisData?.powerUsage?.dates || !analysisData?.powerUsage?.buildings) {
+            return {
+                series: [],
+                options: {
+                    chart: {
+                        type: 'area',
+                        height: 350,
+                    }
+                }
+            };
         }
-    }, [isLoadingGetAnalysis, isLoadingGetAllTotalCount]);
 
-    const handleCustomClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+        const categories = analysisData.powerUsage.dates.map(date => new Date(date).getTime());
+        const series = analysisData.powerUsage.buildings.map(building => ({
+            name: building.name,
+            data: building.data
+        }));
+        const colors = analysisData.powerUsage.buildings.map(building => building.color);
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-
-    useEffect(() => {
-        if (selectedPeriod === 'custom') {
-            const buttonElement = document.querySelector('[value="custom"]');
-            setAnchorEl(buttonElement);
-        }
-    }, [selectedPeriod]);
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                await Promise.all([getTotalCounts()])
-            } catch (error) {
-                console.log(error);
+        return {
+            series: series,
+            options: {
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    stacked: false,
+                    toolbar: {
+                        show: false
+                    },
+                    zoom: {
+                        enabled: false
+                    }
+                },
+                colors: colors,
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth',
+                    width: 2
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.7,
+                        opacityTo: 0.2,
+                        stops: [0, 100]
+                    }
+                },
+                legend: {
+                    show: true,
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    fontSize: '14px',
+                    fontFamily: 'Helvetica, Arial',
+                    fontWeight: 500,
+                    markers: {
+                        width: 12,
+                        height: 12,
+                        radius: 6
+                    },
+                    itemMargin: {
+                        horizontal: 10,
+                        vertical: 5
+                    }
+                },
+                xaxis: {
+                    type: 'datetime',
+                    categories: categories,
+                    labels: {
+                        style: {
+                            colors: '#666',
+                            fontSize: '12px'
+                        },
+                        formatter: function(value) {
+                            const date = new Date(value);
+                            return date.toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric'
+                            });
+                        }
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function(value) {
+                            return value >= 1000 ? `${(value / 1000).toFixed(1)} kWh` : `${value} Wh`;
+                        },
+                        style: {
+                            colors: '#666',
+                            fontSize: '12px'
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: '#e0e0e0',
+                    strokeDashArray: 4,
+                    xaxis: {
+                        lines: {
+                            show: false
+                        }
+                    },
+                    yaxis: {
+                        lines: {
+                            show: true
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                    theme: 'light',
+                    shared: true,
+                    intersect: false,
+                    y: {
+                        formatter: function (value) {
+                            return value >= 1000 ? `${(value / 1000).toFixed(2)} kWh` : `${value} Wh`;
+                        }
+                    },
+                    x: {
+                        format: 'dd MMM yyyy'
+                    }
+                }
             }
-        }
-        fetchData();
-    }, []);
+        };
+    }, [analysisData]);
 
     let content;
 
-    if (isLoading || isLoadingGetAnalysis) content = <LoadingFetchingDataComponent/>;
+    if (isLoading) content = <LoadingFetchingDataComponent/>;
 
-    if (!isLoading && isSuccess) content = (
+    if (!isLoading) content = (
         <>
-            <div className="flex justify-between items-center gap-5 mb-8">
-                <Typography variant={sm ? "h5" : "body1"}>{t('welcomeBack')}</Typography>
-                {/*<div className="flex items-center gap-5">*/}
-                {/*        <>*/}
-                {/*            <ToggleButtonGroup*/}
-                {/*                value={selectedPeriod}*/}
-                {/*                exclusive*/}
-                {/*                onChange={(event, newPeriod) => {*/}
-                {/*                    if (newPeriod !== null) {*/}
-                {/*                        dispatch(setSelectedPeriod(newPeriod))*/}
-                {/*                    }*/}
-                {/*                }}*/}
-                {/*            >*/}
-                {/*                <ToggleButton*/}
-                {/*                    value={selectedPeriod}*/}
-                {/*                    color="primary"*/}
-                {/*                    onClick={handleCustomClick}*/}
-                {/*                    sx={{justifyContent: "center", alignItems: "center", gap: 1}}*/}
-                {/*                >*/}
-                {/*                    {selectedPeriod === 'custom'*/}
-                {/*                        ? (selectedDate ? selectedDate.format('MMM YYYY') : 'Custom')*/}
-                {/*                        : selectedPeriod === 'month'*/}
-                {/*                            ? 'Last month'*/}
-                {/*                            : selectedPeriod === '30days'*/}
-                {/*                                ? 'Last 30days'*/}
-                {/*                                : 'Last 7days'*/}
-                {/*                    }*/}
-                {/*                    <IoIosArrowDown/>*/}
-                {/*                </ToggleButton>*/}
-                {/*            </ToggleButtonGroup>*/}
-                {/*        </>*/}
-                {/*</div>*/}
+            {/* Welcome Section */}
+            <Box sx={{ mb: 4 }}>
+                <Typography 
+                    variant="h5"
+                    sx={{ 
+                        fontWeight: 500,
+                        color: 'text.primary',
+                        mb: 1
+                    }}
+                >
+                    {t('welcomeBack')}
+                </Typography>
+            </Box>
 
-            </div>
-
-
-            <Grid2 container spacing={3} sx={{mb: 3}}>
+            {/* Statistics Cards */}
+            <Grid2 container spacing={3} sx={{mb: 4}}>
                 <Grid2 size={{xs: 12, sm: 6, md: 3}}>
-                    <TotalCountComponent quantity={totalCountDevice} percentage={"+2.6%"}
-                                         gradient1={"#BFDAF3"}
-                                         gradient2={"#9DC0E0"}
-                                         textColor={"#0C4C88"}
-                                         title={t("device")}
-                                         icon={<FaMicrochip
-                                             className={`${lg ? "w-14 h-14" : "w-10 h-10"}  object-cover ml-2 mt-2 text-[#0C4C88]`}
-                                         />}
+                    <TotalCountComponent 
+                        quantity={analysisData?.stats?.devices}
+                        gradient1={"#BFDAF3"}
+                        gradient2={"#9DC0E0"}
+                        textColor={"#0C4C88"}
+                        title={t("device")}
+                        icon={<FaMicrochip
+                            className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-2 text-[#0C4C88]`}
+                        />}
                     />
                 </Grid2>
 
-                {
-                    isAdmin && (<Grid2 size={{xs: 12, sm: 6, md: 3}}>
-                        <TotalCountComponent quantity={totalFloorCount} percentage={"+2.6%"}
-                                             gradient1={"#F3C8F7"}
-                                             gradient2={"#DC9DE2"}
-                                             textColor={"#6F0E78"}
-                                             title={t("floor")}
-                                             icon={<MdElevator
-                                                 className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-2 text-[#6F0E78]`}/>}
+                {isAdmin && (
+                    <Grid2 size={{xs: 12, sm: 6, md: 3}}>
+                        <TotalCountComponent 
+                            quantity={analysisData?.stats?.floors}
+                            gradient1={"#F3C8F7"}
+                            gradient2={"#DC9DE2"}
+                            textColor={"#6F0E78"}
+                            title={t("floor")}
+                            icon={<MdElevator
+                                className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-1 text-[#6F0E78]`}
+                            />}
                         />
-                    </Grid2>)
-                }
+                    </Grid2>
+                )}
 
-                {
-                    isManager && (<Grid2 size={{xs: 12, sm: 6, md: 3}}>
-                        <TotalCountComponent quantity={totalCountBuilding} percentage={"+2.6%"}
-                                             gradient1={"#F3C8F7"}
-                                             gradient2={"#DC9DE2"}
-                                             textColor={"#6F0E78"}
-                                             title={t("building")}
-                                             icon={<FaBuilding
-                                                 className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-2 text-[#6F0E78]`}/>}
+                {isManager && (
+                    <Grid2 size={{xs: 12, sm: 6, md: 3}}>
+                        <TotalCountComponent 
+                            quantity={analysisData?.stats?.buildings}
+                            gradient1={"#F3C8F7"}
+                            gradient2={"#DC9DE2"}
+                            textColor={"#6F0E78"}
+                            title={t("building")}
+                            icon={<FaBuilding
+                                className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-1 text-[#6F0E78]`}
+                            />}
                         />
-                    </Grid2>)
-                }
+                    </Grid2>
+                )}
 
                 <Grid2 size={{xs: 12, sm: 6, md: 3}}>
-                    <TotalCountComponent quantity={totalCountRoom} percentage={"+2.6%"}
-                                         gradient1={"#F6EACF"}
-                                         gradient2={"#F9E3B0"}
-                                         textColor={"#73550E"}
-                                         title={t("room")}
-                                         icon={<MdMeetingRoom
-                                             className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-1 text-[#73550E]`}/>}
+                    <TotalCountComponent 
+                        quantity={analysisData?.stats?.rooms}
+                        gradient1={"#F6EACF"}
+                        gradient2={"#F9E3B0"}
+                        textColor={"#73550E"}
+                        title={t("room")}
+                        icon={<MdMeetingRoom
+                            className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-1 text-[#73550E]`}
+                        />}
                     />
                 </Grid2>
+                
                 <Grid2 size={{xs: 12, sm: 6, md: 3}}>
-                    <TotalCountComponent quantity={totalUserCount} percentage={"+2.6%"}
-                                         gradient1={"#F7E0C5"}
-                                         gradient2={"#E1C29E"}
-                                         textColor={"#734005"}
-                                         title={t("user")}
-                                         icon={<ImUsers className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-1 text-[#734005]`}/>}
+                    <TotalCountComponent 
+                        quantity={analysisData?.stats?.users}
+                        gradient1={"#F7E0C5"}
+                        gradient2={"#E1C29E"}
+                        textColor={"#734005"}
+                        title={t("user")}
+                        icon={<ImUsers 
+                            className={`${lg ? "w-14 h-14" : "w-10 h-10"} object-cover ml-2 mt-1 text-[#734005]`}
+                        />}
                     />
                 </Grid2>
             </Grid2>
 
+            {/* Charts Section */}
+            <Grid2 container spacing={3}>
+                {/* Single Device Status Chart for All Buildings */}
+                <Grid2 size={{xs: 12, md: 5}}>
+                    <Card sx={{
+                        p: 3,
+                        height: "100%",
+                        borderRadius: 2,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        border: '1px solid rgba(0,0,0,0.05)'
+                    }}>
+                        <Box sx={{ mb: 3 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                                Device Status by Building
+                            </Typography>
+                        </Box>
 
-            <Grid2 container spacing={2}>
-                <Grid2 size={{xs: 12, md: 4}}>
-                    <PieChartComponent title={t('deviceStatus')}
-                                       series={analysis?.statusDevice?.series}
-                                       labels={analysis?.statusDevice?.labels}
-                    />
+                        {/* Device Status Chart */}
+                        <Box sx={{ position: 'relative' }}>
+                            <ReactApexChart 
+                                options={{
+                                    chart: {
+                                        type: 'bar',
+                                        height: 300,
+                                        toolbar: {
+                                            show: false
+                                        }
+                                    },
+                                    plotOptions: {
+                                        bar: {
+                                            horizontal: false,
+                                            columnWidth: '55%',
+                                            endingShape: 'rounded'
+                                        },
+                                    },
+                                    dataLabels: {
+                                        enabled: true,
+                                        formatter: function (val) {
+                                            return val;
+                                        },
+                                        style: {
+                                            fontSize: '12px',
+                                            colors: ['#fff']
+                                        }
+                                    },
+                                    stroke: {
+                                        show: true,
+                                        width: 2,
+                                        colors: ['transparent']
+                                    },
+                                    colors: ['#4CAF50', '#FF5252'],
+                                    xaxis: {
+                                        categories: analysisData?.buildingDeviceStatus?.map(b => b.name),
+                                        labels: {
+                                            style: {
+                                                colors: '#666',
+                                                fontSize: '14px',
+                                                fontWeight: 500
+                                            }
+                                        }
+                                    },
+                                    yaxis: {                                       
+                                        labels: {
+                                            style: {
+                                                colors: '#666',
+                                                fontSize: '12px'
+                                            }
+                                        }
+                                    },
+                                    fill: {
+                                        opacity: 1
+                                    },
+                                    tooltip: {
+                                        y: {
+                                            formatter: function (val) {
+                                                return val + " devices";
+                                            }
+                                        }
+                                    },
+                                    legend: {
+                                        position: 'top',
+                                        horizontalAlign: 'center',
+                                        fontSize: '14px',
+                                        fontFamily: 'Helvetica, Arial',
+                                        fontWeight: 500
+                                    }
+                                }}
+                                series={[
+                                    {
+                                        name: 'Active',
+                                        data: analysisData?.buildingDeviceStatus?.map(b => b.series[0])
+                                    },
+                                    {
+                                        name: 'Inactive',
+                                        data: analysisData?.buildingDeviceStatus?.map(b => b.series[1])
+                                    }
+                                ]}
+                                type="bar"
+                                height={300}
+                            />
+                        </Box>
+                    </Card>
                 </Grid2>
-                <Grid2 size={{xs: 12, md: 8}}>
-                    <ColumnChartComponent title={t('powerConsumption')}/>
+                
+                {/* Power Usage Chart */}
+                <Grid2 size={{xs: 12, md: 7}}>
+                    <Card sx={{
+                        p: 3,
+                        height: "100%",
+                        borderRadius: 2,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        border: '1px solid rgba(0,0,0,0.05)'
+                    }}>
+                        <Box sx={{ mb: 3 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                                Power Usage Overview (Last 28 Days)
+                            </Typography>
+                        </Box>
+
+                        {/* Chart */}
+                        <Box sx={{ position: 'relative' }}>
+                            <ReactApexChart 
+                                options={chartData.options} 
+                                series={chartData.series} 
+                                type="area" 
+                                height={300} 
+                            />
+                        </Box>
+                    </Card>
                 </Grid2>
             </Grid2>
-            <Popover
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-            >
-                <Box sx={{p: 2, display: 'flex', flexDirection: 'column', gap: 2}}>
-
-                        <div className="flex flex-col gap-2">
-                            <ToggleButton
-                                fullWidth
-                                value="month"
-                                selected={selectedPeriod === 'month'}
-                                onClick={() => {
-                                    dispatch(setSelectedPeriod("month"))
-                                    handleClose();
-                                }}
-                            >
-                                Last month
-                            </ToggleButton>
-                            <ToggleButton
-                                fullWidth
-                                value="30days"
-                                selected={selectedPeriod === '30days'}
-                                onClick={() => {
-                                    dispatch(setSelectedPeriod("30days"))
-                                    handleClose();
-                                }}
-                            >
-                                Last 30days
-                            </ToggleButton>
-                            <ToggleButton
-                                fullWidth
-                                value="7days"
-                                selected={selectedPeriod === '7days'}
-                                onClick={() => {
-                                    dispatch(setSelectedPeriod("7days"));
-                                    handleClose();
-                                }}
-                            >
-                                Last 7days
-                            </ToggleButton>
-                        </div>
-
-                    <DatePicker
-                        views={['month', 'year']}
-                        label="Month and Year"
-                        value={selectedDate}
-                        onChange={(newValue) => {
-                            setSelectedDate(newValue);
-                            dispatch(setSelectedPeriod("custom"))
-                            handleClose();
-                        }}
-                    />
-                </Box>
-            </Popover>
-
-
         </>
+    );
 
-    )
-
-    return content
-
+    return content;
 }
 
 export default Dashboard;

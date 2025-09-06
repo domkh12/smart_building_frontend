@@ -16,7 +16,7 @@ export const analysisApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
 
         getAnalysis: builder.query({
-           query: ({date_from, date_to}) => ({
+           query: ({date_from = "", date_to = ""}) => ({
                url: `/analysis?date_from=${date_from}&date_to=${date_to}`,
                validateStatus: (response, result) => {
                    return response.status === 200 && !result.isError;

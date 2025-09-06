@@ -198,6 +198,8 @@ void restoreRelayStates() {
   }
 }`:``}
 
+bool mqttConnectedOnce = false;
+
 void setup_ethernet() {
   Serial.println("[Ethernet] Initializing Ethernet...");
   Ethernet.init(W5500_CS); // Initialize Ethernet shield CS pin
@@ -209,6 +211,7 @@ void setup_ethernet() {
   // Check for Ethernet link status and print IP
   unsigned long startAttemptTime = millis();
   while (Ethernet.linkStatus() == LinkOFF && millis() - startAttemptTime < 10000) {
+    mqttConnectedOnce = false;  
     Serial.print(".");
     delay(500);
   }
@@ -322,8 +325,9 @@ void loop() {
       return;      
     }
   }
-  if (!client.connected()) {
+  if (!client.connected() && !mqttConnectedOnce) {
     reconnect();  
+    mqttConnectedOnce = true;
   }
 
   client.loop();${isTemperature || isHumidity || isPM2_5 || isPower ? `
@@ -505,6 +509,8 @@ void restoreRelayStates() {
   }
 }`:``}
 
+bool mqttConnectedOnce = false;
+
 void setup_wifi() {
   delay(10);
   Serial.println();
@@ -513,6 +519,7 @@ void setup_wifi() {
 
   int retry_count = 0;
   while (WiFi.status() != WL_CONNECTED) {
+    mqttConnectedOnce = false;
     delay(500);
     Serial.print(".");
     retry_count++;
@@ -616,17 +623,19 @@ void setup() {
 void loop() {
 
   if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("[Loop] WiFi disconnected. Attempting to reconnect WiFi...");
-    setup_wifi(); 
-    delay(5000); 
-    return;    
+    static unsigned long lastWiFiAttempt = 0;
+    if (millis() - lastWiFiAttempt > 10000) {  // try every 10 seconds
+      Serial.println("[WiFi] Disconnected, retrying...");
+      setup_wifi();
+      lastWiFiAttempt = millis();
+    }
   }
-  if (!client.connected()) {
-    Serial.println("[Loop] MQTT disconnected. Attempting to reconnect MQTT...");
+
+  if (WiFi.status() == WL_CONNECTED && !client.connected() && !mqttConnectedOnce) {
     reconnect();
-    delay(1000);
-    return;
+    mqttConnectedOnce = true;
   }
+
   client.loop();${isTemperature || isHumidity || isPM2_5 || isPower ? `
   unsigned long now = millis();
   if (now - lastMsgTime > interval) {

@@ -199,7 +199,6 @@ function EditDeviceForm({ device }) {
                                                         selectFistValue={values.deviceTypeId}
                                                         isEditable={true}
                                                         onClickQuickEdit={(value) => {
-
                                                             dispatch(setIdDeviceTypeToEdit(value));
                                                             dispatch(setIsQuickEditDeviceTypeOpen(true));
                                                         }}

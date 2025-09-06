@@ -7,6 +7,9 @@ export default defineConfig({
     host: 'localhost',
     port: 3000
   },
+  esbuild: {
+    drop: ['console', 'debugger']
+  },
   build: {
     minify: true,
     sourcemap: false,

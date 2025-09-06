@@ -131,8 +131,8 @@ const SelectComponent = ({
     const getOptionDisplayText = (option) => {
         let displayText = option[optionLabelKey] || "";
         const labels = [];
-        // if (floorLabel && option[floorLabel]?.name) labels.push(option[floorLabel].name);
-        // if (buildingLabel && option[floorLabel]?.building?.name) labels.push(option[floorLabel].building.name);
+        if (floorLabel && option[floorLabel]?.name) labels.push(option[floorLabel].name);
+        if (buildingLabel && option[floorLabel]?.building?.name) labels.push(option[floorLabel].building.name);
         if (labels.length > 0) {
             displayText += ` (${labels.join(", ")})`;
         }

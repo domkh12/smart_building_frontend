@@ -38,16 +38,6 @@ function UserLayout() {
     const [isLoading, setIsLoading] = useState(true);
     const {data: user} = useGetUserProfileQuery("profileList");
 
-    // const [
-    //   getSitesList,
-    //   {
-    //     isSuccess: isGetSitesSuccess,
-    //     isLoading: isGetSitesLoading,
-    //     isError: isGetSitesError,
-    //     error: errorGetSites,
-    //   },
-    // ] = useGetSitesListMutation();
-
     const [
         connectedUser,
         {isSuccess: isSuccessConnectUser, isLoading: isLoadingConnectUser},

@@ -48,15 +48,11 @@ export default function Login() {
     const [verifyCodeErrorMessage, setVerifyCodeErrorMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [open, setOpen] = useState(false);
-    const [token, setToken] = useState("");
     const [step, setStep] = useState(1);
     const [persist, setPersist] = usePersist();
     const [otp, setOtp] = useState('');
     const [email, setEmail] = useState("");
     const mode = useSelector((state) => state.theme.mode);
-    const [rememberMe, setRememberMe] = useState(
-        localStorage.getItem("isRemember")
-    );
     const {t} = useTranslate();
     const [login, {isSuccess, isLoading}] = useLoginMutation();
     const handleClickShowPassword = () => setShowPassword((show) => !show);

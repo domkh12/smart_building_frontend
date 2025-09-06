@@ -13,7 +13,6 @@ function EditBuilding() {
     refetch();
   }, [refetch]);
 
-  console.log(isSuccess)
   let content;
 
   if (isFetching) content = <LoadingFetchingDataComponent/>;
